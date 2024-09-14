@@ -2,7 +2,8 @@ import { apiIDB } from '../../../api/apiIDB';
 import { randomMax } from '../../common/utillites/utilites';
 
 export const setNewCode = async () => {
-  //let maxCode = Math.floor(Math.random() * 1e5);//await productsApi.getData('products', { max: 'code' });
+  //let maxCode = Math.floor(Math.random() * 1e5);
+  //await productsApi.getData('products', { max: 'code' });
   let arr = await apiIDB.getProduct();
   // debugger
   let codes = arr.map((item) => +item.code || 0);
