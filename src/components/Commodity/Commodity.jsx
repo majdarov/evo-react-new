@@ -23,8 +23,8 @@ const Commodity = props => {
     let schema = [];
     Object.keys(sch).forEach((key) => {
       let lbl;
-      if (sch[key][1]) {
-        lbl = sch[key][0] ? sch[key][0] : key;
+      if (!!sch[key][1]) {
+        lbl = !!sch[key][0] ? sch[key][0] : key;
         schema.push([key, lbl]);
       }
     });
@@ -37,8 +37,10 @@ const Commodity = props => {
     props.history.push('/settings');
   }
 
-  // const propsSetPid = props.setPid;
-  // useEffect(() => { propsSetPid(pid) }, [pid, propsSetPid]);
+  const propsSetPid = props.setPid;
+  useEffect(() => {
+    propsSetPid(pid)
+  }, [pid]);
 
   useEffect(() => { //get groups & products
     if (!props.isLoaded && props.isInit) {
@@ -55,8 +57,8 @@ const Commodity = props => {
   }, [props])
 
   useEffect(() => {
-    setCommodities(items);
     if (isSearching) {
+      setCommodities(items);
       setLabelGroup(`Результаты поиска - ${items.length} позиций.`);
     }
   }, [items, setCommodities, isSearching])

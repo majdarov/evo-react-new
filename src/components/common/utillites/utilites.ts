@@ -4,7 +4,7 @@ export function randomMax(max: number): number {
 
 export function getUUID4(): string {
 
-  let arr: any[] = [];
+  let arr: string[] = [];
   while (arr.length < 16) {
     let byte = randomMax(16).toString(16).concat(randomMax(16).toString(16));
     if (arr.length === 6)
@@ -14,8 +14,8 @@ export function getUUID4(): string {
     arr.push(byte);
   }
 
-  let newStr = arr.join('');
-  let strUuid = newStr.slice(0, 8);
+  let newStr: string = arr.join('');
+  let strUuid: string = newStr.slice(0, 8);
   strUuid += '-' + newStr.slice(8, 12);
   strUuid += '-' + newStr.slice(12, 16);
   strUuid += '-' + newStr.slice(16, 20);
