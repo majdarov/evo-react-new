@@ -1,0 +1,28 @@
+table tr:nth-child(2n) {
+  background-color: lightcyan;
+}
+
+th {
+  background-color: lightgray;
+  padding: 0.5rem;
+}
+
+th i {
+  margin-left: .5rem;
+}
+
+td {
+  padding-left: 0.5rem;
+  padding-top: 0.5rem;
+}
+
+td:hover {
+  border: green 2px solid;
+}
+
+.del::before {
+  content: '\f2ed';
+  font-weight: 900;
+  color: tomato;
+  /* margin-left: 1rem; */
+}

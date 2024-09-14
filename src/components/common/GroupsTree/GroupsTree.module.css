@@ -1,0 +1,57 @@
+.tree-container {
+  display: flex;
+  /* justify-content: last baseline; */
+  z-index: 200;
+  position: sticky;
+  top: 11rem;
+  background-color: var(--app-background-color);
+}
+
+.g-tree {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+  border: 1px solid var(--icon-color);
+  box-shadow: gray 0 0 .5rem;
+  border-radius: .5rem;
+  padding: 0.2rem;
+  margin: 0.2rem;
+  color: var(--icon-color);
+  font-weight: bold;
+}
+
+.g-tree:hover {
+  background-color: lavender;
+  cursor: pointer;
+}
+
+.g-tree i {
+  margin-left: .5rem;;
+}
+
+.tree-modal {
+  position: absolute;
+  width: fit-content;
+  border-radius: 5%;
+  box-shadow: grey 0 0 1rem;
+  text-align: left;
+}
+/*
+.tree {
+  position: absolute;
+  display: block;
+  top: -10rem;
+  text-align: start;
+  border: solid 1px blueviolet;
+  background-color: white;
+  transition: ease-in-out top 0.5s 0.5s;
+} */
+
+.del i {
+  color: var(--color-form-icon-warn);
+}
+
+.edit i {
+  color: var(--color-form-icon);
+  cursor: pointer;
+}

@@ -1,0 +1,63 @@
+@font-face {
+  font-family: 'Code EAN13';
+  src: url('../../Assets/fonts/ean13.ttf');
+}
+
+html,
+body {
+  padding: 0;
+  width: 99%;
+  height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+  --tree-color: rgb(59, 57, 185);
+  --icon-color: rgb(137, 135, 243);
+  --icon2-color: rgb(247, 124, 10);
+  --icon-font: "Font Awesome 5 Free";
+  --barcode-font: "Code EAN13";
+  --app-background-color: lightblue;
+  --forms-background-color: rgb(137, 135, 243, 0.6);
+  --forms-button-hover: rgb(230, 230, 250);
+}
+
+.app {
+  display: grid;
+  grid-template-rows: 5.5rem 1fr;
+  grid-template-columns: repeat(6, 2fr);
+  grid-template-areas:
+    "h h h h h h"
+    "c c c c c c"
+    /* "f f f f f f" */;
+  /* grid-gap: 0.5rem; */
+  background-color: var(--app-background-color);
+  border-radius: .5rem;
+}
+
+.app-content {
+  grid-area: c;
+  padding: 0.5rem;
+  border-radius: .5rem;
+}
+
+/* .footer {
+  grid-area: f;
+} */
+
+#root {
+  max-width: initial;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#Tree {
+  position: sticky;
+  top: 9rem;
+}
+
+input,
+fieldset {
+  border-radius: .5rem;
+  padding: .2rem;
+}

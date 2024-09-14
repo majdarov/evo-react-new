@@ -1,0 +1,69 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--icon-font);
+  font-size: 1rem;
+}
+
+.list {
+  /* grid-column: 2/7; */
+  /* display: flex; */
+  padding-top: 0.2rem;
+  padding-left: 0.2rem;
+  border: 1px solid blue;
+  background-color: cornsilk;
+  cursor: default;
+  overflow: auto;
+}
+
+.list h3 {
+  text-align: center;
+  border-bottom: grey solid 2px;
+  margin: 0.5rem;
+  color: var(--icon-color);
+}
+
+.selected {
+  background-color: lavender;
+}
+
+.del {
+  margin-left: 1rem;
+}
+
+.del::before {
+  content: '\f2ed';
+  font-weight: 900;
+  color: tomato;
+}
+
+.head {
+  /* display: block; */
+  background-color: lightblue;
+  position: sticky;
+  top: 5.5rem;
+  z-index: 101;
+}
+
+.buttons {
+  display: flex;
+}
+
+.button-add {
+  border: 1px solid var(--icon-color);
+  padding: .5rem;
+  margin-bottom: .2rem;
+  color: var(--icon-color);
+  border-radius: .5rem;
+  cursor: pointer;
+  /* background-color: var(--forms-background-color); */
+}
+
+.button-add:hover {
+  background-color: lavender;
+}
+
+.button-add i {
+  margin-left: .5rem;
+  color: var(--icon-color);
+}
