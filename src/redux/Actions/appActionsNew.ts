@@ -1,4 +1,3 @@
-import { AppState, SyncDataType } from './../appSlice';
 import {
   setAppKeyAC,
   setStoreKeyAC,
@@ -6,8 +5,8 @@ import {
   setStoresAC,
   setLastUpdateAC,
   setPeriodUpdateAC,
-  setSyncDataAC,
-  clearSyncDataAC,
+  // setSyncDataAC,
+  // clearSyncDataAC,
 
 } from '../appSlice';
 import { AppDispatch } from '../redux-store';
@@ -54,10 +53,10 @@ export const setPeriodUpdate = (periodUpdate: number) => (dispatch: AppDispatch)
   dispatch(setPeriodUpdateAC(periodUpdate));
 };
 
-export const setSyncData = ({ products, groups }: SyncDataType) => (dispatch: AppDispatch) => {
-  dispatch(setSyncDataAC({ products, groups }));
-};
+// export const setSyncData = ({ products, groups }: { products: any[], groups: any[] }) => (dispatch: AppDispatch) => {
+//   dispatch(setSyncDataAC({ products, groups }));
+// };
 
-export const clearSyncData = () => (dispatch: AppDispatch) => {
-  dispatch(clearSyncDataAC());
-};
+// export const clearSyncData = () => (dispatch: AppDispatch) => {
+//   dispatch(clearSyncDataAC());
+// };

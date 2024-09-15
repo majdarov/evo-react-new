@@ -6,8 +6,8 @@ export {
   initializeApp,
   setLastUpdate,
   setPeriodUpdate,
-  setSyncData,
-  clearSyncData
+  // setSyncData,
+  // clearSyncData
 } from './appActionsNew';
 
 export { getTitle, chooseLang } from './navigationActions';

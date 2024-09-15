@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export type SyncDataType = {
+interface SyncDataType {
   products: any[]
   groups: any[]
 }
@@ -10,9 +10,9 @@ export type AppState = {
   storeKey: string | null
   isInit: boolean
   stores: string[]
-  lastUpdate: number | null
+  lastUpdate: number
   periodUpdate: number
-  syncData?: SyncDataType
+  // syncData?: SyncDataType
 }
 
 const initialState: AppState = {
@@ -20,12 +20,12 @@ const initialState: AppState = {
   storeKey: null,
   isInit: false,
   stores: [],
-  lastUpdate: null,
+  lastUpdate: 0,
   periodUpdate: 24,
-  syncData: {
-    products: [],
-    groups: [],
-  },
+  // syncData: {
+  //   products: [],
+  //   groups: [],
+  // },
 };
 
 const appSlice = createSlice({
@@ -81,24 +81,24 @@ const appSlice = createSlice({
       //     groups: [...action.groups],
       //   },
       // };
-    setSyncDataAC(state, action) {
+    // setSyncDataAC(state, action) {
 
-      const { products, groups } = action.payload;
+    //   const { products, groups } = action.payload;
 
-      state.syncData = { products, groups }
-    },
+    //   state.syncData = { products, groups }
+    // },
 
-    // case CLEAR_SYNC_DATA:
-      // return { ...state, syncData: { products: [], groups: [] } };
-    clearSyncDataAC(state) {
-      state.syncData = { products: [], groups: [] }
-    },
+    // // case CLEAR_SYNC_DATA:
+    //   // return { ...state, syncData: { products: [], groups: [] } };
+    // clearSyncDataAC(state) {
+    //   state.syncData = { products: [], groups: [] }
+    // },
 
   }
 });
 
 export const {
-  setAppKeyAC, setStoreKeyAC, toggleInitAppAC, setStoresAC, setLastUpdateAC, setPeriodUpdateAC, setSyncDataAC, clearSyncDataAC
+  setAppKeyAC, setStoreKeyAC, toggleInitAppAC, setStoresAC, setLastUpdateAC, setPeriodUpdateAC/* , setSyncDataAC, clearSyncDataAC */
 } = appSlice.actions
 
 export default appSlice;

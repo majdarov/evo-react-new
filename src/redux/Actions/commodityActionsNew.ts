@@ -2,19 +2,20 @@ import { apiEvotor } from '../../api/api';
 import { apiIDB } from '../../api/apiIDB';
 import { chooseError } from '../../components/Errors/chooseError';
 import { setGroupsAC, setPidAC, setCommoditiesAC, setErrorAC, setFormErrorAC, setViewFormAC, toggleFormPostAC, setFormDataAC, setFormPhotosAC } from '../commoditySlice';
+import { useAppStore } from '../hooks';
+import { AppDispatch } from '../redux-store';
 
-export const getProducts = (pId) => {
-  return (dispatch) => {
+export const getProducts = (pId: string) => {
+  return (dispatch: AppDispatch) => {
     apiIDB.getProductsPid(pId).then((res) => {
-      // console.log(res)
       dispatch(setCommoditiesAC(res));
     });
   };
 };
 
-export const getProductId = (id, isGroup = false) => {
-  if (!id) return (dispatch) => dispatch(setViewFormAC(true));
-  return (dispatch) => {
+export const getProductId = (id: string, isGroup = false) => {
+  if (!id) return (dispatch: AppDispatch) => dispatch(setViewFormAC(true));
+  return (dispatch: AppDispatch) => {
     let getData;
     if (isGroup) {
       getData = apiIDB.getGroup;
@@ -23,8 +24,7 @@ export const getProductId = (id, isGroup = false) => {
     }
     getData(id)
       .then((res) => {
-        // console.log(res)
-        dispatch(setFormDataAC(res, isGroup));
+        dispatch(setFormDataAC({ formData: res, isGroup }));
         return true;
       })
       .then((result) => {
@@ -34,27 +34,30 @@ export const getProductId = (id, isGroup = false) => {
 };
 
 export const getGroups = () => {
-  return (dispatch) => {
+  return (dispatch: AppDispatch) => {
     apiIDB.getGroup('all').then((res) => {
       dispatch(setGroupsAC(res));
     });
   };
 };
 
-export const setGroups = (groups) => (dispatch) => {
+export const setGroups = (groups: any[]) => (dispatch: AppDispatch) => {
   dispatch(setGroupsAC(groups));
 };
 
-export const setViewForm = (view) => (dispatch) => {
+export const setViewForm = (view: boolean) => (dispatch: AppDispatch) => {
   dispatch(setViewFormAC(view));
 };
 
-export const setFormData = (formData) => (dispatch) => {
+export const setFormData = (formData: any) => (dispatch: AppDispatch) => {
   dispatch(setFormDataAC(formData));
 };
 
-export const postFormData = (typeData, typeQuery, body) => (dispatch) => {
-  // debugger
+export const postFormData = (
+    typeData: 'product' | 'group',
+    typeQuery: 'post' | 'put',
+    body: any // TODO define type of Body
+) => (dispatch: AppDispatch) => {
   let path;
   switch (typeData) {
     case 'product':
@@ -99,8 +102,11 @@ export const postFormData = (typeData, typeQuery, body) => (dispatch) => {
       if (typeData === 'group') {
         apiIDB
           .getGroup('all')
-          .then((res) => dispatch(setGroupsAC(res)))
-          .then(dispatch(setPidAC(pid)));
+          .then((res) => {
+            dispatch(setGroupsAC(res))
+            dispatch(setPidAC(pid))
+          })
+        //   .then(dispatch(setPidAC(pid)));
       } else {
         dispatch(setPidAC(pid));
       }
@@ -113,14 +119,13 @@ export const postFormData = (typeData, typeQuery, body) => (dispatch) => {
     });
 };
 
-export const deleteProduct = (id, pid, path = 'product') => async (
-  dispatch,
-  getState,
+export const deleteProduct = (id: string, pidIn: string | null, path = 'product') => async (
+  dispatch: AppDispatch
 ) => {
+    const state = useAppStore().getState()
   try {
-    pid = !pid ? getState().commodityPage.pid : pid;
+    let pid = !pidIn ? state.commodity.pid : pidIn;
     let res = await apiEvotor.deleteData(path, id);
-    // console.log(res.status);
     if (res.status >= 400) {
       throw new Error(`Error deleting object \n\r id: ${id}`);
     } else {
@@ -139,18 +144,18 @@ export const deleteProduct = (id, pid, path = 'product') => async (
   }
 };
 
-export const setCommodities = (commodities) => (dispatch) =>
+export const setCommodities = (commodities: any[]) => (dispatch: AppDispatch) =>
   dispatch(setCommoditiesAC(commodities));
 
-export const setFormPhotos = (photos) => (dispatch) =>
+export const setFormPhotos = (photos: any[]) => (dispatch: AppDispatch) =>
   dispatch(setFormPhotosAC(photos));
 
-export const setPid = (pId) => (dispatch) => dispatch(setPidAC(pId));
+export const setPid = (pId: string) => (dispatch: AppDispatch) => dispatch(setPidAC(pId));
 
-export const setError = (err) => (dispatch) => dispatch(setErrorAC(err));
+export const setError = (err: any) => (dispatch: AppDispatch) => dispatch(setErrorAC(err));
 
-export const setFormError = (err) => (dispatch) =>
+export const setFormError = (err: any) => (dispatch: AppDispatch) =>
   dispatch(setFormErrorAC(err));
 
-export const toggleFormPost = (formPost) => (dispatch) =>
+export const toggleFormPost = (formPost: boolean) => (dispatch: AppDispatch) =>
   dispatch(toggleFormPostAC(formPost));

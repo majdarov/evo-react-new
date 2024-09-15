@@ -21,7 +21,7 @@ interface ISchemaTable {
 
 
 export type SettingsState = {
-  app: AppState
+  // app: AppState
   products: {
     table: {
       schema: ISchemaTable//{
@@ -30,14 +30,14 @@ export type SettingsState = {
 };
 
 const initialState: SettingsState = {
-  app: {
-    appKey: null,
-    storeKey: null,
-    isInit: false,
-    stores: [],
-    lastUpdate: null,
-    periodUpdate: 24,
-  },
+  // app: {
+  //   appKey: null,
+  //   storeKey: null,
+  //   isInit: false,
+  //   stores: [],
+  //   lastUpdate: 0,
+  //   periodUpdate: 24,
+  // },
   products: {
     table: {
       schema: {

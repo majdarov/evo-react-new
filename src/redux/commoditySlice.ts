@@ -1,6 +1,52 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-let initialState = {
+interface IFormData {
+  id: string | null
+  name: string
+  code: string
+  measure_name: string // TODO - create enumerable
+  tax: string // TODO - create enumerable
+  allow_to_sell: boolean
+  description: string
+  article_number: string
+  parent_id: string | null
+  type: string // TODO - create enumerable
+  price: number
+  cost_price: number
+  quantity: number
+  photos: any[]
+  barcodes: string[]
+}
+
+interface IForm {
+  formData: IFormData
+  formPost: boolean
+  resMessage: string | null
+  formError: unknown
+  isGroup: boolean
+  photos: any[],
+}
+
+interface Group {
+  id: string
+  pid: string | null
+  label: string
+}
+
+export type CommodityState = {
+  groups: Group[]
+  commodities: any[] // TODO - define type of Product/commodities
+  pid: string
+  isLoaded: boolean
+  comIsLoaded: boolean
+  error: unknown
+  lastUpdate: number
+  isUpdated: boolean
+  viewForm: boolean
+  form: IForm
+};
+
+let initialState: CommodityState = {
   groups: [],
   commodities: [],
   pid: '0',
@@ -41,9 +87,9 @@ const commoditySlice = createSlice({
   initialState,
   reducers: {
     setGroupsAC(state, action) {
-      let groups = [];
+      let groups: Group[] = [];
       let _groups = action.payload;
-      _groups.forEach((item) => {
+      _groups.forEach((item: any) => {
         let group = {
           id: item.id,
           pid: item.parent_id ? item.parent_id : null,
@@ -52,7 +98,6 @@ const commoditySlice = createSlice({
         };
         groups.push(group);
       });
-      // groups.sort((a,b) => a.code - b.code);
       state.groups = [...groups];
       state.isLoaded = true;
     },
@@ -77,9 +122,8 @@ const commoditySlice = createSlice({
       state.form.formPost = action.payload
     },
     setFormDataAC(state, action) {
-      const formData = action.payload ?? initialState.form.formData
-        // action.payload === null ? initialState.form.formData : action.payload;
-      const isGroup = true && action.isGroup;
+      const formData: IFormData = action.payload?.formData ?? initialState.form.formData
+      const isGroup = !!action.payload?.isGroup;
       state.form.formData = formData;
       state.form.isGroup = isGroup;
     },

@@ -5,7 +5,7 @@ import "../../Assets/css/solid.css";
 import "../../Assets/css/regular.css";
 import "../../Assets/css/brands.css";
 import { Route } from "react-router-dom";
-import Game from "../Game";
+import Game from "../Game/Game";
 import HeaderContainer from "../Header/HeaderContainer";
 import CommodityContainer from "../Commodity";
 import ImpExcel from "../ImpExcel/ImpExcel";
@@ -20,15 +20,16 @@ import {
   setLastUpdate,
   setPeriodUpdate,
 } from '../../redux/Actions';
-import { connect } from "react-redux";
+import { connect, ConnectedProps } from "react-redux";
 import Documents from "../Documents";
 import { syncGroupsProducts, testNeedUpdate } from "../../api/apiUtils";
+import { RootState } from "../../redux/redux-store";
 
-const App = props => {
+const App = (props: Props) => {
 
   useEffect(() => {
 
-    async function getProductsForIdb(lastUpdate, periodUpdate = 24) {
+    async function getProductsForIdb(lastUpdate: number, periodUpdate = 24) {
       if (testNeedUpdate(lastUpdate, periodUpdate)) {
         await syncGroupsProducts();
         props.setLastUpdate();
@@ -61,7 +62,7 @@ const App = props => {
   );
 }
 
-const mapState = state => {
+const mapState = (state: RootState) => {
   return {
     appKey: state.app.appKey,
     storeKey: state.app.storeKey,
@@ -71,14 +72,17 @@ const mapState = state => {
   }
 }
 
-export default connect(
-  mapState,
-  {
-    initializeApp,
-    toggleInitApp,
-    setAppKey,
-    setStoreKey,
-    setLastUpdate,
-    setPeriodUpdate,
-  }
-)(App);
+const mapDispatch = {
+  initializeApp,
+  toggleInitApp,
+  setAppKey,
+  setStoreKey,
+  setLastUpdate,
+  setPeriodUpdate,
+}
+
+const connector = connect(mapState, mapDispatch)
+
+type Props = ConnectedProps<typeof connector>;
+
+export default connector(App);
