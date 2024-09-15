@@ -1,6 +1,22 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-let initialState = {
+interface Langs {
+  [key: string]: number
+}
+
+interface NavLink {
+  link: string
+  title: string[]
+}
+
+export type NavigationState = {
+  langs: Langs
+  currentLang: number
+  title: string
+  navBar: NavLink[]
+}
+
+let initialState: NavigationState = {
   langs: { ru: 0, en: 1 },
   currentLang: 0,
   title: '',
@@ -18,15 +34,15 @@ const navSlice = createSlice({
   name: 'navigation',
   initialState,
   reducers: {
-    getTitleAC(state, action) {
+    getTitleAC(state, action: PayloadAction<string>) {
       let title;
       let nav = state.navBar.find((item) => item.link === action.payload);
       if (nav !== undefined) {
         title = nav.title[state.currentLang];
       }
-      state.title = title;
+      state.title = title || 'No Title';
     },
-    chooseLangAC(state, action) {
+    chooseLangAC(state, action: PayloadAction<string>) {
       state.currentLang = state.langs[action.payload]
     }
   }

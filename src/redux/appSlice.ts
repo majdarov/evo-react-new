@@ -1,6 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
+export type SyncDataType = {
+  products: any[]
+  groups: any[]
+}
+
+export type AppState = {
+  appKey: string | null
+  storeKey: string | null
+  isInit: boolean
+  stores: string[]
+  lastUpdate: number | null
+  periodUpdate: number
+  syncData?: SyncDataType
+}
+
+const initialState: AppState = {
   appKey: null,
   storeKey: null,
   isInit: false,
@@ -75,7 +90,7 @@ const appSlice = createSlice({
 
     // case CLEAR_SYNC_DATA:
       // return { ...state, syncData: { products: [], groups: [] } };
-    clearSyncDataAC(state, action) {
+    clearSyncDataAC(state) {
       state.syncData = { products: [], groups: [] }
     },
 

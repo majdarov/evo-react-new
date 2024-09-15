@@ -22,7 +22,7 @@ import {
 } from '../../redux/Actions';
 import { connect } from "react-redux";
 import Documents from "../Documents";
-import { /* fetchGroupsProducts, */ syncGroupsProducts, testNeedUpdate } from "../../api/apiUtils";
+import { syncGroupsProducts, testNeedUpdate } from "../../api/apiUtils";
 
 const App = props => {
 

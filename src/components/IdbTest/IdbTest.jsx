@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { apiForIdb } from '../../api/api';
+import { apiEvotor } from '../../api/api';
 import Tree from '../common/Tree/Tree';
 import { apiIDB } from '../../api/apiIDB';
 
@@ -15,7 +15,7 @@ const IdbTest = () => {
     }
 
     async function butGetGroups() {
-        let res = await apiForIdb.fetchGroupsEvo();
+        let res = await apiEvotor.fetchGroupsEvo();
         setIsLoading(true);
         console.log(res);
         let g = await res.items;

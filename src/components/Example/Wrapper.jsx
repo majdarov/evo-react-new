@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Example from './Example';
 // import { commodities } from '../../Tests/products.json';
 import useFilteredData from '../../Hooks/useFilteredData';
-import { apiForIdb } from '../../api/api';
+import { apiEvotor } from '../../api/api';
 import schemes from './schemes.json';
 import { apiIDB } from '../../api/apiIDB';
 
@@ -32,7 +32,7 @@ const Wrapper = (props) => {
     }
 
     const getSchemes = async () => {
-        let schemes = await apiForIdb.getSchemes();
+        let schemes = await apiEvotor.getSchemes();
         console.log(schemes);
     }
 
@@ -41,7 +41,7 @@ const Wrapper = (props) => {
         body[0].uuid = localStorage.getItem('storeKey');
         body[0].appId = localStorage.getItem('appKey');
         // console.log(body);
-        let resSchemes = await apiForIdb.postSchemes(body);
+        let resSchemes = await apiEvotor.postSchemes(body);
         console.log(resSchemes);
     }
     apiIDB.getGroup('0').then(g => console.log(g))

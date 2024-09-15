@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { setAppKey, setStoreKey, setStores, toggleInitApp, setPeriodUpdate } from "../../redux/Actions";
-import { apiForIdb } from "../../api/api";
+import { apiEvotor } from "../../api/api";
 import { readJsonFile, saveConfig } from "../../api/apiFile";
 import { apiIDB } from "../../api/apiIDB";
 
@@ -32,7 +32,7 @@ const MainSettings = props => {
         localStorage.appKey = key;
         props.setAppKey(key);
         try {
-            let stores = await apiForIdb.getStores();
+            let stores = await apiEvotor.getStores();
             props.setStores(stores);
         } catch (err) {
             delete localStorage.appKey;

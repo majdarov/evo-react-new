@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { apiForIdb } from '../../api/api';
+import { apiEvotor } from '../../api/api';
 // import { compose } from '../../api/apiUtils';
 import ProgressBar from '../common/ProgressBar/ProgressBar';
 import { dateToString, getMinData } from '../common/utillites/utilites';
@@ -51,15 +51,15 @@ const Documents = (props) => {
         let res;
         try {
             if (docType === 'employees') {
-                res = await apiForIdb.getEmployees();
+                res = await apiEvotor.getEmployees();
             } else if (docType === 'ofd') {
-                res = await apiForIdb.getOfdDocuments();
+                res = await apiEvotor.getOfdDocuments();
             } else {
                 let p = {
                     dateStart: period.dateStart.getTime(),
                     dateEnd: period.dateEnd.getTime()
                 }
-                res = await apiForIdb.getDocuments(docType, p);
+                res = await apiEvotor.getDocuments(docType, p);
             }
             if (!res.items) {
                 setDocs([]);
@@ -94,9 +94,9 @@ const Documents = (props) => {
         }
         let doc;
         if (docType === 'employees') {
-            doc = await apiForIdb.getEmployees(id);
+            doc = await apiEvotor.getEmployees(id);
         } else {
-            doc = await apiForIdb.getDocuments(null, null, id);
+            doc = await apiEvotor.getDocuments(null, null, id);
         }
         console.log(doc);
         // compose(blobToUrl, blobFromObj)({ obj: doc, fileName: docType });

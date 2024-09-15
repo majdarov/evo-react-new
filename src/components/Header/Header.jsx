@@ -39,7 +39,7 @@ const Header = (props) => {
             setIsInit(true)
             setTimeout(() => {
                 setIsInit(false)
-                let date = new Date(+props.lastUpdate);
+                let date = new Date(props.lastUpdate);
                 setLastUpdate(date.toString());
             }, 500);
         }

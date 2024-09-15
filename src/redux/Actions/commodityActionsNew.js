@@ -1,4 +1,4 @@
-import { apiForIdb } from '../../api/api';
+import { apiEvotor } from '../../api/api';
 import { apiIDB } from '../../api/apiIDB';
 import { chooseError } from '../../components/Errors/chooseError';
 import { setGroupsAC, setPidAC, setCommoditiesAC, setErrorAC, setFormErrorAC, setViewFormAC, toggleFormPostAC, setFormDataAC, setFormPhotosAC } from '../commoditySlice';
@@ -70,13 +70,13 @@ export const postFormData = (typeData, typeQuery, body) => (dispatch) => {
   let callbackApi;
   switch (typeQuery) {
     case 'post':
-      callbackApi = apiForIdb.postData;
+      callbackApi = apiEvotor.postData;
       break;
     case 'put':
-      callbackApi = apiForIdb.putData;
+      callbackApi = apiEvotor.putData;
       break;
     default:
-      callbackApi = apiForIdb.postData;
+      callbackApi = apiEvotor.postData;
       break;
   }
   callbackApi(path, body)
@@ -119,7 +119,7 @@ export const deleteProduct = (id, pid, path = 'product') => async (
 ) => {
   try {
     pid = !pid ? getState().commodityPage.pid : pid;
-    let res = await apiForIdb.deleteData(path, id);
+    let res = await apiEvotor.deleteData(path, id);
     // console.log(res.status);
     if (res.status >= 400) {
       throw new Error(`Error deleting object \n\r id: ${id}`);

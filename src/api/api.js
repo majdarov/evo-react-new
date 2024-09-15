@@ -1,6 +1,6 @@
 import { createRequest, fetchEvo } from './api_evotor';
 
-export const apiForIdb = {
+export const apiEvotor = {
 
   async getStores() {
     let request = await createRequest({ type: 'store_v2' });
