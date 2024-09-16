@@ -39,7 +39,7 @@ export type CommodityState = {
   pid: string
   isLoaded: boolean
   comIsLoaded: boolean
-  error: unknown
+  error: any
   lastUpdate: number
   isUpdated: boolean
   viewForm: boolean

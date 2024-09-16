@@ -1,6 +1,23 @@
 import api_v2 from './api_v2_config'
 
-async function createRequest(action) {
+export type ActionType = {
+  type: string /* "documents_v2" */
+  docType: string/* "SELL" */
+  period?:
+    {
+      dateStart: number /* 1726430400429 */
+      dateEnd: number/* 1726508738429 */
+    }
+    value?: string | null
+    storeUuid?: string
+    body?: any
+    cursor?: unknown
+    id?: string
+    employee_id?: string
+}
+
+async function createRequest(action: ActionType) {
+  console.log(action)
   api_v2.headers['X-Authorization'] = localStorage.appKey;
 
   action.storeUuid = localStorage.storeKey;
@@ -12,7 +29,7 @@ async function createRequest(action) {
   return { ...request, action: action.type };
 }
 
-function selectOption(action) {
+function selectOption(action: ActionType) {
   let url, method, body, headers;
 
   switch (action.type) {

@@ -2,8 +2,8 @@ import { apiEvotor } from '../../api/api';
 import { apiIDB } from '../../api/apiIDB';
 import { chooseError } from '../../components/Errors/chooseError';
 import { setGroupsAC, setPidAC, setCommoditiesAC, setErrorAC, setFormErrorAC, setViewFormAC, toggleFormPostAC, setFormDataAC, setFormPhotosAC } from '../commoditySlice';
-import { useAppStore } from '../hooks';
-import { AppDispatch } from '../redux-store';
+import { useAppSelector, useAppStore } from '../hooks';
+import { AppDispatch, RootState } from '../redux-store';
 
 export const getProducts = (pId: string) => {
   return (dispatch: AppDispatch) => {
@@ -13,7 +13,7 @@ export const getProducts = (pId: string) => {
   };
 };
 
-export const getProductId = (id: string, isGroup = false) => {
+export const getProductId = (id: string | null, isGroup = false) => {
   if (!id) return (dispatch: AppDispatch) => dispatch(setViewFormAC(true));
   return (dispatch: AppDispatch) => {
     let getData;
@@ -122,9 +122,16 @@ export const postFormData = (
 export const deleteProduct = (id: string, pidIn: string | null, path = 'product') => async (
   dispatch: AppDispatch
 ) => {
-    const state = useAppStore().getState()
   try {
-    let pid = !pidIn ? state.commodity.pid : pidIn;
+    let p: any;
+    switch(path) {
+      case 'product':
+        p = await apiIDB.getProduct(id)
+        break;
+      case 'group':
+        p = await apiIDB.getGroup(id)
+    }
+    let pid = p.parent_id || '0';
     let res = await apiEvotor.deleteData(path, id);
     if (res.status >= 400) {
       throw new Error(`Error deleting object \n\r id: ${id}`);

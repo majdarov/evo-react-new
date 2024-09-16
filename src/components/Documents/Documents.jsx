@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { apiEvotor } from '../../api/api';
-// import { compose } from '../../api/apiUtils';
 import ProgressBar from '../common/ProgressBar/ProgressBar';
 import { dateToString, getMinData } from '../common/utillites/utilites';
 import { CardSell } from './components/CardSell/CardSell';
-// import { blobFromObj, blobToUrl } from '../../api/apiFile'
 
 const mapState = state => {
     return {
@@ -28,7 +26,8 @@ const Documents = (props) => {
         ['SELL', 'Продажа'],
         ['PAYBACK', 'Возврат'],
         ['employees', 'Сотрудники'],
-        ['ofd', 'Документы ОФД']
+        ['ofd', 'Документы ОФД'],
+        ['invoice', 'Первичка']
     ]
 
     const [docs, setDocs] = useState([]);
@@ -118,45 +117,47 @@ const Documents = (props) => {
 
     return (
         <>
-            <h1>Documents {docType}</h1>
+            <h1>Documents { docType }</h1>
             <div>
                 <label htmlFor="dateStart">Date start:</label>
                 <input type="date" name="dateStart"
                     id="dateStart"
-                    value={dateToString(period.dateStart)}
-                    min={period.dateMin}
-                    max={dateToString()}
-                    onChange={changeDate}
+                    value={ dateToString(period.dateStart) }
+                    min={ period.dateMin }
+                    max={ dateToString() }
+                    onChange={ changeDate }
                 />
                 <label htmlFor="dateEnd">Date end:</label>
                 <input type="date" name="dateEnd"
                     id="dateEnd"
-                    value={dateToString(period.dateEnd)}
-                    min={period.dateMin}
-                    max={dateToString()}
-                    onChange={changeDate}
+                    value={ dateToString(period.dateEnd) }
+                    min={ period.dateMin }
+                    max={ dateToString() }
+                    onChange={ changeDate }
                 />
             </div>
             <label>
                 DocType
-            <select name="type_docs" id="typeDocs" onChange={changeType}>
+            <select name="type_docs" id="typeDocs" onChange={ changeType }>
                     {
                         typesOfDocs.map(item => {
-                            return <option key={item[0]} value={item[0]}>{item[1]}</option>
+                            return <option key={ item[0] } value={ item[0] }>{ item[1] }</option>
                         })
                     }
                 </select>
             </label>
-            <button onClick={butGetDocs} disabled={isLoading}>get Documents</button>
+            <button onClick={butGetDocs} disabled={ isLoading }>get Documents</button>
             { isLoading && <ProgressBar limit={20} delay={500} text={'Loading '} />}
             { !!docs.length &&
                 <ul>
-                    {docs.map((item, idx) => {
-                        if (docType === 'SELL') return <CardSell key={item.id} {...item} />
-                        return (idx < 20) && <li key={item.id} id={item.id} onClick={docClick} style={{ margin: '0.5rem' }}>
-                            <span style={styleSpan}>{item.id}</span>
-                        </li>
-                    })}
+                    {
+                        docs.map((item, idx) => {
+                            if (docType === 'SELL') return <CardSell key={ item.id } {...item} />
+                            return (idx < 20) && <li key={ item.id } id={ item.id } onClick={ docClick } style={{ margin: '0.5rem' }}>
+                                <span style={styleSpan}>{item.id}</span>
+                            </li>
+                        })
+                    }
                 </ul>
             }
         </>

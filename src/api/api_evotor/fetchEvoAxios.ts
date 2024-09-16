@@ -1,4 +1,5 @@
-import { default as Axios } from 'axios';
+import { default as Axios, AxiosRequestConfig } from 'axios';
+import { ApiEvoType } from './api_v2_config';
 
 async function fetchEvo({
   baseURL,
@@ -7,10 +8,10 @@ async function fetchEvo({
   method,
   body,
   params,
-  action,
-}) {
+  // action,
+}: ApiEvoType) {
   try {
-    let request = { baseURL, url, headers, method, params };
+    let request: AxiosRequestConfig = { baseURL, url, headers, method, params };
     // console.log(request);
     if (body) {
       request.data = body;
@@ -24,7 +25,7 @@ async function fetchEvo({
     }
     if (result.paging && result.paging.next_cursor) {
       request.params = { cursor: result.paging.next_cursor };
-      let response = await fetchEvo(request);
+      let response = await fetchEvo(request as ApiEvoType);
       result.items = result.items.concat(response.items);
     }
     result.paging = {};

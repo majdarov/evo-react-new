@@ -21,15 +21,16 @@ const FormSearch = (props) => {
 
   const propsSearchProducts = props.searchProducts;
   const setIsSearching = props.setIsSearching;
+
   const searchProducts = useCallback((obj) => {
     propsSearchProducts(obj)
   }, [])
 
   const getObj = useCallback(() => {
-    let chk = document.forms['form-search']['current-pid'];
+    let isCurrentGroup = document.forms['form-search']['current-pid'];
     let obj = { ...formData };
 
-    if (!chk.checked) {
+    if (!isCurrentGroup.checked) {
       delete obj.parent_id;
     }
 
@@ -38,13 +39,14 @@ const FormSearch = (props) => {
       if (period[key] && obj[key].length === 1) obj[key][1] = null;
     })
 
-    if (name.length) obj.name = name;
+    if ( !!name.length ) obj.name = name;
     return obj;
   }, [formData, name, period])
 
   useEffect(() => setPid(props.parent_id), [props.parent_id])
+
   useEffect(() => {
-    if (Object.keys(formData).length) {
+    if ( !!Object.keys(formData).length ) {
       setIsSearching(true);
     } else {
       setIsSearching(false);
@@ -53,7 +55,7 @@ const FormSearch = (props) => {
 
   function changeFormElement(ev) {
     let elem = ev.target;
-    let [name, idxName] = elem.name.split('-');
+    let [ name, idxName ] = elem.name.split('-');
     let value = formData[name];
 
     if (idxName) {
@@ -73,9 +75,9 @@ const FormSearch = (props) => {
       let elemValue = elem.value;
       if (ev.target.type === 'date') elemValue = Date.parse(elemValue);
       if (ev.target.type === 'number') elemValue = Number(elemValue);
-      if (!value) {
+      if ( !value ) {
         value = [];
-        idx === 0 ? value = [elemValue] : value = [null, elemValue];
+        value = idx === 0 ? [ elemValue ] : [ null, elemValue ];
       } else {
         value[idx] = elemValue ? elemValue : null;
       }
@@ -96,8 +98,8 @@ const FormSearch = (props) => {
   }, [getObj, name, setIsSearching, searchProducts])
 
   function selectParentID(ev) {
-    let chk = ev.target.checked;
-    if (chk) {
+    let isCurrentGroup = ev.target.checked;
+    if (isCurrentGroup) {
       setFormData({ ...formData, parent_id: pid || '0' });
     }
     searchProducts(getObj());

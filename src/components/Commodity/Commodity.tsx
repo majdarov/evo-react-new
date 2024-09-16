@@ -8,9 +8,9 @@ import FormSearch from "./Forms/FormSearch";
 import useFilteredData from "../../Hooks/useFilteredData";
 import GroupsTree from "../common/GroupsTree";
 import { Modal } from "../common/Modal/Modal";
-// import FormModalWrapper from "../common/Modal/FormModalWrapper";
+import { CommodityProps } from "./CommodityContainer";
 
-const Commodity = props => {
+const Commodity: React.FC<CommodityProps> = (props) => {
 
   const { items, setFilterConfig } = useFilteredData(/* props.commodities */);
   const [pid, setPidSearch] = useState(props.pid);
@@ -20,7 +20,7 @@ const Commodity = props => {
   const setCommodities = props.setCommodities;
   const schema = useMemo(() => {
     let sch = props.schema;
-    let schema = [];
+    let schema: any[] = [];
     Object.keys(sch).forEach((key) => {
       let lbl;
       if (!!sch[key][1]) {
@@ -33,9 +33,10 @@ const Commodity = props => {
   }, [props.schema]);
   const [showTreeView, setShowTreeView] = useState(false);
 
-  if (!props.isInit) {
-    props.history.push('/settings');
-  }
+//   if (!props.isInit) {
+
+//     props.history.push('/settings');
+//   }
 
   const propsSetPid = props.setPid;
   useEffect(() => {
@@ -69,15 +70,15 @@ const Commodity = props => {
   }, [props.commodities]);
 
   function newData() {
-    props.getProductId();
+    props.getProductId(null);
   }
 
   function clickGroups() {
     setShowTreeView(!showTreeView);
   }
 
-  const callbackTree = (id, tagName, className) => {
-    let parent_id = id ? id : 0;
+  const callbackTree = (id: string, tagName: string, className: string) => {
+    let parent_id = id ? id : '0';
     if (tagName !== 'SPAN' && className !== 'fa fa-edit') return;
     if (className !== 'fa fa-edit') {
       changePid(parent_id);
@@ -87,13 +88,13 @@ const Commodity = props => {
     setShowTreeView(false);
   }
 
-  function changePid(eId) {
+  function changePid(eId: string) {
     // if (props.pid === eId) return;
     props.setPid(eId);
     setPidSearch(eId);
   }
 
-  const searchProducts = (formData) => {
+  const searchProducts = (formData: any) => {
     setFilterConfig(formData);
   }
 
