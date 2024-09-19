@@ -1,15 +1,17 @@
-import { default as Axios, AxiosRequestConfig } from 'axios';
+import { default as Axios, AxiosRequestConfig, ResponseType } from 'axios';
 
-async function fetchEvo({
+async function fetchBack({
   baseURL,
   url,
   headers,
   method,
   data,
-  params,
-}: AxiosRequestConfig) {
+  params
+}: AxiosRequestConfig ) {
   try {
+
     let request: AxiosRequestConfig = { baseURL, url, headers, method, params, data };
+
     let response = await Axios(request);
     let result;
     if (method === 'DELETE') {
@@ -19,7 +21,7 @@ async function fetchEvo({
     }
     if (result.paging && result.paging.next_cursor) {
       request.params = { cursor: result.paging.next_cursor };
-      let response = await fetchEvo(request);
+      let response = await fetchBack(request);
       result.items = result.items.concat(response.items);
     }
     result.paging = {};
@@ -29,4 +31,4 @@ async function fetchEvo({
   }
 }
 
-export default fetchEvo;
+export default fetchBack;

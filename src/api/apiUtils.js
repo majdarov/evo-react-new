@@ -1,4 +1,4 @@
-import { apiEvotor } from './api';
+import apiEvotor from './apiEvotor';
 import { apiIDB } from './apiIDB';
 
 export function compose(...fns) {

@@ -1,14 +1,6 @@
-export type ApiEvoType = {
-  baseURL: 'https://api.evotor.ru/',
-  url: '',
-  headers: {
-    Accept: 'application/vnd.evotor.v2+json',
-    'Content-Type': 'application/vnd.evotor.v2+json',
-    'X-Authorization': ''
-  }
-  method?: string
-  body?: any
-  params?: unknown
+import { AxiosRequestConfig } from "axios"
+
+export type ApiEvoType = AxiosRequestConfig & {
   cursor?: unknown
 }
 

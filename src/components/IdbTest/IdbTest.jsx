@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { apiEvotor } from '../../api/api';
+import { apiEvotor } from '../../api';
 import Tree from '../common/Tree/Tree';
 import { apiIDB } from '../../api/apiIDB';
 

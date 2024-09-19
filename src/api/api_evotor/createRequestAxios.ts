@@ -1,36 +1,16 @@
+import { AxiosRequestConfig } from 'axios';
+import { ActionType } from '../types';
 import api_v2 from './api_v2_config'
 
-export type ActionType = {
-  type: string /* "documents_v2" */
-  docType: string/* "SELL" */
-  period?:
-    {
-      dateStart: number /* 1726430400429 */
-      dateEnd: number/* 1726508738429 */
-    }
-    value?: string | null
-    storeUuid?: string
-    body?: any
-    cursor?: unknown
-    id?: string
-    employee_id?: string
-}
-
 async function createRequest(action: ActionType) {
-  console.log(action)
-  api_v2.headers['X-Authorization'] = localStorage.appKey;
-
+  api_v2.headers!['X-Authorization'] = localStorage.appKey;
   action.storeUuid = localStorage.storeKey;
-
   api_v2.params = action.cursor ? { cursor: action.cursor } : null;
-
-  let request = selectOption(action);
-
-  return { ...request, action: action.type };
+  return selectOption(action);
 }
 
-function selectOption(action: ActionType) {
-  let url, method, body, headers;
+function selectOption(action: ActionType): AxiosRequestConfig {
+  let url, method, headers, data;
 
   switch (action.type) {
     case 'store_v2':
@@ -54,7 +34,7 @@ function selectOption(action: ActionType) {
     case 'post_schemes':
       method = 'POST';
       url = `/api/v1/inventories/stores/${action.storeUuid}/products/schemes`;
-      return { ...api_v2, method, url, body: JSON.stringify(action.body) };
+      return { ...api_v2, method, url, data: JSON.stringify(action.body) };
 
     /* Получить товар по ID или все товары */
     case 'products_v2':
@@ -128,15 +108,15 @@ function selectOption(action: ActionType) {
     case 'put_product_v2':
       method = 'PUT';
       url = 'stores/' + action.storeUuid + '/products/' + action.body.id;
-      body = JSON.stringify(action.body);
+      data = JSON.stringify(action.body);
       // console.log(body);
-      return { ...api_v2, method, url, body };
+      return { ...api_v2, method, url, data };
 
     case 'post_product_v2':
       method = 'POST';
       url = 'stores/' + action.storeUuid + '/products';
-      body = JSON.stringify(action.body);
-      return { ...api_v2, method, url, body };
+      data = JSON.stringify(action.body);
+      return { ...api_v2, method, url, data };
 
     case 'delete_product_v2':
       method = 'DELETE';
@@ -146,14 +126,14 @@ function selectOption(action: ActionType) {
     case 'put_group_v2':
       method = 'PUT';
       url = 'stores/' + action.storeUuid + '/product-groups/' + action.body.id;
-      body = JSON.stringify(action.body);
-      return { ...api_v2, method, url, body };
+      data = JSON.stringify(action.body);
+      return { ...api_v2, method, url, data };
 
     case 'post_group_v2':
       method = 'POST';
       url = 'stores/' + action.storeUuid + '/product-groups/';
-      body = JSON.stringify(action.body);
-      return { ...api_v2, method, url, body };
+      data = JSON.stringify(action.body);
+      return { ...api_v2, method, url, data };
 
     case 'delete_group_v2':
       method = 'DELETE';
@@ -170,8 +150,8 @@ function selectOption(action: ActionType) {
         'Content-Type': 'application/vnd.evotor.v2+bulk+json',
       };
       url = 'stores/' + action.storeUuid + '/products';
-      body = JSON.stringify(action.body);
-      return { ...api_v2, method, headers, url, body };
+      data = JSON.stringify(action.body);
+      return { ...api_v2, method, headers, url, data };
 
     case 'put_array_groups_v2':
       method = 'PUT';
@@ -180,8 +160,8 @@ function selectOption(action: ActionType) {
         'Content-Type': 'application/vnd.evotor.v2+bulk+json',
       };
       url = 'stores/' + action.storeUuid + '/product-groups';
-      body = JSON.stringify(action.body);
-      return { ...api_v2, method, headers, url, body };
+      data = JSON.stringify(action.body);
+      return { ...api_v2, method, headers, url, data };
 
     case 'get_ofd_documents':
       method = 'GET';
@@ -205,6 +185,7 @@ function selectOption(action: ActionType) {
       return { ...api_v2, method, url, params };
 
     default:
+      return api_v2;
       break;
   }
 }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { setAppKey, setStoreKey, setStores, toggleInitApp, setPeriodUpdate } from "../../redux/Actions";
-import { apiEvotor } from "../../api/api";
+import { apiEvotor } from "../../api";
 import { readJsonFile, saveConfig } from "../../api/apiFile";
 import { apiIDB } from "../../api/apiIDB";
 

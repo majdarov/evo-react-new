@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Example from './Example';
 // import { commodities } from '../../Tests/products.json';
 import useFilteredData from '../../Hooks/useFilteredData';
-import { apiEvotor } from '../../api/api';
+import { apiEvotor } from '../../api';
 import schemes from './schemes.json';
 import { apiIDB } from '../../api/apiIDB';
 

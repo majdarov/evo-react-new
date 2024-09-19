@@ -1,38 +1,34 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import { apiEvotor } from '../../api/api';
+import { apiBack, apiEvotor } from '../../api';
 import ProgressBar from '../common/ProgressBar/ProgressBar';
 import { dateToString, getMinData } from '../common/utillites/utilites';
 import { CardSell } from './components/CardSell/CardSell';
+import { useAppSelector } from '../../redux/hooks';
 
-const mapState = state => {
-    return {
-        isInit: state.app.isInit,
-    }
-}
+const Documents = () => {
 
-const Documents = (props) => {
+    // // TODO разобраться с history
+    // if (!props.isInit) {
+    //     props.history.push('/settings');
+    // }
 
-    if (!props.isInit) {
-        props.history.push('/settings');
-    }
+    const typesOfDocs = useAppSelector(state => state.settings.documents.typesOfDoc)
+    //[
+    //     ['ACCEPT', 'Приемка товаров'],
+    //     ['INVENTORY', 'Документ инвентаризации'],
+    //     ['REVALUATION', 'Переоценка'],
+    //     ['RETURN', 'Возврат поставщику'],
+    //     ['WRITE_OFF', 'Списание'],
+    //     ['SELL', 'Продажа'],
+    //     ['PAYBACK', 'Возврат'],
+    //     ['employees', 'Сотрудники'],
+    //     ['ofd', 'Документы ОФД'],
+    //     ['invoice', 'Первичка']
+    // ]
 
-    const typesOfDocs = [
-        ['ACCEPT', 'Приемка товаров'],
-        ['INVENTORY', 'Документ инвентаризации'],
-        ['REVALUATION', 'Переоценка'],
-        ['RETURN', 'Возврат поставщику'],
-        ['WRITE_OFF', 'Списание'],
-        ['SELL', 'Продажа'],
-        ['PAYBACK', 'Возврат'],
-        ['employees', 'Сотрудники'],
-        ['ofd', 'Документы ОФД'],
-        ['invoice', 'Первичка']
-    ]
-
-    const [docs, setDocs] = useState([]);
+    const [docs, setDocs] = useState([] as Record<string, any>[]);
     const [isLoading, setIsLoading] = useState(false);
-    const [docType, setDocType] = useState(typesOfDocs[0][0]);
+    const [docType, setDocType] = useState(typesOfDocs[9][0]);
 
     const [period, setPeriod] = useState({
         dateStart: new Date(),
@@ -46,13 +42,14 @@ const Documents = (props) => {
 
     async function butGetDocs() {
         setIsLoading(true);
-        console.log(docType);
         let res;
         try {
             if (docType === 'employees') {
                 res = await apiEvotor.getEmployees();
             } else if (docType === 'ofd') {
                 res = await apiEvotor.getOfdDocuments();
+            } else if (docType === 'invoice') {
+                res = await apiBack.getDocs();
             } else {
                 let p = {
                     dateStart: period.dateStart.getTime(),
@@ -65,15 +62,14 @@ const Documents = (props) => {
             } else {
                 setDocs(res.items);
             }
-        } catch (e) {
+        } catch (e: any) {
             alert(e.message);
             setDocs([]);
         }
-        console.log(res);
         setIsLoading(false);
     }
 
-    function changeDate(e) {
+    function changeDate(e: React.ChangeEvent<HTMLInputElement>) {
         let date = new Date(e.currentTarget.value);
         if (e.currentTarget.name === 'dateStart') {
             date.setHours(0);
@@ -81,32 +77,39 @@ const Documents = (props) => {
             date.setHours(23);
         }
         setPeriod({ ...period, [e.currentTarget.name]: date });
-        // console.log(e.currentTarget.name + ' : ' + e.currentTarget.value)
     }
 
-    async function docClick(e) {
-        if (e.target.tagName !== 'SPAN') return;
+    async function docClick(e: React.MouseEvent<HTMLElement, MouseEvent>) {
+        // console.log(e.target.tagName, e.currentTarget.tagName)
+        // if (e.target.tagName !== 'SPAN') return;
         let id = e.currentTarget.id;
         if (id === 'Временно не работает!') {
             alert(id);
             return;
         }
-        let doc;
+        let doc: Record<string, any> = {id: 'no doc'};
         if (docType === 'employees') {
             doc = await apiEvotor.getEmployees(id);
+            alert(String(doc.name).toUpperCase() + ' ' + String(doc.last_name).toUpperCase())
+        } else if (docType === 'invoice') {
+            doc = await apiBack.getDocById(id)
+            console.log(doc)
+            alert(doc.summa)
         } else {
-            doc = await apiEvotor.getDocuments(null, null, id);
+            doc = await apiEvotor.getDocuments('', null, id);
+            console.log(doc)
+            alert(doc)
         }
-        console.log(doc);
+
         // compose(blobToUrl, blobFromObj)({ obj: doc, fileName: docType });
     }
 
-    function changeType(e) {
+    function changeType(e: React.ChangeEvent<HTMLSelectElement>) {
         setDocType(e.target.value);
         setDocs([]);
     }
 
-    const styleSpan = {
+    const styleSpan: React.CSSProperties = {
         cursor: 'pointer',
         border: '1px solid green',
         paddingTop: '0.5rem',
@@ -138,7 +141,7 @@ const Documents = (props) => {
             </div>
             <label>
                 DocType
-            <select name="type_docs" id="typeDocs" onChange={ changeType }>
+            <select name="type_docs" id="typeDocs" onChange={ changeType } defaultValue={docType[0]}>
                     {
                         typesOfDocs.map(item => {
                             return <option key={ item[0] } value={ item[0] }>{ item[1] }</option>
@@ -148,13 +151,28 @@ const Documents = (props) => {
             </label>
             <button onClick={butGetDocs} disabled={ isLoading }>get Documents</button>
             { isLoading && <ProgressBar limit={20} delay={500} text={'Loading '} />}
+            { !docs.length &&
+                <div>
+                    <h2>No docs</h2>
+                </div>
+            }
             { !!docs.length &&
                 <ul>
                     {
                         docs.map((item, idx) => {
-                            if (docType === 'SELL') return <CardSell key={ item.id } {...item} />
-                            return (idx < 20) && <li key={ item.id } id={ item.id } onClick={ docClick } style={{ margin: '0.5rem' }}>
-                                <span style={styleSpan}>{item.id}</span>
+                            if (docType === 'SELL' ) return <CardSell key={ item.id } {...item} />
+                            return (idx < 20) && <li key={ item.id || item._id } id={ item.id || item._id } onClick={ docClick } style={{ margin: '0.5rem' }}>
+                                {!(docType === 'invoice') && <span style={styleSpan}>{item.id}</span>}
+                                {
+                                    (docType === 'invoice') &&
+                                    <div>
+                                        <pre>
+                                            <code>
+                                                { JSON.stringify(item, null, 2) }
+                                            </code>
+                                        </pre>
+                                    </div>
+                                }
                             </li>
                         })
                     }
@@ -164,4 +182,4 @@ const Documents = (props) => {
     );
 }
 
-export default connect(mapState)(Documents);
+export default Documents

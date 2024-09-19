@@ -16,7 +16,7 @@ const GroupsTree = props => {
         if (confirmDel) {
             let parentGroup = (await apiIDB.getGroup(props.parent_id)).parent_id;
             if (!parentGroup) parentGroup = '0';
-            await props.deleteProduct(props.parent_id, parentGroup, 'group')
+            await props.deleteProduct(props.parent_id, 'group')
         } else {
             alert('DELETED CANCEL');
         }

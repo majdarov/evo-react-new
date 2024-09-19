@@ -1,9 +1,9 @@
-import { apiEvotor } from '../../api/api';
+import { apiEvotor } from '../../api';
 import { apiIDB } from '../../api/apiIDB';
 import { chooseError } from '../../components/Errors/chooseError';
 import { setGroupsAC, setPidAC, setCommoditiesAC, setErrorAC, setFormErrorAC, setViewFormAC, toggleFormPostAC, setFormDataAC, setFormPhotosAC } from '../commoditySlice';
 import { useAppSelector, useAppStore } from '../hooks';
-import { AppDispatch, RootState } from '../redux-store';
+import store, { AppDispatch, RootState } from '../redux-store';
 
 export const getProducts = (pId: string) => {
   return (dispatch: AppDispatch) => {
@@ -83,7 +83,7 @@ export const postFormData = (
       break;
   }
   callbackApi(path, body)
-    .then((res) => {
+    .then((res: any) => {
       if (res.status < 400 || res.id) {
         apiIDB.putData(`${path}s`, res);
       } else {
@@ -91,11 +91,11 @@ export const postFormData = (
       }
       return res;
     })
-    .then((res) => {
+    .then((res: any) => {
       if (typeData === 'group') return res.id;
       return res.parent_id ? res.parent_id : '0';
     })
-    .then((pid) => {
+    .then((pid: string | null) => {
       dispatch(toggleFormPostAC(false));
       dispatch(setViewFormAC(false));
       dispatch(setFormDataAC(null));
@@ -111,7 +111,7 @@ export const postFormData = (
         dispatch(setPidAC(pid));
       }
     })
-    .catch((err) => {
+    .catch((err: any) => {
       console.dir(err);
       alert(err);
       dispatch(setFormErrorAC(chooseError(err)));
@@ -119,19 +119,11 @@ export const postFormData = (
     });
 };
 
-export const deleteProduct = (id: string, pidIn: string | null, path = 'product') => async (
+export const deleteProduct = (id: string, path = 'product') => async (
   dispatch: AppDispatch
 ) => {
   try {
-    let p: any;
-    switch(path) {
-      case 'product':
-        p = await apiIDB.getProduct(id)
-        break;
-      case 'group':
-        p = await apiIDB.getGroup(id)
-    }
-    let pid = p.parent_id || '0';
+    let pid = store.getState().commodity.pid
     let res = await apiEvotor.deleteData(path, id);
     if (res.status >= 400) {
       throw new Error(`Error deleting object \n\r id: ${id}`);
