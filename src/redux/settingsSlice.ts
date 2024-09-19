@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { AppState } from './appSlice';
+import { documentConstants, documentSchemaOfTable, productsSchemaOfTable } from '../config';
 
-interface ISchemaTable {
-  [key: string]: [string, number]
+export type schemaTableType = {
+  [key: string]: [ string, number ]
   // name: ['Наименование', 1],
   // code: ['', 0],
 }
@@ -11,48 +11,28 @@ export type TypeOfDoc = [ string, string ]
 
 export type SettingsState = {
   documents:{
+    table: {
+      schema: schemaTableType
+    }
     typesOfDoc: TypeOfDoc[]
   }
   products: {
     table: {
-      schema: ISchemaTable//{
+      schema: schemaTableType
     }
   }
 };
 
 const initialState: SettingsState = {
   documents: {
-    typesOfDoc: [
-      ['ACCEPT', 'Приемка товаров'],
-      ['INVENTORY', 'Документ инвентаризации'],
-      ['REVALUATION', 'Переоценка'],
-      ['RETURN', 'Возврат поставщику'],
-      ['WRITE_OFF', 'Списание'],
-      ['SELL', 'Продажа'],
-      ['PAYBACK', 'Возврат'],
-      ['employees', 'Сотрудники'],
-      ['ofd', 'Документы ОФД'],
-      ['invoice', 'Первичка']
-    ]
+    typesOfDoc: documentConstants.TYPES_OF_DOC,
+    table: {
+      schema: documentSchemaOfTable
+    }
   },
   products: {
     table: {
-      schema: {
-        id: ['', 0],
-        name: ['Наименование', 1],
-        code: ['', 0],
-        measure_name: ['', 0],
-        tax: ['', 0],
-        allow_to_sell: ['', 0],
-        description: ['', 0],
-        article_number: ['Артикул', 1],
-        parent_id: ['', 0],
-        type: ['', 0],
-        price: ['Цена', 1],
-        cost_price: ['', 0],
-        quantity: ['Количество', 1],
-        barcodes: ['', 0],
-      }
+      schema: productsSchemaOfTable
     }
   }
 };

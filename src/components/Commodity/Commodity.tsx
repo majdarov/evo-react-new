@@ -159,10 +159,10 @@ const Commodity: React.FC<CommodityProps> = (props) => {
             { !props.comIsLoaded && <ProgressBar limit={20} text={'Processing...'} /> }
             { props.comIsLoaded &&
               <Table
-                products={props.commodities}
+                records={props.commodities}
                 // headers={headers}
                 callback={props.getProductId}
-                deleteProduct={props.deleteProduct}
+                deleteRecord={props.deleteProduct}
                 schema={schema}
               /> }
           </div>

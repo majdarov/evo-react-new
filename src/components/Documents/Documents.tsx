@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { apiBack, apiEvotor } from '../../api';
 import ProgressBar from '../common/ProgressBar/ProgressBar';
 import { dateToString, getMinData } from '../common/utillites/utilites';
 import { CardSell } from './components/CardSell/CardSell';
 import { useAppSelector } from '../../redux/hooks';
+import Table from '../common/Table';
 
 const Documents = () => {
 
@@ -25,6 +26,21 @@ const Documents = () => {
     //     ['ofd', 'Документы ОФД'],
     //     ['invoice', 'Первичка']
     // ]
+    const docsSchema = useAppSelector(state => state.settings.documents.table.schema)
+
+    const schema = useMemo(() => {
+        let sch = docsSchema;
+        let schema: any[] = [];
+        Object.keys(sch).forEach((key) => {
+          let lbl;
+          if (!!sch[key][1]) {
+            lbl = !!sch[key][0] ? sch[key][0] : key;
+            schema.push([key, lbl]);
+          }
+        });
+        // console.log(schema);
+        return schema;
+      }, [docsSchema]);
 
     const [docs, setDocs] = useState([] as Record<string, any>[]);
     const [isLoading, setIsLoading] = useState(false);
@@ -50,6 +66,11 @@ const Documents = () => {
                 res = await apiEvotor.getOfdDocuments();
             } else if (docType === 'invoice') {
                 res = await apiBack.getDocs();
+                res.items = res.items.map((d: any) => {
+                    d.docDate = new Date(d.docDate)
+                    return d
+                })
+                console.log(res)
             } else {
                 let p = {
                     dateStart: period.dateStart.getTime(),
@@ -93,7 +114,6 @@ const Documents = () => {
             alert(String(doc.name).toUpperCase() + ' ' + String(doc.last_name).toUpperCase())
         } else if (docType === 'invoice') {
             doc = await apiBack.getDocById(id)
-            console.log(doc)
             alert(doc.summa)
         } else {
             doc = await apiEvotor.getDocuments('', null, id);
@@ -157,26 +177,26 @@ const Documents = () => {
                 </div>
             }
             { !!docs.length &&
-                <ul>
-                    {
-                        docs.map((item, idx) => {
-                            if (docType === 'SELL' ) return <CardSell key={ item.id } {...item} />
-                            return (idx < 20) && <li key={ item.id || item._id } id={ item.id || item._id } onClick={ docClick } style={{ margin: '0.5rem' }}>
-                                {!(docType === 'invoice') && <span style={styleSpan}>{item.id}</span>}
-                                {
-                                    (docType === 'invoice') &&
-                                    <div>
-                                        <pre>
-                                            <code>
-                                                { JSON.stringify(item, null, 2) }
-                                            </code>
-                                        </pre>
-                                    </div>
-                                }
-                            </li>
-                        })
-                    }
-                </ul>
+                (
+                    ((docType === 'invoice') &&
+                    <Table
+                        records={ docs }
+                        callback={ null }
+                        deleteRecord={ null }
+                        schema={ schema }
+                    />) ||
+                    <ul>
+                        {
+                            docs.map((item, idx) => {
+                                if (docType === 'SELL' ) return <CardSell key={ item.id } {...item} />
+                                return (idx < 20) && <li key={ item.id || item._id } id={ item.id || item._id } onClick={ docClick } style={{ margin: '0.5rem' }}>
+                                    {!(docType === 'invoice') && <span style={styleSpan}>{item.id}</span>}
+
+                                </li>
+                            })
+                        }
+                    </ul>
+                )
             }
         </>
     );
