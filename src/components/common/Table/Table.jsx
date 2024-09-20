@@ -1,6 +1,7 @@
+import React, { useMemo } from 'react';
 import useSortableData from '../../../Hooks';
 import s from './Table.module.css'
-import { clickTable } from './utilsTable';
+import { clickTable, getMapSchema } from './utilsTable';
 
 export default function Table(props) {
   const { records } = props;
@@ -8,8 +9,10 @@ export default function Table(props) {
 
   if (!items.length) return <p>Empty Group!</p>
 
-  const schema = props.schema || Object.keys(records[0]);
-  const headers = props.schema.map(item => {
+  // const schema = props.schema || Object.keys(records[0]);
+  const schema = useMemo(() => getMapSchema(props.schema), [props.schema]);
+
+  const headers = schema.map(item => {
     return item[1];
   });
 

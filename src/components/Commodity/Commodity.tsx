@@ -18,19 +18,6 @@ const Commodity: React.FC<CommodityProps> = (props) => {
   const [labelGroup, setLabelGroup] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const setCommodities = props.setCommodities;
-  const schema = useMemo(() => {
-    let sch = props.schema;
-    let schema: any[] = [];
-    Object.keys(sch).forEach((key) => {
-      let lbl;
-      if (!!sch[key][1]) {
-        lbl = !!sch[key][0] ? sch[key][0] : key;
-        schema.push([key, lbl]);
-      }
-    });
-    // console.log(schema);
-    return schema;
-  }, [props.schema]);
   const [showTreeView, setShowTreeView] = useState(false);
 
 //   if (!props.isInit) {
@@ -163,7 +150,7 @@ const Commodity: React.FC<CommodityProps> = (props) => {
                 // headers={headers}
                 callback={props.getProductId}
                 deleteRecord={props.deleteProduct}
-                schema={schema}
+                schema={props.schema}
               /> }
           </div>
         </div>

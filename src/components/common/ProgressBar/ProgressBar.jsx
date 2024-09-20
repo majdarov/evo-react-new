@@ -1,9 +1,9 @@
-// import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 const ProgressBar = (props) => {
   return (
     <div>
-      <h5 style={{display: 'inline'}}>{props.text}</h5><progress></progress>
+      <h5 style={{display: 'inline'}}>{props.text}</h5><progress value={props.value ?? null}></progress>
     </div>
   );
 };

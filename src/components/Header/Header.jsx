@@ -4,9 +4,12 @@ import logo from '../../Assets/img/terminal-5.png';
 import ProgressBar from '../common/ProgressBar/ProgressBar';
 import { /* fetchGroupsProducts, */ syncGroupsProducts, testNeedUpdate } from '../../api/apiUtils';
 import NavbarContainer from '../Navbar/NavbarContainer';
+import { useAppSelector } from '../../redux/hooks';
 // import ProgressBar2 from '../common/ProgressBar/ProgressBar2';
 
 const Header = (props) => {
+
+    const [progressValue, setProgressValue] = useState(0);
 
     const [isInit, setIsInit] = useState(false);
     const [lastUpdate, setLastUpdate] = useState(null);
@@ -24,9 +27,15 @@ const Header = (props) => {
             return;
         }
     }
+
+    const calllbackForProgress = (text, progressValue) => {
+        setText(text)
+        setProgressValue(progressValue)
+    }
+
     async function clickDateUpdate() {
         setUpdated(true);
-        let result = await syncGroupsProducts(setText);
+        let result = await syncGroupsProducts(calllbackForProgress);
         console.log('fetchGroupsProducts - ' + result.length);
         props.setLastUpdate();
         props.setGroups(result);
@@ -57,7 +66,7 @@ const Header = (props) => {
                 <div className={s['info']}>
                     {!props.isInit && <h4>Initializing App...</h4>}
                     {isInit && <h4>App Is Init!</h4>}
-                    {updated && <ProgressBar limit={20} delay={500} text={text} />}
+                    {updated && <ProgressBar value={progressValue} text={text} />}
                     {!isInit && !updated &&
                         <div style={{ cursor: 'pointer' }} onClick={clickDateUpdate}>
                             <h5 style={styleH5}>{lastUpdate && 'Синхронизировано - '}{lastUpdate}</h5>

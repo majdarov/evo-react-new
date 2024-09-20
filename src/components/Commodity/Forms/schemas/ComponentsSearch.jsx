@@ -1,3 +1,4 @@
+import React from 'react';
 import { dateToString, getMinData } from '../../../common/utillites/utilites';
 import s from '../FormSearch.module.css';
 

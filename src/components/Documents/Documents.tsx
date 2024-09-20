@@ -28,20 +28,6 @@ const Documents = () => {
     // ]
     const docsSchema = useAppSelector(state => state.settings.documents.table.schema)
 
-    const schema = useMemo(() => {
-        let sch = docsSchema;
-        let schema: any[] = [];
-        Object.keys(sch).forEach((key) => {
-          let lbl;
-          if (!!sch[key][1]) {
-            lbl = !!sch[key][0] ? sch[key][0] : key;
-            schema.push([key, lbl]);
-          }
-        });
-        // console.log(schema);
-        return schema;
-      }, [docsSchema]);
-
     const [docs, setDocs] = useState([] as Record<string, any>[]);
     const [isLoading, setIsLoading] = useState(false);
     const [docType, setDocType] = useState(typesOfDocs[9][0]);
@@ -66,11 +52,10 @@ const Documents = () => {
                 res = await apiEvotor.getOfdDocuments();
             } else if (docType === 'invoice') {
                 res = await apiBack.getDocs();
-                res.items = res.items.map((d: any) => {
-                    d.docDate = new Date(d.docDate)
+                /* res.items =  */res.items.map((d: any) => {
+                    d.docDate = new Date(d.docDate).toLocaleDateString()
                     return d
                 })
-                console.log(res)
             } else {
                 let p = {
                     dateStart: period.dateStart.getTime(),
@@ -102,7 +87,8 @@ const Documents = () => {
 
     async function docClick(e: React.MouseEvent<HTMLElement, MouseEvent>) {
         // console.log(e.target.tagName, e.currentTarget.tagName)
-        // if (e.target.tagName !== 'SPAN') return;
+        const elem = e.target as HTMLElement
+        if (elem.tagName !== 'SPAN') return;
         let id = e.currentTarget.id;
         if (id === 'Временно не работает!') {
             alert(id);
@@ -183,7 +169,7 @@ const Documents = () => {
                         records={ docs }
                         callback={ null }
                         deleteRecord={ null }
-                        schema={ schema }
+                        schema={ docsSchema }
                     />) ||
                     <ul>
                         {

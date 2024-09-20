@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-interface SyncDataType {
-  products: any[]
-  groups: any[]
-}
+// interface SyncDataType {
+//   products: any[]
+//   groups: any[]
+// }
 
 export type AppState = {
   appKey: string | null
@@ -73,6 +73,7 @@ const appSlice = createSlice({
 
       state.periodUpdate = periodUpdate
     },
+
     // case SET_SYNC_DATA:
       // return {
       //   ...state,
