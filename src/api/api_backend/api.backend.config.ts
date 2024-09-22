@@ -1,8 +1,12 @@
 import { AxiosRequestConfig } from "axios";
 
+console.log('MODE: ' + import.meta.env.MODE)
+
 const api_back: AxiosRequestConfig = {
-  baseURL: import.meta.env.VITE_BASE_URL_BACK,
-  url: '',
+  baseURL: localStorage.getItem('baseURL') || '',
+  // baseURL: 'http://itk.galinka-malinka.ru/',
 }
+
+console.log('BaseURL: ' + api_back.baseURL)
 
 export default api_back;

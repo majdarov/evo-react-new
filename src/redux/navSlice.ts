@@ -25,6 +25,7 @@ let initialState: NavigationState = {
     { link: '/settings', title: ['Настройки', 'Settings'] },
     { link: '/commodity', title: ['Товары', 'Products'] },
     { link: '/documents', title: ['Документы', 'Documents'] },
+    { link: '/docs', title: ['Первичка', 'Invoice'] },
     { link: '/game', title: ['Играть', 'Game'] },
     { link: '/table', title: ['Экспорт Excel', 'Export Excel'] },
   ],

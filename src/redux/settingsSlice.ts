@@ -15,6 +15,7 @@ export type SettingsState = {
       schema: schemaTableType
     }
     typesOfDoc: TypeOfDoc[]
+    baseUrl: string
   }
   products: {
     table: {
@@ -25,6 +26,7 @@ export type SettingsState = {
 
 const initialState: SettingsState = {
   documents: {
+    baseUrl: localStorage.getItem('backUrl') || '',
     typesOfDoc: documentConstants.TYPES_OF_DOC,
     table: {
       schema: documentSchemaOfTable
@@ -44,9 +46,12 @@ const settingsSlice = createSlice({
     // setSchemaAC(state, action) {
     //   state.products.table.schema = action.payload;
     // }
+      setBaseUrl(state, action) {
+        state.documents.baseUrl = action.payload
+      }
   }
 })
 
-// export const { setSchemaAC } = settingsSlice.actions;
+export const { setBaseUrl } = settingsSlice.actions;
 
 export default settingsSlice;

@@ -30,7 +30,7 @@ const GroupsTree = props => {
                     <div className={s['tree-modal']}>
                         <Tree
                             data={groups}
-                            price="Price"
+                            rootLabel="Price"
                             treeLabel="Groups"
                             callback={props.callbackTree}
                             viewEdit={props.viewEdit}

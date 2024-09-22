@@ -9,7 +9,7 @@ import Game from "../Game/Game";
 import HeaderContainer from "../Header/HeaderContainer";
 import CommodityContainer from "../Commodity";
 import ImpExcel from "../ImpExcel/ImpExcel";
-import Wrapper from "../Example/Wrapper";
+// import Wrapper from "../Example/Wrapper";
 import IdbTest from "../IdbTest/IdbTest";
 import MainSettings from "../Settings/MainSettings";
 import {
@@ -24,6 +24,8 @@ import { connect, ConnectedProps } from "react-redux";
 import Documents from "../Documents";
 import { syncGroupsProducts, testNeedUpdate } from "../../api/apiUtils";
 import { RootState } from "../../redux/redux-store";
+import Example from "../Example/Example";
+import Docs from "../Docs/Docs";
 
 const App = (props: Props) => {
 
@@ -51,7 +53,8 @@ const App = (props: Props) => {
       <div className="app-content">
         <Route exact path="/" />
         <Route exact path="/settings" component={MainSettings} />
-        <Route path="/example" component={Wrapper} />
+        <Route exact path="/example" component={Example} />
+        <Route exact path="/docs" component={Docs} />
         {props.isInit && <Route path="/commodity" component={CommodityContainer} />}
         <Route path="/game" component={Game} />
         <Route path="/table" component={ImpExcel} />

@@ -4,6 +4,8 @@ import { setAppKey, setStoreKey, setStores, toggleInitApp, setPeriodUpdate } fro
 import { apiEvotor } from "../../api";
 import { readJsonFile, saveConfig } from "../../api/apiFile";
 import { apiIDB } from "../../api/apiIDB";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { setBaseUrl } from "../../redux/settingsSlice";
 
 function addKey(id) {
     var key = document.getElementById(id).value;
@@ -15,6 +17,13 @@ function addKey(id) {
 const MainSettings = props => {
 
     let inpRef = React.createRef();
+
+    const backLink = useAppSelector(state => state.settings.documents.baseUrl);
+
+    const dispatch = useAppDispatch()
+
+    const changeBackLink = link => (dispatch(setBaseUrl(link)))
+    const setBackLink = link => localStorage.setItem('backUrl', link)
 
     async function saveData() {
 
@@ -136,16 +145,27 @@ const MainSettings = props => {
             }
             { props.isInit && !clean && <h2>Приложение инициализировано!</h2>}
             { props.isInit && !clean &&
-                <div>
-                    <button onClick={() => cleareStorage('Evo')}>cleare Storage</button>
-                    <button onClick={saveData}>Save Config</button>
-                    <label htmlFor="periodUpdate">Период обновления(час.):</label>
-                    <input type="number" name="periodUpdate" id="periodUpdate"
-                        style={{width: '3rem'}}
-                        value={periodUpdate} onChange={ev => setPUpdate(ev.target.value)}
-                        onBlur={blurPeriodUpdate}
-                    />
-                </div>
+                <>
+                    <div>
+                        <button onClick={() => cleareStorage('Evo')}>cleare Storage</button>
+                        <button onClick={saveData}>Save Config</button>
+                        <label htmlFor="periodUpdate">Период обновления(час.):</label>
+                        <input type="number" name="periodUpdate" id="periodUpdate"
+                            style={{width: '3rem'}}
+                            value={periodUpdate} onChange={ev => setPUpdate(ev.target.value)}
+                            onBlur={blurPeriodUpdate}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="backLink">Адрес сервера документов</label>
+                        <input type="url" name="backLink" id="backLink"
+                            style={{width: '15rem'}}
+                            value={ backLink }
+                            onChange={ ev => changeBackLink(ev.target.value)}
+                            onBlur={ ev => setBackLink(ev.target.value) }
+                        />
+                    </div>
+                </>
             }
             {
                 !props.appKey &&

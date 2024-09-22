@@ -1,18 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { CurrentPidContext } from './Tree';
 
-const Node = props => {
+const Node = (props: React.PropsWithoutRef<any>) => {
 
-  const context = useContext(CurrentPidContext);
-
-  const [icon, setIcon] = useState(null/* props.hidden ? 'far fa-folder' : 'far fa-folder-open' */);
-
-  const [isOpen, setIsOpen] = useState(null/* props.hidden ? 'closed' : 'open' */);
-
+  const context = useContext(CurrentPidContext) as Record<string, any>;
+  const [icon, setIcon] = useState<string>('far fa-folder') /* props.hidden ? 'far fa-folder' : 'far fa-folder-open' */;
+  const [isOpen, setIsOpen] = useState<string>('closed') /* props.hidden ? 'closed' : 'open' */;
   const hasChildren = !!props.children.length;
-
-  const [hidden, setHidden] = useState(props.hidden);
-
+  const [hidden, setHidden] = useState<boolean>(props.hidden);
   const [selected, setSelected] = useState(false);
 
   useEffect(() => {
@@ -29,18 +24,19 @@ const Node = props => {
     if (props.id === context.pId) {
       setSelected(true);
     }
-    if (context.arrNotHidden.length) {
+    if (!!context.arrNotHidden.length) {
       if (context.arrNotHidden.includes(props.id)) setHidden(false);
     }
     return () => setSelected(false);
   }, [context.arrNotHidden, context.pId, props.id])
 
-  const clickGroup = (ev) => {
+  const clickGroup = (ev: React.MouseEvent) => {
+    const elem = ev.target as HTMLElement
     ev.stopPropagation();
     if (props.id !== '0') setHidden(hidden => !hidden);
     if (props.callback) {
-      let tagName = ev.target.tagName;
-      let className = ev.target.className;
+      let tagName = elem.tagName;
+      let className = elem.className;
       props.callback(props.id.toString(), tagName, className);
     }
   }

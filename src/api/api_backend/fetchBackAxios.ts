@@ -1,4 +1,4 @@
-import { default as Axios, AxiosRequestConfig, ResponseType } from 'axios';
+import { default as Axios, AxiosRequestConfig } from 'axios';
 
 async function fetchBack({
   baseURL,

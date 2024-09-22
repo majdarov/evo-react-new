@@ -1,0 +1,15 @@
+.parent {
+    display: grid;
+    grid-template-columns: minmax(100px, 25%) 1fr;
+    font-family: var(--icon-font);
+    font-size: 1rem;
+}
+
+.docnumber, .docdetail {
+    border: solid blue 2px;
+    padding-left: 0.5rem;
+}
+
+.docnumber {
+    border-right: none;
+}

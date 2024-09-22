@@ -8,10 +8,20 @@ const ComponentsSearch = {
         const lblTo = name.match('price', 'gi') ? 'До' : 'Конец';
         function getInputEl(type, textName) {
             if (type === 'date') {
-                return <input type={type} name={`${name}-${textName}`} onChange={changeFormElement}
-                    min={getMinData()} max={dateToString()} />
+                return <input
+                    type={type}
+                    name={`${name}-${textName}`}
+                    id={`${name}-${textName}`}
+                    onChange={changeFormElement}
+                    min={getMinData()} max={dateToString()}
+                />
             } else {
-                return <input type={type} name={`${name}-${textName}`} onChange={changeFormElement} />
+                return <input
+                    type={type}
+                    name={`${name}-${textName}`}
+                    id={`${name}-${textName}`}
+                    onChange={changeFormElement}
+                />
             }
         }
         return (

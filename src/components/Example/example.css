@@ -1,0 +1,12 @@
+.parent {
+    display: grid;
+    grid-template-columns: minmax(100px, 25%) 1fr;
+}
+
+.yellow {
+    background-color: rgb(200, 255, 0);
+}
+
+.blue {
+    background-color: blue;
+}

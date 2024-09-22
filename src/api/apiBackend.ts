@@ -3,8 +3,9 @@ import fetchBack from "./api_backend/fetchBackAxios";
 
 const apiBack = {
 
-    async getDocs() {
+    async getDocs(bUrl: string = '') {
       let request = api_back;
+      request.baseURL = bUrl;
       request.url = 'docs';
       request.method = 'GET';
       return await fetchBack(request);

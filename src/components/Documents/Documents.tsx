@@ -5,6 +5,7 @@ import { dateToString, getMinData } from '../common/utillites/utilites';
 import { CardSell } from './components/CardSell/CardSell';
 import { useAppSelector } from '../../redux/hooks';
 import Table from '../common/Table';
+import { AxiosError, isAxiosError } from 'axios';
 
 const Documents = () => {
 
@@ -27,6 +28,7 @@ const Documents = () => {
     //     ['invoice', 'Первичка']
     // ]
     const docsSchema = useAppSelector(state => state.settings.documents.table.schema)
+    const baseUrl = useAppSelector(state => state.settings.documents.baseUrl)
 
     const [docs, setDocs] = useState([] as Record<string, any>[]);
     const [isLoading, setIsLoading] = useState(false);
@@ -51,8 +53,10 @@ const Documents = () => {
             } else if (docType === 'ofd') {
                 res = await apiEvotor.getOfdDocuments();
             } else if (docType === 'invoice') {
-                res = await apiBack.getDocs();
-                /* res.items =  */res.items.map((d: any) => {
+                res = await apiBack.getDocs(baseUrl);
+                if (isAxiosError(res)) throw new Error(res.message);
+                res.items ??= []
+                res.items.map((d: any) => {
                     d.docDate = new Date(d.docDate).toLocaleDateString()
                     return d
                 })

@@ -27,7 +27,7 @@ interface IForm {
   photos: any[],
 }
 
-interface Group {
+export interface Group {
   id: string
   pid: string | null
   label: string

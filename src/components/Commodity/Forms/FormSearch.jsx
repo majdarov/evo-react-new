@@ -157,7 +157,7 @@ const FormSearch = (props) => {
             />
             <div className={s['search-name']}>
               <label htmlFor='name'>Поиск</label>
-              <input type="text" name='name' value={name} onChange={changeName} />
+              <input type="text" name='name' id='name' value={name} onChange={changeName} />
             </div>
             <div>
               <label>В текущей группе</label>

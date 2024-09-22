@@ -1,32 +1,19 @@
 import React, { useEffect } from 'react';
-/* import { withCompose, withDouble, map, getName } from './testCompose';
+import './example.css'
 
-console.log(withCompose(5)); //21
-
-const arr = [1, 2, 3, 4, 5];
-console.log(withDouble(arr)); // [ 2, 4, 6, 8, 10 ]
-
-const people = [
-    { name: "Alex" },
-    { name: "Julia" },
-    { name: "Leo" },
-    { name: "Den" }
-  ];
-
-console.log(map(getName)(people)); */
-
-const Example = ({ count }) => {
-
-    useEffect(() => {
-        console.log('render - ' + count)
-        return () => {
-            console.log('unmount - ' + count);
-        }
-    }, [count])
+const Example = () => {
 
     return (
-        <div>example: {count}</div>
-    );
+        <div className="parent">
+            <div id='1' className="section yellow" contentEditable>
+            Min: 100px / Max: 25%
+            </div>
+            <div id='2' className="section blue" contentEditable>
+            This element takes the second grid position (1fr), meaning
+            it takes up the rest of the remaining space.
+            </div>
+        </div>
+    )
 }
 
 export default Example;
