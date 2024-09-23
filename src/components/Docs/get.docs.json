@@ -131,6 +131,71 @@
             ],
             "__v": 2,
             "summa": 4880
+        },
+        {
+            "_id": "66dc9016f011c44d24286test",
+            "docNumber": "new doc number 003",
+            "docDate": 1725729713874,
+            "docType": 0,
+            "docSum": 0,
+            "paymentStatus": 0,
+            "createStatus": 0,
+            "seller": {
+                "_id": "66d40adfb4137b9301fcd1c5",
+                "name": "Test Seller 3",
+                "other_data": {
+                    "address": "433300, NewUljanovsk, Komsomol st. 20",
+                    "phone_number": 8422300322
+                },
+                "__v": 0,
+                "id": "66d40adfb4137b9301fcd1c3"
+            },
+            "products": [
+                {
+                    "name": "Royal Canin Adult British Shorthair ",
+                    "code": "1682",
+                    "price": 440,
+                    "cost_price": 323.95,
+                    "quantity": 2,
+                    "measure_name": "шт",
+                    "id": "00477B81-649D-30BF-AA4A-36077CD6C51A",
+                    "barcodes": [],
+                    "_id": "66dc949d72e672cdd7b26378"
+                },
+                {
+                    "name": "Royal Canin British для взрослых кощек 2кг. (пачка)",
+                    "code": "688",
+                    "price": 1560,
+                    "cost_price": 0,
+                    "quantity": 1,
+                    "measure_name": "шт",
+                    "id": "0056BD87-5A36-EE55-ADD8-52BEE70C5FC6",
+                    "barcodes": [],
+                    "_id": "66dc949d72e672cdd7b26379"
+                },
+                {
+                    "name": "Royal Canin Adult British Shorthair ",
+                    "code": "1682",
+                    "price": 440,
+                    "cost_price": 323.95,
+                    "quantity": 2,
+                    "measure_name": "шт",
+                    "id": "00477B81-649D-30BF-AA4A-36077CD6C51A",
+                    "barcodes": []
+                },
+                {
+                    "name": "Royal Canin British для взрослых кощек 2кг. (пачка)",
+                    "code": "688",
+                    "price": 1560,
+                    "cost_price": 0,
+                    "quantity": 1,
+                    "measure_name": "шт",
+                    "id": "0056BD87-5A36-EE55-ADD8-52BEE70C5FC6",
+                    "barcodes": []
+                }
+            ],
+            "__v": 2,
+            "summa": 4880
         }
     ]
 }

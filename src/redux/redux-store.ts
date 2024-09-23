@@ -3,6 +3,7 @@ import appSlice from './appSlice';
 import navSlice from './navSlice';
 import settingsSlice from './settingsSlice';
 import commoditySlice from './commoditySlice';
+import docsSlice from './docsSlice';
 
 let store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ let store = configureStore({
     commodity: commoditySlice.reducer,
     app: appSlice.reducer,
     settings: settingsSlice.reducer,
+    docs: docsSlice.reducer
   }
 })
 

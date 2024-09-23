@@ -29,7 +29,7 @@ import { TreeNode } from "./types";
 
 function createNode(item: TreeNode) {
   let node = { ...item };
-  node.childs = [];
+  node.childs ??= [];
   return node;
 }
 

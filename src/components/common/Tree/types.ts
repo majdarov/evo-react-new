@@ -9,6 +9,6 @@ export interface TreeProps {
     treeLabel: string;
     pId: string;
     data: TreeNode[];
-    callback: Function;
+    callback: Function | null;
     viewEdit: boolean;
 }
