@@ -1,6 +1,6 @@
 .parent {
     display: grid;
-    grid-template-columns: minmax(100px, 25%) 1fr;
+    grid-template-columns: minmax(250px, 25%) 1fr;
     font-family: var(--icon-font);
     font-size: 1rem;
 }

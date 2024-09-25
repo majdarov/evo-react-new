@@ -12,3 +12,5 @@ export interface TreeProps {
     callback: Function | null;
     viewEdit: boolean;
 }
+
+export type Callback = (id: string, tagName: string, className: string) => void

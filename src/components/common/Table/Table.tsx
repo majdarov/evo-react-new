@@ -3,8 +3,8 @@ import useSortableData from '../../../Hooks';
 import s from './Table.module.css'
 import { clickTable, getMapSchema } from './utilsTable';
 
-export default function Table(props) {
-  const { records } = props;
+export default function Table(props: React.PropsWithoutRef<any>) {
+  const { records, } = props;
   const { items, requestSort, sortConfig } = useSortableData(records);
 
   if (!items.length) return <p>Empty Group!</p>
@@ -16,7 +16,7 @@ export default function Table(props) {
     return item[1];
   });
 
-  const getClassName = name => {
+  const getClassName = (name: string) => {
     if (!sortConfig) return;
     let className = sortConfig.key === name ? sortConfig.direction : null;
     switch (className) {
@@ -31,7 +31,6 @@ export default function Table(props) {
 
   return (
     <div onClick={ev => clickTable(ev, props.callback, props.deleteRecord)}>
-      {/* <caption>Commodities</caption> */}
       <table>
         <thead>
           <tr>
@@ -51,7 +50,7 @@ export default function Table(props) {
             <tr key={record.uuid || record.id || record._id} id={record.uuid || record.id || record._id}>
               { schema.map(item => {
                 if (item[0] === 'uuid' || item[0] === 'id' || item[0] === '_id') return null;
-                return <td key={`${item[0]}_${record.id || record.uuid}`} name={item[0]}>{record[item[0]]}</td>
+                return <td key={`${item[0]}_${record.id || record.uuid}`} id={item[0]}>{record[item[0]]}</td>
               })}
               <td key={`del_${record.id || record.uuid || record._id }`}><span className={s.del}></span></td>
             </tr>

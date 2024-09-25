@@ -11,6 +11,12 @@
 
 import { useMemo, useState } from 'react';
 
+/**
+ *
+ * @param {*} items
+ * @param {Record<string, string>} config
+ * @returns
+ */
 const useSortableData = (items, config = null) => {
   const [sortConfig, setSortConfig] = useState(config);
 

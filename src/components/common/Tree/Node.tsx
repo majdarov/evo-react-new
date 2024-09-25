@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { CurrentPidContext } from './Tree';
+import { Callback } from "./types";
 
 const Node = (props: React.PropsWithoutRef<any>) => {
 
@@ -9,6 +10,7 @@ const Node = (props: React.PropsWithoutRef<any>) => {
   const hasChildren = !!props.children.length;
   const [hidden, setHidden] = useState<boolean>(props.hidden);
   const [selected, setSelected] = useState(false);
+  const callback: Callback = props.callback
 
   useEffect(() => {
     if (hidden) {
@@ -34,10 +36,10 @@ const Node = (props: React.PropsWithoutRef<any>) => {
     const elem = ev.target as HTMLElement
     ev.stopPropagation();
     if (props.id !== '0') setHidden(hidden => !hidden);
-    if (props.callback) {
+    if ( !!callback ) {
       let tagName = elem.tagName;
       let className = elem.className;
-      props.callback(props.id.toString(), tagName, className);
+      callback(props.id.toString(), tagName, className);
     }
   }
 

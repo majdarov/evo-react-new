@@ -29,40 +29,45 @@ const Example = () => {
             setFilterDocs(stateDocs)
         } else {
             const _fDocs = stateDocs.filter(d => {
-                return (d.seller._id === docsPid || (d.docDate.toString() + d.seller._id) === docsPid)
+                return (
+                    d.seller._id === docsPid
+                    || (d.docDate.toString() + d.seller._id) === docsPid
+                    || d.docDate.toString() === docsPid
+                )
             })
             setFilterDocs(_fDocs)
         }
     }, [docsPid])
 
 
-    let sellers: {sellerId: string, dates: number[]}[] = []
+    // let sellers: {sellerId: string, dates: number[]}[] = []
+    let dates: {timestamp: number, sellers: string[]}[] = []
     let docsTree: TreeNode[] = []
 
     stateDocs.forEach((d) => {
-        let seller = sellers.find(s => s.sellerId === d.seller._id)
-        // add seller level
-        if (!seller) {
-            seller = {
-                sellerId: d.seller._id,
-                dates: []
+        let date = dates.find(s => s.timestamp === d.docDate)
+        // add date level
+        if (!date) {
+            date = {
+                timestamp: d.docDate,
+                sellers: []
             }
-            sellers.push(seller);
+            dates.push(date);
             // add seller group in docsTree
             docsTree.push({
-                id: d.seller._id,
-                label: d.seller.name,
+                id: String(d.docDate),
+                label: new Date(d.docDate).toLocaleDateString(),
                 pid: '0',
             } as TreeNode)
         }
-        // add date level
-        if (!seller.dates.includes(d.docDate)) {
-            seller.dates.push(d.docDate)
+        // add seller level
+        if (!date.sellers.includes(d.seller._id)) {
+            date.sellers.push(d.seller._id)
             // add date group in docsTree
             docsTree.push({
                 id: String(d.docDate) + d.seller._id,
-                label: new Date(d.docDate).toLocaleDateString(),
-                pid: d.seller._id,
+                label: d.seller.name,
+                pid: String(d.docDate)
             } as TreeNode)
         }
     });
