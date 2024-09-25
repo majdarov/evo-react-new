@@ -24,6 +24,7 @@ export type SellerType = {
 }
 
 export type DocType = {
+  [key: string]: any
   _id: string
   createStatus: number
   docDate: number
