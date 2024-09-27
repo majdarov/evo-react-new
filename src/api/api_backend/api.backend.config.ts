@@ -3,7 +3,7 @@ import { AxiosRequestConfig } from "axios";
 console.log('MODE: ' + import.meta.env.MODE)
 
 const api_back: AxiosRequestConfig = {
-  baseURL: localStorage.getItem('baseURL') || '',
+  // baseURL: localStorage.getItem('backURL') || '',
   // baseURL: 'http://itk.galinka-malinka.ru/',
 }
 
