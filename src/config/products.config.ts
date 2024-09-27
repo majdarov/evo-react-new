@@ -1,6 +1,6 @@
 import { schemaTableType } from "../redux/settingsSlice";
 
-export const schemaOfTable: schemaTableType = {
+export const productsSchemaOfTable: schemaTableType = {
     id: ['', 0],
     name: ['Наименование', 1],
     code: ['', 0],

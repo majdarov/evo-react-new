@@ -62,7 +62,7 @@ const Docs = () => {
                 className='fa fa-search'
                 onClick={() => setRootLevevl(rootLevel === 'seller' ? 'docDate' : 'seller' )}
                 style={{margin: 0.5, padding: 5, display: 'inline-flex'}}
-                >{ rootLabel }</button>
+                >{ rootLevel === 'seller' ? 'setDates' : 'setSellers' }</button>
 
                 <Tree
                     pId='0'
