@@ -46,7 +46,7 @@ function createRegexp(str = '') {
     }
   }
   val = str.replace(/[-[.+$*()^\]\\]/g, '\\$&');
-  console.log(val);
+  // console.log(val);
   return new RegExp(val, 'gi');
 }
 
@@ -188,7 +188,7 @@ const useFilteredData = (/* inItems */) => {
       });
     }
     return () => setItems([]);
-  }, [search]);
+  }, [search, filterProd]);
 
   return { items, setFilterConfig, search };
 };

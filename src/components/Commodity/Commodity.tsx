@@ -12,12 +12,14 @@ import { CommodityProps } from "./CommodityContainer";
 
 const Commodity: React.FC<CommodityProps> = (props) => {
 
+  const { commodities, schema, isLoaded, isInit, comIsLoaded, error } = props;
+  const { setPid, getGroups, getProducts, setError, setCommodities, getProductId, deleteProduct } = props;
+
   const { items, setFilterConfig } = useFilteredData(/* props.commodities */);
   const [pid, setPidSearch] = useState(props.pid);
   const [isEmpty, setIsEmpty] = useState(false);
   const [labelGroup, setLabelGroup] = useState('');
   const [isSearching, setIsSearching] = useState(false);
-  const setCommodities = props.setCommodities;
   const [showTreeView, setShowTreeView] = useState(false);
 
 //   if (!props.isInit) {
@@ -25,39 +27,39 @@ const Commodity: React.FC<CommodityProps> = (props) => {
 //     props.history.push('/settings');
 //   }
 
-  const propsSetPid = props.setPid;
   useEffect(() => {
-    propsSetPid(pid)
-  }, [pid]);
+    setPid(pid)
+  }, [ pid, setPid ]);
+
 
   useEffect(() => { //get groups & products
-    if (!props.isLoaded && props.isInit) {
-      props.setPid('0');
-      props.getGroups();
+    if (!isLoaded && isInit) {
+      setPid('0');
+      getGroups();
     }
-    if (!props.comIsLoaded && props.isInit) {
-      props.getProducts(props.pid);
+    if (!comIsLoaded && isInit) {
+      getProducts(pid);
     }
-    if (props.error) {
-      alert(`${props.error.name}\n\r${props.error.message}`);
-      props.setError(null);
+    if (error) {
+      alert(`${error.name}\n\r${error.message}`);
+      setError(null);
     }
-  }, [props])
+  }, [ isLoaded, isInit, comIsLoaded, error, setPid, getGroups, getProducts, setError ])
 
-  useEffect(() => {
+  useEffect(() => { // set serching result
     if (isSearching) {
       setCommodities(items);
       setLabelGroup(`Результаты поиска - ${items.length} позиций.`);
     }
-  }, [items, setCommodities, isSearching])
+  }, [ items, setCommodities, isSearching ])
 
   useEffect(() => {
-    if (!props.commodities.length) setIsEmpty(true);
+    if (!commodities.length) setIsEmpty(true);
     return () => setIsEmpty(false);
-  }, [props.commodities]);
+  }, [ commodities ]);
 
   function newData() {
-    props.getProductId(null);
+    getProductId(null);
   }
 
   function clickGroups() {
@@ -144,13 +146,13 @@ const Commodity: React.FC<CommodityProps> = (props) => {
           <div className={s.list}>
             {/* <h3>{groupName}  {groupIsEmpty && <span className={s.del} onClick={delGroup}></span>}</h3> */}
             { !props.comIsLoaded && <ProgressBar limit={20} text={'Processing...'} /> }
-            { props.comIsLoaded &&
+            { props.comIsLoaded && !!commodities.length &&
               <Table
-                records={props.commodities}
+                records={ commodities }
                 // headers={headers}
-                callback={props.getProductId}
-                deleteRecord={props.deleteProduct}
-                schema={props.schema}
+                callback={ getProductId }
+                deleteRecord={ deleteProduct }
+                schema={ schema }
               /> }
           </div>
         </div>

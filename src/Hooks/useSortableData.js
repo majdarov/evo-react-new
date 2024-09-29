@@ -18,7 +18,8 @@ import { useMemo, useState } from 'react';
  * @returns
  */
 const useSortableData = (items, config = null) => {
-  const [sortConfig, setSortConfig] = useState(config);
+
+  const [ sortConfig, setSortConfig ] = useState(config);
 
   const sortedItems = useMemo(() => {
     let sortedProducts = [...items];
@@ -33,7 +34,7 @@ const useSortableData = (items, config = null) => {
       });
     }
     return sortedProducts;
-  }, [items, sortConfig]);
+  }, [ items, sortConfig]);
 
   function requestSort(key) {
     let direction = 'asc';

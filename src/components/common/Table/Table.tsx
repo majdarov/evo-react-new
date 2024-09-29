@@ -3,16 +3,16 @@ import useSortableData from '../../../Hooks';
 import s from './Table.module.css'
 import { clickTable, getMapSchema } from './utilsTable';
 
-export default function Table(props: React.PropsWithoutRef<any>) {
-  const { records, } = props;
+export default function Table({ records, schema, callback, deleteRecord }: React.PropsWithoutRef<any>) {
+
   const { items, requestSort, sortConfig } = useSortableData(records);
 
   if (!items.length) return <p>Empty Group!</p>
 
   // const schema = props.schema || Object.keys(records[0]);
-  const schema = useMemo(() => getMapSchema(props.schema), [props.schema]);
+  schema = useMemo(() => getMapSchema(schema), [ schema ]);
 
-  const headers = schema.map(item => {
+  const headers = schema.map((item: [ string, string ]) => {
     return item[1];
   });
 
@@ -30,12 +30,12 @@ export default function Table(props: React.PropsWithoutRef<any>) {
   }
 
   return (
-    <div onClick={ev => clickTable(ev, props.callback, props.deleteRecord)}>
+    <div onClick={ev => clickTable(ev, callback, deleteRecord)}>
       <table>
         <thead>
           <tr>
             {
-              headers.map((item, idx) => {
+              headers.map((item: string, idx: number) => {
                 if (item === 'uuid' || item === 'id' || item === '_id') return null;
                 return <th
                   key={item}
@@ -48,7 +48,7 @@ export default function Table(props: React.PropsWithoutRef<any>) {
         <tbody>
           {items.map(record => (
             <tr key={record.uuid || record.id || record._id} id={record.uuid || record.id || record._id}>
-              { schema.map(item => {
+              { schema.map((item: [ string, string ]) => {
                 if (item[0] === 'uuid' || item[0] === 'id' || item[0] === '_id') return null;
                 return <td key={`${item[0]}_${record.id || record.uuid}`} id={item[0]}>{record[item[0]]}</td>
               })}
