@@ -163,6 +163,7 @@ const MainSettings = props => {
                             value={ backLink }
                             onChange={ ev => changeBackLink(ev.target.value)}
                             onBlur={ ev => setBackLink(ev.target.value) }
+                            placeholder="http://localhost:3000"
                         />
                     </div>
                 </>
