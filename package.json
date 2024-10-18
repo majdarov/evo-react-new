@@ -23,7 +23,7 @@
     "yup": "^1.4.0"
   },
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --no-open",
     "start": "vite",
     "build": "vite build",
     "preview": "vite preview",
