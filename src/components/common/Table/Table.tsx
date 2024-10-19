@@ -50,7 +50,7 @@ export default function Table({ records, schema, callback, deleteRecord }: React
             <tr key={record.uuid || record.id || record._id} id={record.uuid || record.id || record._id}>
               { schema.map((item: [ string, string ]) => {
                 if (item[0] === 'uuid' || item[0] === 'id' || item[0] === '_id') return null;
-                return <td key={`${item[0]}_${record.id || record.uuid}`} id={item[0]}>{record[item[0]]}</td>
+                return <td key={`${item[0]}_${record.id || record.uuid || record._id}`} id={item[0]}>{record[item[0]]}</td>
               })}
               <td key={`del_${record.id || record.uuid || record._id }`}><span className={s.del}></span></td>
             </tr>
