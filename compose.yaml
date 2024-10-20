@@ -5,18 +5,9 @@ services:
   frontend:
     build:
       context: .
-      dockerfile_inline: |
-        FROM node:20
-        WORKDIR /app
-        COPY package.json ./
-        RUN corepack enable
-        RUN yarn set version stable
-        RUN yarn install
-        COPY . .
-        EXPOSE 4000
-    command: yarn dev
+    # command: yarn dev
     volumes:
-      - ./:/app
+      - ./src:/app/src
       - node_modules:/app/node_modules
     ports:
       - 4000:4000
