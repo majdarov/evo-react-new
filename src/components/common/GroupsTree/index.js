@@ -1,1 +1,1 @@
-export { default } from './GroupsTree.jsx';
+export { default } from './GroupsTree.tsx';

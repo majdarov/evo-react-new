@@ -89,7 +89,7 @@ function filterProd(item, search = []) {
     barcode: Number(barcode);
 } */
 function createSearchRequest(formData) {
-  let arrSearchReuests = [];
+  let arrSearchRequests = [];
   // console.log('createSearchRequest:', formData);
   Object.keys(formData).forEach((key) => {
     let keys = [key];
@@ -166,9 +166,9 @@ function createSearchRequest(formData) {
         break;
     }
     // console.log('createSearchRequest', searchRequest);
-    arrSearchReuests.push(searchRequest);
+    arrSearchRequests.push(searchRequest);
   });
-  return arrSearchReuests;
+  return arrSearchRequests;
 }
 
 const useFilteredData = (/* inItems */) => {

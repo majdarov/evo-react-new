@@ -8,19 +8,46 @@ import FormSearch from "./Forms/FormSearch";
 import useFilteredData from "../../Hooks/useFilteredData";
 import GroupsTree from "../common/GroupsTree";
 import { Modal } from "../common/Modal/Modal";
-import { CommodityProps } from "./CommodityContainer";
+import type { CommodityProps } from "./CommodityContainer";
+import { getPaging } from "../common/utillites";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { setCurrentPage } from "../../redux/commoditySlice";
 
 const Commodity: React.FC<CommodityProps> = (props) => {
 
   const { commodities, schema, isLoaded, isInit, comIsLoaded, error } = props;
   const { setPid, getGroups, getProducts, setError, setCommodities, getProductId, deleteProduct } = props;
-
   const { items, setFilterConfig } = useFilteredData(/* props.commodities */);
   const [pid, setPidSearch] = useState(props.pid);
   const [isEmpty, setIsEmpty] = useState(false);
   const [labelGroup, setLabelGroup] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [showTreeView, setShowTreeView] = useState(false);
+
+  // Use new redux
+  const dispatch = useAppDispatch();
+  const currentPage = useAppSelector(state => state.commodity.currentPage);
+  const [productsWithPaging, setProductsWithPaging] = useState([] as any[])
+  const [pagesCount, setPagesCount] = useState(1)
+
+  useEffect(() => {
+    const { pagesCount, sliceStart, sliceEnd } = getPaging(commodities.length, 20, currentPage);
+    setPagesCount(pagesCount);
+    setProductsWithPaging(commodities.slice(sliceStart, sliceEnd))
+  })
+
+  const incrementPage = () => {
+    if (currentPage < pagesCount) {
+      dispatch(setCurrentPage(currentPage + 1))
+    }
+  }
+
+  const decrementPage = () => {
+    if (currentPage > 1) {
+      dispatch(setCurrentPage(currentPage - 1))
+    }
+  }
+
 
 //   if (!props.isInit) {
 
@@ -130,31 +157,47 @@ const Commodity: React.FC<CommodityProps> = (props) => {
           </Modal>
           // </FormModalWrapper>
         }
-        <div className={s.container}>
+        <div className={ s.container }>
           <GroupsTree
-            groups={props.groups}
-            treeView={showTreeView}
-            onClick={clickGroups}
-            callbackTree={callbackTree}
-            parent_id={props.pid}
-            isEmpty={isEmpty}
-            deleteProduct={props.deleteProduct}
-            getProductId={props.getProductId}
-            label={labelGroup}
-            viewEdit={true}
+            groups={ props.groups }
+            treeView={ showTreeView }
+            onClick={ clickGroups }
+            callbackTree={ callbackTree }
+            parent_id={ props.pid }
+            isEmpty={ isEmpty }
+            deleteProduct={ props.deleteProduct }
+            getProductId={ props.getProductId }
+            label={ labelGroup }
+            countP={ commodities.length }
+            viewEdit={ true }
           />
           <div className={s.list}>
             {/* <h3>{groupName}  {groupIsEmpty && <span className={s.del} onClick={delGroup}></span>}</h3> */}
             { !props.comIsLoaded && <ProgressBar limit={20} text={'Processing...'} /> }
             { props.comIsLoaded && !!commodities.length &&
               <Table
-                records={ commodities }
+                records={ /*commodities*/ productsWithPaging }
                 // headers={headers}
                 callback={ getProductId }
                 deleteRecord={ deleteProduct }
                 schema={ schema }
               /> }
           </div>
+        </div>
+        <div>
+          <div className={s.buttons} style={{display: "inline-block", margin: 5}}>
+              <span className={`${s['button-add']} fa`} onClick={decrementPage}>
+                Назад
+              <i className='fa fa-file'></i>
+              </span>
+            </div>
+            <div className={s.buttons} style={{display: "inline-block", margin: 5}}>
+              <span className={`${s['button-add']} fa`} onClick={incrementPage}>
+                Вперед
+              <i className='fa fa-file'></i>
+              </span>
+            </div>
+            <span>Page {currentPage} of {pagesCount}</span>
         </div>
       </>
     );

@@ -4,11 +4,11 @@ import { Modal } from '../Modal/Modal';
 import Tree from '../Tree/Tree';
 import s from './GroupsTree.module.css';
 
-const GroupsTree = props => {
+const GroupsTree = (props: any) => {
 
     const groups = [...props.groups];
     let g = groups.find(item => item.id === props.parent_id);
-    let gLabel = g ? g.label : 'Root';
+    let gLabel = `${g ? g.label : 'Root'}( ${props.countP} )`;
     let onDivClick = props.disabled ? null : props.onClick;
 
     async function delGroup() {
@@ -46,7 +46,7 @@ const GroupsTree = props => {
                 </div>
             }
             <div className={s['g-tree']} onClick={onDivClick}>
-                <div name='parent_id'>
+                <div className='parent_id'>
                     {props.label || gLabel}
                     {/* <i className='fa fa-share-alt fa-1x'></i> */}
                     <i className='fa fa-bars fa-1x'></i>

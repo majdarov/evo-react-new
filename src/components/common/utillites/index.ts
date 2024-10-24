@@ -1,1 +1,7 @@
-export { getUUID4, randomMax, dateToString, getMinData } from './utilites';
+export {
+    getUUID4,
+    randomMax,
+    dateToString,
+    getMinData,
+    getPaging
+} from './utilites';

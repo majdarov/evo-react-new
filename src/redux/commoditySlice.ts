@@ -37,6 +37,7 @@ export type CommodityState = {
   groups: Group[]
   commodities: any[] // TODO - define type of Product/commodities
   pid: string
+  currentPage: number
   isLoaded: boolean
   comIsLoaded: boolean
   error: any
@@ -50,6 +51,7 @@ let initialState: CommodityState = {
   groups: [],
   commodities: [],
   pid: '0',
+  currentPage: 1,
   isLoaded: false,
   comIsLoaded: false,
   error: null,
@@ -129,10 +131,13 @@ const commoditySlice = createSlice({
     },
     setFormPhotosAC(state, action) {
       state.form.photos = [...action.payload]
+    },
+    setCurrentPage(state, action) {
+      state.currentPage = action.payload;
     }
   }
 })
 
-export const { setGroupsAC, setPidAC, setCommoditiesAC, setErrorAC, setFormErrorAC, setViewFormAC, toggleFormPostAC, setFormDataAC, setFormPhotosAC } = commoditySlice.actions;
+export const { setGroupsAC, setPidAC, setCommoditiesAC, setErrorAC, setFormErrorAC, setViewFormAC, toggleFormPostAC, setFormDataAC, setFormPhotosAC, setCurrentPage } = commoditySlice.actions;
 
 export default commoditySlice;

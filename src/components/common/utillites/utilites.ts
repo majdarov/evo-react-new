@@ -47,3 +47,12 @@ export function getMinData() {
       console.error(e.message)
   }
 }
+
+export function getPaging(elemsCount: number, pageSize: number = 20, pageNumber: number = 1) {
+  let sliceStart: number, sliceEnd: number
+  let pagesCount: number = Math.floor(elemsCount / pageSize)
+  sliceStart = (pageNumber - 1) * pageSize
+  sliceEnd = sliceStart + pageSize
+
+  return{ sliceStart, sliceEnd, pagesCount }
+}
