@@ -26,7 +26,6 @@ const mapState = (state: RootState) => {
     groups: _state.groups,
     price: 'Price',
     pid: _state.pid,
-    currentPage: _state.currentPage,
     // commodities: _state.commodities.length > 100 ? _state.commodities.slice(0, 100) : _state.commodities,
     commodities: _state.commodities,
     comIsLoaded: _state.comIsLoaded,

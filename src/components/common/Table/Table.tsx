@@ -9,7 +9,6 @@ export default function Table({ records, schema, callback, deleteRecord }: React
 
   if (!items.length) return <p>Empty Group!</p>
 
-  // const schema = props.schema || Object.keys(records[0]);
   schema = useMemo(() => getMapSchema(schema), [ schema ]);
 
   const headers = schema.map((item: [ string, string ]) => {

@@ -50,7 +50,7 @@ export function getMinData() {
 
 export function getPaging(elemsCount: number, pageSize: number = 20, pageNumber: number = 1) {
   let sliceStart: number, sliceEnd: number
-  let pagesCount: number = Math.floor(elemsCount / pageSize)
+  let pagesCount: number = Math.ceil(elemsCount / pageSize)
   sliceStart = (pageNumber - 1) * pageSize
   sliceEnd = sliceStart + pageSize
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { ChangeEvent, ReactElement, SelectHTMLAttributes, useEffect, useState } from "react";
 import s from "./Commodity.module.css";
 import Preloader from "../common/Preloader/Preloader";
 import FormProduct from "./Forms/FormProduct";
@@ -10,8 +10,6 @@ import GroupsTree from "../common/GroupsTree";
 import { Modal } from "../common/Modal/Modal";
 import type { CommodityProps } from "./CommodityContainer";
 import { getPaging } from "../common/utillites";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { setCurrentPage } from "../../redux/commoditySlice";
 
 const Commodity: React.FC<CommodityProps> = (props) => {
 
@@ -24,33 +22,29 @@ const Commodity: React.FC<CommodityProps> = (props) => {
   const [isSearching, setIsSearching] = useState(false);
   const [showTreeView, setShowTreeView] = useState(false);
 
-  // Use new redux
-  const dispatch = useAppDispatch();
-  const currentPage = useAppSelector(state => state.commodity.currentPage);
+  const [currentPage, setCurrentPage] = useState(1);
   const [productsWithPaging, setProductsWithPaging] = useState([] as any[])
   const [pagesCount, setPagesCount] = useState(1)
+  const [pageSize, setPageSize] = useState(20)
 
   useEffect(() => {
-    const { pagesCount, sliceStart, sliceEnd } = getPaging(commodities.length, 20, currentPage);
-    setPagesCount(pagesCount);
-    setProductsWithPaging(commodities.slice(sliceStart, sliceEnd))
-  })
+    const { pagesCount: pCount, sliceStart, sliceEnd } = getPaging(commodities.length, pageSize, currentPage);
+    setPagesCount(pCount);
+    setProductsWithPaging(commodities.slice(sliceStart, sliceEnd));
+  }, [currentPage, commodities, pageSize])
 
   const incrementPage = () => {
-    if (currentPage < pagesCount) {
-      dispatch(setCurrentPage(currentPage + 1))
-    }
+    if (currentPage + 1 > pagesCount) return;
+    setCurrentPage(currentPage + 1)
   }
 
   const decrementPage = () => {
-    if (currentPage > 1) {
-      dispatch(setCurrentPage(currentPage - 1))
-    }
+    if (currentPage - 1 < 1) return;
+    setCurrentPage(currentPage - 1)
   }
 
-
+// TODO history
 //   if (!props.isInit) {
-
 //     props.history.push('/settings');
 //   }
 
@@ -108,6 +102,7 @@ const Commodity: React.FC<CommodityProps> = (props) => {
     // if (props.pid === eId) return;
     props.setPid(eId);
     setPidSearch(eId);
+    setCurrentPage(1);
   }
 
   const searchProducts = (formData: any) => {
@@ -118,6 +113,13 @@ const Commodity: React.FC<CommodityProps> = (props) => {
     props.getProducts(props.pid);
     setIsSearching(false);
     setLabelGroup('');
+  }
+
+  function selectPageSize(e: React.SyntheticEvent<HTMLSelectElement>) {
+    const value = e.currentTarget.value
+    console.log('value:', value)
+    const pSize = value ? +value : 20
+    setPageSize(pSize);
   }
 
   const formSearchProps = { searchProducts, returnBeforeSearch, setIsSearching, parent_id: pid }
@@ -177,7 +179,6 @@ const Commodity: React.FC<CommodityProps> = (props) => {
             { props.comIsLoaded && !!commodities.length &&
               <Table
                 records={ /*commodities*/ productsWithPaging }
-                // headers={headers}
                 callback={ getProductId }
                 deleteRecord={ deleteProduct }
                 schema={ schema }
@@ -185,19 +186,28 @@ const Commodity: React.FC<CommodityProps> = (props) => {
           </div>
         </div>
         <div>
-          <div className={s.buttons} style={{display: "inline-block", margin: 5}}>
+          <select name="page-size" id="page-size" onChange={selectPageSize}>
+              <option value="20">20</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+          </select>
+          { currentPage > 1 &&
+            <div className={s.buttons} style={{display: "inline-block", margin: 5}}>
               <span className={`${s['button-add']} fa`} onClick={decrementPage}>
                 Назад
               <i className='fa fa-file'></i>
               </span>
             </div>
+          }
+          { currentPage < pagesCount &&
             <div className={s.buttons} style={{display: "inline-block", margin: 5}}>
               <span className={`${s['button-add']} fa`} onClick={incrementPage}>
                 Вперед
               <i className='fa fa-file'></i>
               </span>
             </div>
-            <span>Page {currentPage} of {pagesCount}</span>
+          }
+          <span>Page {currentPage} of {pagesCount}</span>
         </div>
       </>
     );
