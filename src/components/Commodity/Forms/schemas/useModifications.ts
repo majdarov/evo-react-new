@@ -40,15 +40,15 @@ import { apiIDB } from '../../../../api/apiIDB';
   },
 ]; */
 
-export const useModifications = (parentId) => {
+export const useModifications = (parentId: string | null) => {
   const [attributesP, setAttributes] = useState(null);
   // console.log('render: ', attributesP?.length || null, parentId);
 
-  const getAttributes = useCallback(({ parentId }) =>  {
+  const getAttributes = useCallback(( parentId: string | null ) =>  {
     if (parentId === '0' || !parentId) return;
     apiIDB.getGroup(parentId).then((g) => setAttributes(g.attributes || null));
   }, [])
-  getAttributes({ parentId });
+  getAttributes( parentId );
 
   return { attributesP, getAttributes };
 };

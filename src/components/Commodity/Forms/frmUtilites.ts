@@ -4,7 +4,7 @@ import { randomMax } from '../../common/utillites/utilites';
 export const setNewCode = async () => {
   //let maxCode = Math.floor(Math.random() * 1e5);
   //await productsApi.getData('products', { max: 'code' });
-  let arr = await apiIDB.getProduct();
+  let arr: any[] = await apiIDB.getProduct();
   // debugger
   let codes = arr.map((item) => +item.code || 0);
   let maxCode = Math.max.apply(null, codes);
@@ -12,14 +12,13 @@ export const setNewCode = async () => {
   return newCode;
 };
 
-export function newBarcode(code, prefix = '0000') {
+export function newBarcode(code: string, prefix = '0000') {
   // if (!prefix) prefix = '0000';
   code = '';
   for (let i = 1; i <= 6; i++) {
     code += randomMax(9).toString();
   }
-  let A1 =
-    '20'.concat(prefix) + code;
+  let A1 = '20'.concat(prefix) + code;
     // '0'.repeat(6 - code.toString().length) + code.toString();
   let A2 = 0;
   A1.split('').forEach((item, i) => {
@@ -30,10 +29,10 @@ export function newBarcode(code, prefix = '0000') {
     }
   });
   A2 = (10 - (A2 % 10)) % 10;
-  return A1.concat(A2);
+  return A1.concat(String(A2));
 }
 
-export function viewBarcode(barcode) {
+export function viewBarcode(barcode: string) {
   let f1 = 65;
   let f2 = 75;
   let s = [
@@ -54,22 +53,23 @@ export function viewBarcode(barcode) {
     let n = Number(bcStr);
 
     for (let i = 1; i <= 6; i++) {
-      bcStr += String.fromCharCode(Number(barcode.substr(i, 1)) + s[n][i - 1]);
+      bcStr += String.fromCharCode(Number(barcode.slice(i, i + 1)) + s[n][i - 1]);
     }
     bcStr += String.fromCharCode(42);
     for (let i = 7; i <= 12; i++) {
-      bcStr += String.fromCharCode(Number(barcode.substr(i, 1)) + 97);
+      bcStr += String.fromCharCode(Number(barcode.slice(i, i + 1)) + 97);
     }
 
     bcStr += String.fromCharCode(43);
     return { str: bcStr, err: null };
-  } catch (err) {
+  } catch (err: any) {
     return { str: null, err: err.message };
   }
 }
 
-export function validateBarcode(barcode) {
-  function testBarcode() {
+export function validateBarcode(barcode: string) {
+
+  function testBarcode(barcode: string) {
     if (isNaN(Number(barcode))) return false;
     if (![7, 8, 12, 13].includes(barcode.length)) {
       return false;//`Not valid Length barcode: ${barcode.length}`;
@@ -89,7 +89,7 @@ export function validateBarcode(barcode) {
 
   let res = testBarcode(barcode);
 
-  if (res !== 0) {
+  if (res && res !== 0) {
     let message = '';
     if (barcode.length === 13 || barcode.length === 8) {
       let errDig = barcode.slice(-1);
@@ -106,7 +106,7 @@ export function validateBarcode(barcode) {
   return res;
 }
 
-export function validateZeroData(curr/* , prev */) {
+export function validateZeroData(curr: any/* , prev */) {
   for (let key in curr) {
     /* let arrNotChanged = false;
     if (Array.isArray(curr[key])) {
@@ -125,7 +125,7 @@ export function validateZeroData(curr/* , prev */) {
   }
 }
 
-export function validateRequiredData(body, isGroup = false) {
+export function validateRequiredData(body: any, isGroup = false) {
   let reqData;
 
   if (isGroup) {
@@ -140,7 +140,7 @@ export function validateRequiredData(body, isGroup = false) {
       'allow_to_sell',
     ];
   }
-  let missData = [];
+  let missData: string[] = [];
 
   Object.keys(body).forEach((key) => {
     if (!body[key] && reqData.includes(key)) {
@@ -152,13 +152,13 @@ export function validateRequiredData(body, isGroup = false) {
 }
 
 export function arrCompare(arr1 = [], arr2 = []) {
-  let resArrPlus = [];
+  let resArrPlus: any[] = [];
   arr2.forEach((item) => {
     if (!arr1.includes(item)) {
       resArrPlus.push(item);
     }
   });
-  let resArrMinus = [];
+  let resArrMinus: any[] = [];
   arr1.forEach((item) => {
     if (!arr2.includes(item)) {
       resArrMinus.push(item);
