@@ -31,7 +31,7 @@ const Commodity: React.FC<CommodityProps> = (props) => {
     const { pagesCount: pCount, sliceStart, sliceEnd } = getPaging(commodities.length, pageSize, currentPage);
     setPagesCount(pCount);
     setProductsWithPaging(commodities.slice(sliceStart, sliceEnd));
-  }, [currentPage, commodities, pageSize])
+  }, [currentPage, commodities, pageSize, pagesCount])
 
   const incrementPage = () => {
     if (currentPage + 1 > pagesCount) return;
@@ -176,7 +176,7 @@ const Commodity: React.FC<CommodityProps> = (props) => {
           <div className={s.list}>
             {/* <h3>{groupName}  {groupIsEmpty && <span className={s.del} onClick={delGroup}></span>}</h3> */}
             { !props.comIsLoaded && <ProgressBar limit={20} text={'Processing...'} /> }
-            { props.comIsLoaded && !!commodities.length &&
+            { props.comIsLoaded && !!productsWithPaging.length &&
               <Table
                 records={ /*commodities*/ productsWithPaging }
                 callback={ getProductId }
