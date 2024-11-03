@@ -65,7 +65,7 @@ const Commodity: React.FC<CommodityProps> = (props) => {
       alert(`${error.name}\n\r${error.message}`);
       setError(null);
     }
-  }, [ isLoaded, isInit, comIsLoaded, error, setPid, getGroups, getProducts, setError ])
+  }, [ isLoaded, isInit, comIsLoaded, error, pid, setPid, getGroups, getProducts, setError ])
 
   useEffect(() => { // set serching result
     if (isSearching) {
@@ -93,14 +93,14 @@ const Commodity: React.FC<CommodityProps> = (props) => {
     if (className !== 'fa fa-edit') {
       changePid(parent_id);
     } else {
-      props.getProductId(id, true);
+      getProductId(id, true);
     }
     setShowTreeView(false);
   }
 
   function changePid(eId: string) {
     // if (props.pid === eId) return;
-    props.setPid(eId);
+    setPid(eId);
     setPidSearch(eId);
     setCurrentPage(1);
   }
@@ -110,7 +110,7 @@ const Commodity: React.FC<CommodityProps> = (props) => {
   }
 
   function returnBeforeSearch() {
-    props.getProducts(props.pid);
+    getProducts(pid);
     setIsSearching(false);
     setLabelGroup('');
   }
@@ -124,9 +124,9 @@ const Commodity: React.FC<CommodityProps> = (props) => {
 
   const formSearchProps = { searchProducts, returnBeforeSearch, setIsSearching, parent_id: pid }
 
-  if (props.error) {
-    return <div>Ошибка...{props.error.message}</div>;
-  } else if (!props.isLoaded) {
+  if (error) {
+    return <div>Ошибка...{error.message}</div>;
+  } else if (!isLoaded) {
     return <Preloader />
   } else {
     return (
