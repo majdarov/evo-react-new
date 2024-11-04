@@ -46,9 +46,9 @@ const settingsSlice = createSlice({
     // setSchemaAC(state, action) {
     //   state.products.table.schema = action.payload;
     // }
-      setBaseUrl(state, action) {
-        state.documents.baseUrl = action.payload
-      }
+    setBaseUrl(state, action) {
+      state.documents.baseUrl = action.payload
+    }
   }
 })
 

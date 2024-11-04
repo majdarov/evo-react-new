@@ -13,10 +13,9 @@ import { getPaging } from "../common/utillites";
 
 const Commodity: React.FC<CommodityProps> = (props) => {
 
-  const { commodities, schema, isLoaded, isInit, comIsLoaded, error } = props;
+  const { commodities, schema, isLoaded, isInit, comIsLoaded, error, pid } = props;
   const { setPid, getGroups, getProducts, setError, setCommodities, getProductId, deleteProduct } = props;
   const { items, setFilterConfig } = useFilteredData(/* props.commodities */);
-  const [pid, setPidSearch] = useState(props.pid);
   const [isEmpty, setIsEmpty] = useState(false);
   const [labelGroup, setLabelGroup] = useState('');
   const [isSearching, setIsSearching] = useState(false);
@@ -27,31 +26,10 @@ const Commodity: React.FC<CommodityProps> = (props) => {
   const [pagesCount, setPagesCount] = useState(1)
   const [pageSize, setPageSize] = useState(20)
 
-  useEffect(() => {
-    const { pagesCount: pCount, sliceStart, sliceEnd } = getPaging(commodities.length, pageSize, currentPage);
-    setPagesCount(pCount);
-    setProductsWithPaging(commodities.slice(sliceStart, sliceEnd));
-  }, [currentPage, commodities, pageSize, pagesCount])
-
-  const incrementPage = () => {
-    if (currentPage + 1 > pagesCount) return;
-    setCurrentPage(currentPage + 1)
-  }
-
-  const decrementPage = () => {
-    if (currentPage - 1 < 1) return;
-    setCurrentPage(currentPage - 1)
-  }
-
 // TODO history
 //   if (!props.isInit) {
 //     props.history.push('/settings');
 //   }
-
-  useEffect(() => {
-    setPid(pid)
-  }, [ pid, setPid ]);
-
 
   useEffect(() => { //get groups & products
     if (!isLoaded && isInit) {
@@ -73,6 +51,22 @@ const Commodity: React.FC<CommodityProps> = (props) => {
       setLabelGroup(`Результаты поиска - ${items.length} позиций.`);
     }
   }, [ items, setCommodities, isSearching ])
+
+  useEffect(() => {
+    const { pagesCount: pCount, sliceStart, sliceEnd } = getPaging(commodities.length, pageSize, currentPage);
+    setPagesCount(pCount);
+    setProductsWithPaging(commodities.slice(sliceStart, sliceEnd));
+  }, [currentPage, commodities, pageSize, pagesCount])
+
+  const incrementPage = () => {
+    if (currentPage + 1 > pagesCount) return;
+    setCurrentPage(currentPage + 1)
+  }
+
+  const decrementPage = () => {
+    if (currentPage - 1 < 1) return;
+    setCurrentPage(currentPage - 1)
+  }
 
   useEffect(() => {
     if (!commodities.length) setIsEmpty(true);
@@ -101,7 +95,6 @@ const Commodity: React.FC<CommodityProps> = (props) => {
   function changePid(eId: string) {
     // if (props.pid === eId) return;
     setPid(eId);
-    setPidSearch(eId);
     setCurrentPage(1);
   }
 
@@ -153,7 +146,7 @@ const Commodity: React.FC<CommodityProps> = (props) => {
               toggleFormPost={props.toggleFormPost}
               postFormData={props.postFormData}
               setFormError={props.setFormError}
-              pid={props.pid}
+              pid={pid}
               isGroup={props.isGroup}
             />
           </Modal>

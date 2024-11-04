@@ -14,7 +14,7 @@ interface IFormData {
   price: number
   cost_price: number
   quantity: number
-  photos: any[]
+  photos?: any[]
   barcodes: string[]
 }
 
@@ -35,7 +35,7 @@ export interface Group {
 
 export type CommodityState = {
   groups: Group[]
-  commodities: any[] // TODO - define type of Product/commodities
+  commodities: IFormData[] // TODO - define type of Product/commodities
   pid: string
   isLoaded: boolean
   comIsLoaded: boolean

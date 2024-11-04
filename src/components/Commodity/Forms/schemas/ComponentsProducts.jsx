@@ -138,7 +138,7 @@ export const ComponentsProducts = {
                 <div className={view ? s['barcodes'] : `${s['barcodes']} ${s['barcodes-hidden']}`}>
                     <div className={s['view-barcode']}>
                         <ul>
-                            {barcodes.map(b => {
+                            { barcodes.map(b => {
                                 return (
                                     <li key={b} id={b} onClick={delBcClick}>
                                         <div className={s['barcode']}>
@@ -154,7 +154,8 @@ export const ComponentsProducts = {
                                         {props.allow_edit && <span className={s['del-bc']}></span>}
                                     </li>
                                 )
-                            })}
+                             })
+                            }
                         </ul>
                     </div>
                     <input name='barcodes' type="text" defaultValue={props.bc}

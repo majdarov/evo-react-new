@@ -126,12 +126,12 @@ export function validateZeroData(curr: any/* , prev */) {
 }
 
 export function validateRequiredData(body: any, isGroup = false) {
-  let reqData;
+  let requiredData;
 
   if (isGroup) {
-    reqData = ['name'];
+    requiredData = ['name'];
   } else {
-    reqData = [
+    requiredData = [
       'type',
       'name',
       // 'price',
@@ -143,7 +143,7 @@ export function validateRequiredData(body: any, isGroup = false) {
   let missData: string[] = [];
 
   Object.keys(body).forEach((key) => {
-    if (!body[key] && reqData.includes(key)) {
+    if (!body[key] && requiredData.includes(key)) {
       missData.push(key);
     }
   });

@@ -31,8 +31,7 @@ const FormProduct = props => {
   const [attrChoices, setAttrChoices] =
     useState((!!props.formData.attributes_choices && { ...props.formData.attributes_choices }) || []);
   const disabled = !isNewData && !state.allow_edit;
-  const setViewForm = props.setViewForm;
-  const setFormData = props.setFormData;
+  const { setViewForm, setFormData } = props;
 
   const cancelClick = useCallback((ev) => {
     setViewForm(false);
@@ -50,7 +49,7 @@ const FormProduct = props => {
       alert(err.message);
       props.setFormError(null);
     }
-  }, [props, state])
+  }, [props.formError, state.code])
 
   const { attributesP, getAttributes } = useModifications(state.parent_id);
 
@@ -211,7 +210,7 @@ const FormProduct = props => {
       } else {
         body = {
           ...state,
-          attributes_choices: (attrChoices && !!Object.keys(attrChoices).length && attrChoices) || null,
+          attributes_choices: (!!Object.keys(attrChoices).length && attrChoices) || null,
         };
         delete body.createdAt;
         delete body.updatedAt;
