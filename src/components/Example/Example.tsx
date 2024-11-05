@@ -5,8 +5,11 @@ import Tree, { TreeNode } from '../common/Tree';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { DocType, setDocs, setDocsPid } from '../../redux/docsSlice';
 import Table from '../common/Table';
+import { useRouteMatch } from 'react-router-dom';
 
 const Example = () => {
+
+    // let match = useRouteMatch()
 
     const docsSchema = useAppSelector(state => state.settings.documents.table.schema)
     const stateDocs = useAppSelector(state => state.docs.docs)
@@ -80,6 +83,10 @@ const Example = () => {
         <>
             <div className="parent">
                 <div id='1' className="section yellow">
+                {/* <li>{match.url}</li>
+                <li>{match.path}</li>
+                <li>{match.params.id}</li> */}
+
                 <Tree
                     pId='0'
                     data={ docsTree }

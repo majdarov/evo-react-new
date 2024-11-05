@@ -9,7 +9,6 @@ import Game from "../Game/Game";
 import HeaderContainer from "../Header/HeaderContainer";
 import CommodityContainer from "../Commodity";
 import ImpExcel from "../ImpExcel/ImpExcel";
-// import Wrapper from "../Example/Wrapper";
 import IdbTest from "../IdbTest/IdbTest";
 import MainSettings from "../Settings/MainSettings";
 import {
@@ -52,14 +51,14 @@ const App = (props: Props) => {
       <HeaderContainer />
       <div className="app-content">
         <Route exact path="/" />
-        <Route exact path="/settings" component={MainSettings} />
-        <Route exact path="/example" component={Example} />
-        <Route exact path="/docs" component={Docs} />
-        {props.isInit && <Route path="/commodity" component={CommodityContainer} />}
-        <Route path="/game" component={Game} />
-        <Route path="/table" component={ImpExcel} />
-        <Route path="/test" component={IdbTest} />
-        <Route path="/documents" component={Documents} />
+        <Route exact path="/settings" children={<MainSettings />} />
+        <Route exact path="/example" children={<Example />} />
+        <Route exact path="/docs" children={<Docs />} />
+        {props.isInit && <Route path="/commodity" children={<CommodityContainer />} />}
+        <Route path="/game" children={<Game />} />
+        <Route path="/table" children={<ImpExcel />} />
+        <Route path="/test" children={<IdbTest />} />
+        <Route path="/documents" children={<Documents />} />
       </div>
     </div>
   );

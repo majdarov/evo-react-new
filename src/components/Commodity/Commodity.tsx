@@ -10,6 +10,7 @@ import GroupsTree from "../common/GroupsTree";
 import { Modal } from "../common/Modal/Modal";
 import type { CommodityProps } from "./CommodityContainer";
 import { getPaging } from "../common/utillites";
+import { useHistory } from "react-router-dom";
 
 const Commodity: React.FC<CommodityProps> = (props) => {
 
@@ -26,10 +27,11 @@ const Commodity: React.FC<CommodityProps> = (props) => {
   const [pagesCount, setPagesCount] = useState(1)
   const [pageSize, setPageSize] = useState(20)
 
+  let history = useHistory()
 // TODO history
-//   if (!props.isInit) {
-//     props.history.push('/settings');
-//   }
+  if (!props.isInit) {
+    history.replace('/settings');
+  }
 
   useEffect(() => { //get groups & products
     if (!isLoaded && isInit) {
