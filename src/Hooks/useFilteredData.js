@@ -175,6 +175,7 @@ const useFilteredData = (/* inItems */) => {
   const [search, setSearch] = useState([]); // arrSearchRequests
   const [items, setItems] = useState([]);
 
+
   const setFilterConfig = (formData) => {
     setSearch(createSearchRequest(formData));
   };

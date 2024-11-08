@@ -10,55 +10,42 @@ import GroupsTree from "../common/GroupsTree";
 import { Modal } from "../common/Modal/Modal";
 import type { CommodityProps } from "./CommodityContainer";
 import { getPaging } from "../common/utillites";
-import { useHistory } from "react-router-dom";
 
 const Commodity: React.FC<CommodityProps> = (props) => {
 
   const { commodities, schema, isLoaded, isInit, comIsLoaded, error, pid } = props;
   const { setPid, getGroups, getProducts, setError, setCommodities, getProductId, deleteProduct } = props;
   const { items, setFilterConfig } = useFilteredData(/* props.commodities */);
-  const [isEmpty, setIsEmpty] = useState(false);
   const [labelGroup, setLabelGroup] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [showTreeView, setShowTreeView] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsWithPaging, setProductsWithPaging] = useState([] as any[])
-  const [pagesCount, setPagesCount] = useState(1)
   const [pageSize, setPageSize] = useState(20)
 
-  let history = useHistory()
-// TODO history
-  if (!props.isInit) {
-    history.replace('/settings');
+  if (error) {
+    alert(`${error.name}\n\r${error.message}`);
+    setError(null);
+  }
+  if (!isLoaded && isInit) {
+    setPid('0');
+    getGroups();
+  }
+  if (!comIsLoaded && isInit) {
+    getProducts(pid);
   }
 
-  useEffect(() => { //get groups & products
-    if (!isLoaded && isInit) {
-      setPid('0');
-      getGroups();
-    }
-    if (!comIsLoaded && isInit) {
-      getProducts(pid);
-    }
-    if (error) {
-      alert(`${error.name}\n\r${error.message}`);
-      setError(null);
-    }
-  }, [ isLoaded, isInit, comIsLoaded, error, pid, setPid, getGroups, getProducts, setError ])
+  const { pagesCount, sliceStart, sliceEnd } = getPaging(commodities.length, pageSize, currentPage);
+  const productsWithPaging = commodities.slice(sliceStart, sliceEnd);
+
+  let isEmpty = !commodities.length
 
   useEffect(() => { // set serching result
     if (isSearching) {
       setCommodities(items);
       setLabelGroup(`Результаты поиска - ${items.length} позиций.`);
     }
-  }, [ items, setCommodities, isSearching ])
-
-  useEffect(() => {
-    const { pagesCount: pCount, sliceStart, sliceEnd } = getPaging(commodities.length, pageSize, currentPage);
-    setPagesCount(pCount);
-    setProductsWithPaging(commodities.slice(sliceStart, sliceEnd));
-  }, [currentPage, commodities, pageSize, pagesCount])
+  }, [ items, isSearching ])
 
   const incrementPage = () => {
     if (currentPage + 1 > pagesCount) return;
@@ -69,11 +56,6 @@ const Commodity: React.FC<CommodityProps> = (props) => {
     if (currentPage - 1 < 1) return;
     setCurrentPage(currentPage - 1)
   }
-
-  useEffect(() => {
-    if (!commodities.length) setIsEmpty(true);
-    return () => setIsEmpty(false);
-  }, [ commodities ]);
 
   function newData() {
     getProductId(null);
@@ -105,6 +87,7 @@ const Commodity: React.FC<CommodityProps> = (props) => {
   }
 
   function returnBeforeSearch() {
+    setFilterConfig({});
     getProducts(pid);
     setIsSearching(false);
     setLabelGroup('');
@@ -112,7 +95,6 @@ const Commodity: React.FC<CommodityProps> = (props) => {
 
   function selectPageSize(e: React.SyntheticEvent<HTMLSelectElement>) {
     const value = e.currentTarget.value
-    console.log('value:', value)
     const pSize = value ? +value : 20
     setPageSize(pSize);
   }
@@ -169,7 +151,6 @@ const Commodity: React.FC<CommodityProps> = (props) => {
             viewEdit={ true }
           />
           <div className={s.list}>
-            {/* <h3>{groupName}  {groupIsEmpty && <span className={s.del} onClick={delGroup}></span>}</h3> */}
             { !props.comIsLoaded && <ProgressBar limit={20} text={'Processing...'} /> }
             { props.comIsLoaded && !!productsWithPaging.length &&
               <Table

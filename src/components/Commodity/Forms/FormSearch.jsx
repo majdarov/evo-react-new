@@ -79,7 +79,7 @@ const FormSearch = (props) => {
         value = [];
         value = idx === 0 ? [ elemValue ] : [ null, elemValue ];
       } else {
-        value[idx] = elemValue ? elemValue : null;
+        value[idx] = elemValue ?? null;
       }
     }
     setFormData({ ...formData, [name]: value });
