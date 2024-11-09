@@ -1,8 +1,7 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import ComponentsSearch from './schemas/ComponentsSearch';
 import s from './FormSearch.module.css';
-
-// const log = console.log;
+import { useAppSelector } from "../../../redux/hooks";
 
 const initialPeriod = {
   created_at: false,
@@ -15,15 +14,15 @@ const FormSearch = (props) => {
 
   const [view, setView] = useState(false);
   const [formData, setFormData] = useState({});
-  const [pid, setPid] = useState(props.parent_id);
   const [period, setPeriod] = useState(initialPeriod);
   const [name, setName] = useState('');
 
-  const propsSearchProducts = props.searchProducts;
   const setIsSearching = props.setIsSearching;
 
+  const pId = useAppSelector(state => state.commodity.pid)
+
   const searchProducts = useCallback((obj) => {
-    propsSearchProducts(obj)
+    props.searchProducts(obj)
   }, [])
 
   const getObj = useCallback(() => {
@@ -42,8 +41,6 @@ const FormSearch = (props) => {
     if ( !!name.length ) obj.name = name;
     return obj;
   }, [formData, name, period])
-
-  useEffect(() => setPid(props.parent_id), [props.parent_id])
 
   useEffect(() => {
     if ( !!Object.keys(formData).length ) {
@@ -100,7 +97,7 @@ const FormSearch = (props) => {
   function selectParentID(ev) {
     let isCurrentGroup = ev.target.checked;
     if (isCurrentGroup) {
-      setFormData({ ...formData, parent_id: pid || '0' });
+      setFormData({ ...formData, parent_id: pId || '0' });
     }
     searchProducts(getObj());
   }
@@ -147,13 +144,13 @@ const FormSearch = (props) => {
 
   return (
     <div className={s['form-container']}>
-      <form name='form-search' id={s['form-search']} onSubmit={handleSubmit}>
+      <form name='form-search' id={s['form-search']} onSubmit={ handleSubmit }>
         <div className={s.search}>
           <div className={s['form-search-row']}>
             <ComponentsSearch.Button
               label='Очистить фильтр'
               icon='fa fa-times'
-              callback={clearSearch}
+              callback={ clearSearch }
             />
             <div className={s['search-name']}>
               <label htmlFor='name'>Поиск</label>
@@ -162,7 +159,7 @@ const FormSearch = (props) => {
             <div>
               <label>В текущей группе</label>
               <input type="checkbox" name='current-pid' onChange={selectParentID}
-                className={s['current-pid']} id={props.pid} />
+                className={s['current-pid']} id={ pId } />
             </div>
           </div>
           <ComponentsSearch.Button

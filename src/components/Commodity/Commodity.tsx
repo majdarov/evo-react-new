@@ -57,14 +57,6 @@ const Commodity: React.FC<CommodityProps> = (props) => {
     setCurrentPage(currentPage - 1)
   }
 
-  function newData() {
-    getProductId(null);
-  }
-
-  function clickGroups() {
-    setShowTreeView(!showTreeView);
-  }
-
   const callbackTree = (id: string, tagName: string, className: string) => {
     let parent_id = id ? id : '0';
     if (tagName !== 'SPAN' && className !== 'fa fa-edit') return;
@@ -99,7 +91,7 @@ const Commodity: React.FC<CommodityProps> = (props) => {
     setPageSize(pSize);
   }
 
-  const formSearchProps = { searchProducts, returnBeforeSearch, setIsSearching, parent_id: pid }
+  const formSearchProps = { searchProducts, returnBeforeSearch, setIsSearching }
 
   if (error) {
     return <div>Ошибка...{error.message}</div>;
@@ -110,7 +102,7 @@ const Commodity: React.FC<CommodityProps> = (props) => {
       <>
         <div className={s.head}>
           <div className={s.buttons}>
-            <span className={`${s['button-add']} fa`} onClick={newData}>
+            <span className={`${s['button-add']} fa`} onClick={ () => getProductId(null)}>
               + Товар/Группу
             <i className='fa fa-file'></i>
             </span>
@@ -140,7 +132,7 @@ const Commodity: React.FC<CommodityProps> = (props) => {
           <GroupsTree
             groups={ props.groups }
             treeView={ showTreeView }
-            onClick={ clickGroups }
+            onClick={ () => setShowTreeView(!showTreeView)}
             callbackTree={ callbackTree }
             parent_id={ props.pid }
             isEmpty={ isEmpty }
