@@ -82,11 +82,6 @@ const FormSearch = (props) => {
     setFormData({ ...formData, [name]: value });
   }
 
-  function changeName(ev) {
-    let value = ev.target.value;
-    setName(value)
-  }
-
   useEffect(() => {
     if (name.length > 2 && name.slice(0, 3) !== 'rgx') {
       searchProducts(getObj());
@@ -154,12 +149,13 @@ const FormSearch = (props) => {
             />
             <div className={s['search-name']}>
               <label htmlFor='name'>Поиск</label>
-              <input type="text" name='name' id='name' value={ name } onChange={ changeName } />
+              <input type="text" name='name' id='name' value={ name } onChange={ e => setName(e.target.value) } />
             </div>
             <div>
-              <label>В текущей группе</label>
-              <input type="checkbox" name='current-pid' onChange={selectParentID}
+              <label>В текущей группе
+                <input type="checkbox" name='current-pid' onChange={selectParentID}
                 className={s['current-pid']} id={ pId } />
+              </label>
             </div>
           </div>
           <ComponentsSearch.Button
@@ -180,7 +176,7 @@ const FormSearch = (props) => {
               head='Дата создания'
               name='created_at'
               type='date'
-              viewPeriod={period['created_at']}
+              viewPeriod={period.created_at}
               changeFormElement={changeFormElement}
               changePeriod={changePeriod}
             />
@@ -188,7 +184,7 @@ const FormSearch = (props) => {
               head='Дата изменения'
               name='updated_at'
               type='date'
-              viewPeriod={period['updated_at']}
+              viewPeriod={period.updated_at}
               changeFormElement={changeFormElement}
               changePeriod={changePeriod}
             />
@@ -198,7 +194,7 @@ const FormSearch = (props) => {
               head='Цена'
               name='price'
               type='number'
-              viewPeriod={period['price']}
+              viewPeriod={period.price}
               changeFormElement={changeFormElement}
               changePeriod={changePeriod}
             />
@@ -206,7 +202,7 @@ const FormSearch = (props) => {
               head='Цена по приходу'
               name='cost_price'
               type='number'
-              viewPeriod={period['cost_price']}
+              viewPeriod={period.cost_price}
               changeFormElement={changeFormElement}
               changePeriod={changePeriod}
             />
