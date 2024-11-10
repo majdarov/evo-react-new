@@ -45,7 +45,7 @@ const Commodity: React.FC<CommodityProps> = (props) => {
       setCommodities(items);
       setLabelGroup(`Результаты поиска - ${items.length} позиций.`);
     }
-  }, [ items, isSearching ])
+  }, [items, isSearching, setCommodities])
 
   const incrementPage = () => {
     if (currentPage + 1 > pagesCount) return;

@@ -23,7 +23,7 @@ const FormSearch = (props) => {
 
   const searchProducts = useCallback((obj) => {
     props.searchProducts(obj)
-  }, [])
+  }, [props])
 
   const getObj = useCallback(() => {
     let isCurrentGroup = document.forms['form-search']['current-pid'];
