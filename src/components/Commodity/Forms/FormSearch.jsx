@@ -17,13 +17,9 @@ const FormSearch = (props) => {
   const [period, setPeriod] = useState(initialPeriod);
   const [name, setName] = useState('');
 
-  const setIsSearching = props.setIsSearching;
-
   const pId = useAppSelector(state => state.commodity.pid)
 
-  const searchProducts = useCallback((obj) => {
-    props.searchProducts(obj)
-  }, [props])
+  const { setFilterConfig, returnBeforeSearch, isSearching, setIsSearching } = props
 
   const getObj = useCallback(() => {
     let isCurrentGroup = document.forms['form-search']['current-pid'];
@@ -38,21 +34,17 @@ const FormSearch = (props) => {
       if (period[key] && obj[key].length === 1) obj[key][1] = null;
     })
 
-    if ( !!name.length ) obj.name = name;
+    if (!!name.length) obj.name = name;
     return obj;
   }, [formData, name, period])
 
-  useEffect(() => {
-    if ( !!Object.keys(formData).length ) {
-      setIsSearching(true);
-    } else {
-      setIsSearching(false);
-    }
-  }, [formData, setIsSearching])
+  if (!!Object.keys(formData).length && !isSearching) {
+    setIsSearching(true);
+  }
 
   function changeFormElement(ev) {
     let elem = ev.target;
-    let [ name, idxName ] = elem.name.split('-');
+    let [name, idxName] = elem.name.split('-');
     let value = formData[name];
 
     if (idxName) {
@@ -72,9 +64,9 @@ const FormSearch = (props) => {
       let elemValue = elem.value;
       if (ev.target.type === 'date') elemValue = Date.parse(elemValue);
       if (ev.target.type === 'number') elemValue = Number(elemValue);
-      if ( !value ) {
+      if (!value) {
         value = [];
-        value = idx === 0 ? [ elemValue ] : [ null, elemValue ];
+        value = idx === 0 ? [elemValue] : [null, elemValue];
       } else {
         value[idx] = elemValue ?? null;
       }
@@ -84,24 +76,24 @@ const FormSearch = (props) => {
 
   useEffect(() => {
     if (name.length > 2 && name.slice(0, 3) !== 'rgx') {
-      searchProducts(getObj());
-      setIsSearching(true);
+      setFilterConfig(getObj());
+      if (!isSearching) setIsSearching(true);
     }
-  }, [ getObj, name, setIsSearching, searchProducts ])
+  }, [getObj, name, setIsSearching, setFilterConfig, isSearching])
 
   function selectParentID(ev) {
     let isCurrentGroup = ev.target.checked;
     if (isCurrentGroup) {
       setFormData({ ...formData, parent_id: pId || '0' });
     }
-    searchProducts(getObj());
+    setFilterConfig(getObj());
   }
 
   function handleSubmit(ev) {
     ev.preventDefault();
     ev.stopPropagation();
-    searchProducts(getObj());
-    setIsSearching(true);
+    setFilterConfig(getObj());
+    if (!isSearching) setIsSearching(true);
   };
 
   function clearSearch(ev) {
@@ -123,7 +115,7 @@ const FormSearch = (props) => {
     setName('');
     setPeriod(initialPeriod);
     setView(false);
-    props.returnBeforeSearch();
+    returnBeforeSearch();
   }
 
   function changePeriod(ev) {
@@ -139,22 +131,22 @@ const FormSearch = (props) => {
 
   return (
     <div className={s['form-container']}>
-      <form name='form-search' id={s['form-search']} onSubmit={ handleSubmit }>
+      <form name='form-search' id={s['form-search']} onSubmit={handleSubmit}>
         <div className={s.search}>
           <div className={s['form-search-row']}>
             <ComponentsSearch.Button
               label='Очистить фильтр'
               icon='fa fa-times'
-              callback={ clearSearch }
+              callback={clearSearch}
             />
             <div className={s['search-name']}>
               <label htmlFor='name'>Поиск</label>
-              <input type="text" name='name' id='name' value={ name } onChange={ e => setName(e.target.value) } />
+              <input type="text" name='name' id='name' value={name} onChange={e => setName(e.target.value)} />
             </div>
             <div>
               <label>В текущей группе
                 <input type="checkbox" name='current-pid' onChange={selectParentID}
-                className={s['current-pid']} id={ pId } />
+                  className={s['current-pid']} id={pId} />
               </label>
             </div>
           </div>

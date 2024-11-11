@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { apiIDB } from '../api/apiIDB';
 
 // const log = console.log;
@@ -176,9 +176,9 @@ const useFilteredData = (/* inItems */) => {
   const [items, setItems] = useState([]);
 
 
-  const setFilterConfig = (formData) => {
+  const setFilterConfig = useCallback((formData) => {
     setSearch(createSearchRequest(formData));
-  };
+  }, [setSearch])
 
   useEffect(() => {
     // console.log('Render from useFilteredData!')
@@ -189,7 +189,7 @@ const useFilteredData = (/* inItems */) => {
       });
     }
     return () => setItems([]);
-  }, [search, filterProd]);
+  }, [search, setItems]);
 
   return { items, setFilterConfig, search };
 };

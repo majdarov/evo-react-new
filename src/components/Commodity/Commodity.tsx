@@ -74,10 +74,6 @@ const Commodity: React.FC<CommodityProps> = (props) => {
     setCurrentPage(1);
   }
 
-  const searchProducts = (formData: any) => {
-    setFilterConfig(formData);
-  }
-
   function returnBeforeSearch() {
     setFilterConfig({});
     getProducts(pid);
@@ -91,7 +87,7 @@ const Commodity: React.FC<CommodityProps> = (props) => {
     setPageSize(pSize);
   }
 
-  const formSearchProps = { searchProducts, returnBeforeSearch, setIsSearching }
+  const formSearchProps = { setFilterConfig, returnBeforeSearch, isSearching, setIsSearching }
 
   if (error) {
     return <div>Ошибка...{error.message}</div>;
@@ -102,14 +98,14 @@ const Commodity: React.FC<CommodityProps> = (props) => {
       <>
         <div className={s.head}>
           <div className={s.buttons}>
-            <span className={`${s['button-add']} fa`} onClick={ () => getProductId(null)}>
+            <span className={`${s['button-add']} fa`} onClick={() => getProductId(null)}>
               + Товар/Группу
-            <i className='fa fa-file'></i>
+              <i className='fa fa-file'></i>
             </span>
           </div>
           <FormSearch {...formSearchProps} />
         </div>
-        { props.viewForm &&
+        {props.viewForm &&
           // <FormModalWrapper>
           <Modal>
             <FormProduct
@@ -128,50 +124,50 @@ const Commodity: React.FC<CommodityProps> = (props) => {
           </Modal>
           // </FormModalWrapper>
         }
-        <div className={ s.container }>
+        <div className={s.container}>
           <GroupsTree
-            groups={ props.groups }
-            treeView={ showTreeView }
-            onClick={ () => setShowTreeView(!showTreeView)}
-            callbackTree={ callbackTree }
-            parent_id={ props.pid }
-            isEmpty={ isEmpty }
-            deleteProduct={ props.deleteProduct }
-            getProductId={ props.getProductId }
-            label={ labelGroup }
-            countP={ commodities.length }
-            viewEdit={ true }
+            groups={props.groups}
+            treeView={showTreeView}
+            onClick={() => setShowTreeView(!showTreeView)}
+            callbackTree={callbackTree}
+            parent_id={props.pid}
+            isEmpty={isEmpty}
+            deleteProduct={props.deleteProduct}
+            getProductId={props.getProductId}
+            label={labelGroup}
+            countP={commodities.length}
+            viewEdit={true}
           />
           <div className={s.list}>
-            { !props.comIsLoaded && <ProgressBar limit={20} text={'Processing...'} /> }
-            { props.comIsLoaded && !!productsWithPaging.length &&
+            {!props.comIsLoaded && <ProgressBar limit={20} text={'Processing...'} />}
+            {props.comIsLoaded && !!productsWithPaging.length &&
               <Table
-                records={ /*commodities*/ productsWithPaging }
-                callback={ getProductId }
-                deleteRecord={ deleteProduct }
-                schema={ schema }
-              /> }
+                records={ /*commodities*/ productsWithPaging}
+                callback={getProductId}
+                deleteRecord={deleteProduct}
+                schema={schema}
+              />}
           </div>
         </div>
         <div>
           <select name="page-size" id="page-size" onChange={selectPageSize}>
-              <option value="20">20</option>
-              <option value="50">50</option>
-              <option value="100">100</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
           </select>
-          { currentPage > 1 &&
-            <div className={s.buttons} style={{display: "inline-block", margin: 5}}>
+          {currentPage > 1 &&
+            <div className={s.buttons} style={{ display: "inline-block", margin: 5 }}>
               <span className={`${s['button-add']} fa`} onClick={decrementPage}>
                 Назад
-              <i className='fa fa-file'></i>
+                <i className='fa fa-file'></i>
               </span>
             </div>
           }
-          { currentPage < pagesCount &&
-            <div className={s.buttons} style={{display: "inline-block", margin: 5}}>
+          {currentPage < pagesCount &&
+            <div className={s.buttons} style={{ display: "inline-block", margin: 5 }}>
               <span className={`${s['button-add']} fa`} onClick={incrementPage}>
                 Вперед
-              <i className='fa fa-file'></i>
+                <i className='fa fa-file'></i>
               </span>
             </div>
           }
