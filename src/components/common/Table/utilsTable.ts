@@ -17,7 +17,7 @@ export function clickCell(ev: React.MouseEvent<HTMLElement, MouseEvent>) {
 export function clickTable(
   ev: React.MouseEvent<HTMLElement, MouseEvent>,
   callback: (row: string) => void | null,
-  delRowCallback: (id: string, path: string) => void | null
+  delRowCallback: (id: string, path: string) => void | null,
 ) {
   let elem = ev.target as HTMLElement;
   let result = clickCell(ev);
@@ -33,6 +33,7 @@ export function clickTable(
     if (isRealyDelete) {
       let id = result.row;
       let res = delRowCallback(id, 'product');
+      console.log(res);
       alert(`Product id: ${res}\n\rDELETED!`);
     } else {
       alert('CANCEL DELETED!');
@@ -44,13 +45,10 @@ export function clickTable(
   } else {
     alert(JSON.stringify(result, null, 2));
   }
-
 }
 
-
 export function getMapSchema(schema: schemaTableType) {
-
-  let mapSchema: [ string, string ][] = [];
+  let mapSchema: [string, string][] = [];
   Object.keys(schema).forEach((key) => {
     let lbl;
     if (!!schema[key][1]) {
@@ -59,5 +57,4 @@ export function getMapSchema(schema: schemaTableType) {
     }
   });
   return mapSchema;
-
 }

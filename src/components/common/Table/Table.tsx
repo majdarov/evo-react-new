@@ -2,16 +2,24 @@ import React, { useMemo } from 'react';
 import useSortableData from '../../../Hooks';
 import s from './Table.module.css'
 import { clickTable, getMapSchema } from './utilsTable';
+import { schemaTableType } from '../../../redux/settingsSlice';
 
-export default function Table({ records, schema, callback, deleteRecord }: React.PropsWithoutRef<any>) {
+interface Props {
+  records: Record<string, any>[];
+  schema: schemaTableType;
+  callback: (row: string) => void | null;
+  deleteRecord: (id: string, path: string) => any | null;
+}
+
+export default function Table({ records, schema, callback, deleteRecord }: React.PropsWithoutRef<Props>) {
 
   const { items, requestSort, sortConfig } = useSortableData(records);
 
   if (!items.length) return <p>Empty Group!</p>
 
-  schema = useMemo(() => getMapSchema(schema), [ schema ]);
+  const schemaOut = useMemo(() => getMapSchema(schema), [schema]) as [string, string][];
 
-  const headers = schema.map((item: [ string, string ]) => {
+  const headers = schemaOut.map((item: [string, string]) => {
     return item[1];
   });
 
@@ -38,8 +46,8 @@ export default function Table({ records, schema, callback, deleteRecord }: React
                 if (item === 'uuid' || item === 'id' || item === '_id') return null;
                 return <th
                   key={item}
-                  onClick={() => requestSort(schema[idx][0])}
-                >{item}<i className={getClassName(schema[idx][0])}></i></th>
+                  onClick={() => requestSort(schemaOut[idx][0])}
+                >{item}<i className={getClassName(schemaOut[idx][0])}></i></th>
               })
             }
           </tr>
@@ -47,11 +55,11 @@ export default function Table({ records, schema, callback, deleteRecord }: React
         <tbody>
           {items.map(record => (
             <tr key={record.uuid || record.id || record._id} id={record.uuid || record.id || record._id}>
-              { schema.map((item: [ string, string ]) => {
+              {schemaOut.map((item: [string, string]) => {
                 if (item[0] === 'uuid' || item[0] === 'id' || item[0] === '_id') return null;
                 return <td key={`${item[0]}_${record.id || record.uuid || record._id}`} id={item[0]}>{record[item[0]]}</td>
               })}
-              <td key={`del_${record.id || record.uuid || record._id }`}><span className={s.del}></span></td>
+              <td key={`del_${record.id || record.uuid || record._id}`}><span className={s.del}></span></td>
             </tr>
           ))}
         </tbody>

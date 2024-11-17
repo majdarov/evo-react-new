@@ -10,6 +10,7 @@ import GroupsTree from "../common/GroupsTree";
 import { Modal } from "../common/Modal/Modal";
 import type { CommodityProps } from "./CommodityContainer";
 import { getPaging } from "../common/utillites";
+import { useAppStore } from "../../redux/hooks";
 
 const Commodity: React.FC<CommodityProps> = (props) => {
 
@@ -38,15 +39,18 @@ const Commodity: React.FC<CommodityProps> = (props) => {
   const { pagesCount, sliceStart, sliceEnd } = getPaging(commodities.length, pageSize, currentPage);
   const productsWithPaging = commodities.slice(sliceStart, sliceEnd);
 
-  let isEmpty = !commodities.length
+  const childGroupsLenght = useAppStore().getState().commodity.groups.filter(g => g.pid === pid).length;
+  let isEmpty = !commodities.length && !childGroupsLenght;
 
-  useEffect(() => { // set serching result
+  useEffect(() => {
+    // set serching result
     if (isSearching) {
       setCommodities(items);
       setLabelGroup(`Результаты поиска - ${items.length} позиций.`);
-      if (currentPage > pagesCount) setCurrentPage(1)
+      if (currentPage > pagesCount) setCurrentPage(1);
     }
-  }, [items, isSearching, setCommodities, currentPage, pagesCount])
+  }, [items, isSearching, setCommodities, currentPage, pagesCount]);
+
 
   const incrementPage = () => {
     if (currentPage + 1 > pagesCount) return;
@@ -59,15 +63,20 @@ const Commodity: React.FC<CommodityProps> = (props) => {
   }
 
   const callbackTree = (id: string, tagName: string, className: string) => {
-    let parent_id = id ? id : '0';
-    if (tagName !== 'SPAN' && className !== 'fa fa-edit') return;
-    if (className !== 'fa fa-edit') {
-      changePid(parent_id);
+    const isSpan = tagName === 'SPAN';
+    const isEditIcon = className === 'fa fa-edit';
+
+    if (!isSpan && !isEditIcon) return;
+
+    if (!isEditIcon) {
+      changePid(id || '0');
     } else {
       getProductId(id, true);
     }
+
     setShowTreeView(false);
-  }
+  };
+
 
   function changePid(eId: string) {
     // if (props.pid === eId) return;

@@ -354,7 +354,7 @@ const FormProduct = props => {
               </div>
               <div className={s['uuid']}>
                 <label htmlFor='uuid'>ID:</label>
-                <input name='uuid' value={state.id || ''} disabled={!isNewData} onChange={handleChange} />
+                <input name='uuid' id='uuid' value={state.id || ''} disabled={!isNewData} onChange={handleChange} />
               </div>
               {
                 !isNewData &&
