@@ -17,7 +17,8 @@ export default function Table({ records, schema, callback, deleteRecord }: React
 
   if (!items.length) return <p>Empty Group!</p>
 
-  const schemaOut = useMemo(() => getMapSchema(schema), [schema]) as [string, string][];
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const schemaOut = useMemo(() => getMapSchema(schema), [schema]);
 
   const headers = schemaOut.map((item: [string, string]) => {
     return item[1];
@@ -41,6 +42,7 @@ export default function Table({ records, schema, callback, deleteRecord }: React
       <table>
         <thead>
           <tr>
+            <th key='chk' id='chk' /* onClick={} */><input type='checkbox' /></th>
             {
               headers.map((item: string, idx: number) => {
                 if (item === 'uuid' || item === 'id' || item === '_id') return null;
@@ -55,6 +57,12 @@ export default function Table({ records, schema, callback, deleteRecord }: React
         <tbody>
           {items.map(record => (
             <tr key={record.uuid || record.id || record._id} id={record.uuid || record.id || record._id}>
+              <td
+                key={`chk_${record.id || record.uuid || record._id}`}
+                id={`chk_${record.id || record.uuid || record._id}`}
+              >
+                <input type='checkbox' />
+              </td>
               {schemaOut.map((item: [string, string]) => {
                 if (item[0] === 'uuid' || item[0] === 'id' || item[0] === '_id') return null;
                 return <td key={`${item[0]}_${record.id || record.uuid || record._id}`} id={item[0]}>{record[item[0]]}</td>

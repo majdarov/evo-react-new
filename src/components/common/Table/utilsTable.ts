@@ -1,10 +1,11 @@
-import { useAppSelector } from '../../../redux/hooks';
 import { schemaTableType } from '../../../redux/settingsSlice';
 import s from './Table.module.css';
 
 export function clickCell(ev: React.MouseEvent<HTMLElement, MouseEvent>) {
   let elem: HTMLElement = ev.target as HTMLElement;
+  if (elem.tagName === 'INPUT') return;
   if (elem.tagName === 'TD' || elem.closest('td')) {
+    if (elem.id.indexOf('chk') !== -1) return; // checkboxes
     let row = elem.closest('tr')!.id;
     let column = elem.getAttribute('name');
     let cell = elem.innerText;
