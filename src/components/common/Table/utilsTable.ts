@@ -21,6 +21,12 @@ export function clickTable(
   delRowCallback: (id: string, path: string) => void | null,
 ) {
   let elem = ev.target as HTMLElement;
+  // console.log(elem);
+  if (elem.id === 'chkAll') {
+    let el = elem as HTMLInputElement;
+    let checked = el.checked as boolean;
+    toggleCheckAll(checked);
+  }
   let result = clickCell(ev);
   if (!result) return;
   if (elem.tagName === 'SPAN') {
@@ -58,4 +64,37 @@ export function getMapSchema(schema: schemaTableType) {
     }
   });
   return mapSchema;
+}
+
+function getRowsFromTable() {
+  const table = document.getElementById('table');
+  if (!table) return;
+  const rows = table.getElementsByTagName('tr');
+  return rows;
+}
+
+// handler checked records
+export function getCheckedRecords() {
+  const checked = [];
+  const rows = getRowsFromTable();
+  if (!rows) return;
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i];
+    if (!row.id) continue;
+    const chk = row.getElementsByTagName('input')[0];
+    if (chk.checked) {
+      checked.push(row.id);
+    }
+  }
+  return checked;
+}
+
+export function toggleCheckAll(checked: boolean) {
+  const rows = getRowsFromTable();
+  if (!rows) return;
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i];
+    const chk = row.getElementsByTagName('input')[0];
+    chk.checked = checked;
+  }
 }

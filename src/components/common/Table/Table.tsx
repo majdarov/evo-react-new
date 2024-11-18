@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import useSortableData from '../../../Hooks';
 import s from './Table.module.css'
-import { clickTable, getMapSchema } from './utilsTable';
+import { clickTable, getMapSchema, getCheckedRecords } from './utilsTable';
 import { schemaTableType } from '../../../redux/settingsSlice';
 
 interface Props {
@@ -15,10 +15,12 @@ export default function Table({ records, schema, callback, deleteRecord }: React
 
   const { items, requestSort, sortConfig } = useSortableData(records);
 
+  const [checkedRecords, setCheckedRecords] = React.useState<string[]>([])
+
+  const schemaOut = useMemo(() => getMapSchema(schema), [schema]);
+
   if (!items.length) return <p>Empty Group!</p>
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const schemaOut = useMemo(() => getMapSchema(schema), [schema]);
 
   const headers = schemaOut.map((item: [string, string]) => {
     return item[1];
@@ -38,11 +40,14 @@ export default function Table({ records, schema, callback, deleteRecord }: React
   }
 
   return (
-    <div onClick={ev => clickTable(ev, callback, deleteRecord)}>
-      <table>
+    <div onClick={ev => {
+      clickTable(ev, callback, deleteRecord);
+      setCheckedRecords(getCheckedRecords() || []);
+    }}>
+      <table id='table'>
         <thead>
           <tr>
-            <th key='chk' id='chk' /* onClick={} */><input type='checkbox' /></th>
+            <th key='chk' id='chk'><input id='chkAll' type='checkbox' /></th>
             {
               headers.map((item: string, idx: number) => {
                 if (item === 'uuid' || item === 'id' || item === '_id') return null;
