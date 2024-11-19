@@ -21,7 +21,6 @@ export function clickTable(
   delRowCallback: (id: string, path: string) => void | null,
 ) {
   let elem = ev.target as HTMLElement;
-  // console.log(elem);
   if (elem.id === 'chkAll') {
     let el = elem as HTMLInputElement;
     let checked = el.checked as boolean;
@@ -77,6 +76,7 @@ function getRowsFromTable() {
 export function getCheckedRecords() {
   const checked = [];
   const rows = getRowsFromTable();
+  const chkAll = document.getElementById('chkAll') as HTMLInputElement;
   if (!rows) return;
   for (let i = 0; i < rows.length; i++) {
     const row = rows[i];
@@ -85,6 +85,11 @@ export function getCheckedRecords() {
     if (chk.checked) {
       checked.push(row.id);
     }
+  }
+  if (checked.length < rows.length - 1) {
+    chkAll.checked = false;
+  } else {
+    chkAll.checked = true;
   }
   return checked;
 }

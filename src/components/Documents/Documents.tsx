@@ -98,7 +98,7 @@ const Documents = () => {
             alert(id);
             return;
         }
-        let doc: Record<string, any> = {id: 'no doc'};
+        let doc: Record<string, any> = { id: 'no doc' };
         if (docType === 'employees') {
             doc = await apiEvotor.getEmployees(id);
             alert(String(doc.name).toUpperCase() + ' ' + String(doc.last_name).toUpperCase())
@@ -130,56 +130,56 @@ const Documents = () => {
 
     return (
         <>
-            <h1>Documents { docType }</h1>
+            <h1>Documents {docType}</h1>
             <div>
                 <label htmlFor="dateStart">Date start:</label>
                 <input type="date" name="dateStart"
                     id="dateStart"
-                    value={ dateToString(period.dateStart) }
-                    min={ period.dateMin }
-                    max={ dateToString() }
-                    onChange={ changeDate }
+                    value={dateToString(period.dateStart)}
+                    min={period.dateMin}
+                    max={dateToString()}
+                    onChange={changeDate}
                 />
                 <label htmlFor="dateEnd">Date end:</label>
                 <input type="date" name="dateEnd"
                     id="dateEnd"
-                    value={ dateToString(period.dateEnd) }
-                    min={ period.dateMin }
-                    max={ dateToString() }
-                    onChange={ changeDate }
+                    value={dateToString(period.dateEnd)}
+                    min={period.dateMin}
+                    max={dateToString()}
+                    onChange={changeDate}
                 />
             </div>
             <label>
                 DocType
-            <select name="type_docs" id="typeDocs" onChange={ changeType } defaultValue={docType[0]}>
+                <select name="type_docs" id="typeDocs" onChange={changeType} defaultValue={docType[0]}>
                     {
                         typesOfDocs.map(item => {
-                            return <option key={ item[0] } value={ item[0] }>{ item[1] }</option>
+                            return <option key={item[0]} value={item[0]}>{item[1]}</option>
                         })
                     }
                 </select>
             </label>
-            <button onClick={butGetDocs} disabled={ isLoading }>get Documents</button>
-            { isLoading && <ProgressBar limit={20} delay={500} text={'Loading '} />}
-            { !docs.length &&
+            <button onClick={butGetDocs} disabled={isLoading}>get Documents</button>
+            {isLoading && <ProgressBar limit={20} delay={500} text={'Loading '} />}
+            {!docs.length &&
                 <div>
                     <h2>No docs</h2>
                 </div>
             }
-            { !!docs.length &&
+            {!!docs.length &&
                 (
                     ((docType === 'invoice') &&
-                    <Table
-                        records={ docs }
-                        callback={ null }
-                        deleteRecord={ null }
-                        schema={ docsSchema }
-                    />) ||
+                        <Table
+                            records={docs}
+                            callbackTree={null}
+                            deleteRecord={null}
+                            schema={docsSchema}
+                        />) ||
                     <ul>
                         {
                             docs.map((item, idx) => {
-                                if (docType === 'SELL' ) return <CardSell key={ item.id } {...item} />
-                                return (idx < 20) && <li key={ item.id || item._id } id={ item.id || item._id } onClick={ docClick } style={{ margin: '0.5rem' }}>
+                                if (docType === 'SELL') return <CardSell key={item.id} {...item} />
+                                return (idx < 20) && <li key={item.id || item._id} id={item.id || item._id} onClick={docClick} style={{ margin: '0.5rem' }}>
                                     {!(docType === 'invoice') && <span style={styleSpan}>{item.id}</span>}
 
                                 </li>

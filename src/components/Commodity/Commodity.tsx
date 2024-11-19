@@ -153,9 +153,14 @@ const Commodity: React.FC<CommodityProps> = (props) => {
             {props.comIsLoaded && !!productsWithPaging.length &&
               <Table
                 records={ /*commodities*/ productsWithPaging}
-                callback={getProductId}
+                callbackClick={getProductId}
                 deleteRecord={deleteProduct}
                 schema={schema}
+              // advMenu={[{
+              //   lable: 'Test',
+              //   className: 'fa fa-bomb',
+              //   onClick: () => alert('test')
+              // }]}
               />}
           </div>
         </div>

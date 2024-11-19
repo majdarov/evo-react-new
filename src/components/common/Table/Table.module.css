@@ -20,6 +20,10 @@ td:hover {
   border: green 2px solid;
 }
 
+.chk_menu {
+  background-color: lightcyan;
+}
+
 .del::before {
   content: '\f2ed';
   font-weight: 900;

@@ -1,21 +1,52 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useReducer } from 'react';
 import useSortableData from '../../../Hooks';
 import s from './Table.module.css'
 import { clickTable, getMapSchema, getCheckedRecords } from './utilsTable';
 import { schemaTableType } from '../../../redux/settingsSlice';
 
-interface Props {
+interface IProps {
   records: Record<string, any>[];
   schema: schemaTableType;
-  callback: (row: string) => void | null;
+  callbackClick: (row: string) => void | null;
   deleteRecord: (id: string, path: string) => any | null;
+  advMenu?: TAdvMenuElem[] | null;// TODO:add advanse menu
+}
+type TAdvMenuElem = {
+  lable: string;
+  className: string;
+  onClick: () => void | null;
 }
 
-export default function Table({ records, schema, callback, deleteRecord }: React.PropsWithoutRef<Props>) {
+const initState = [{
+  lable: 'Change Group',
+  className: 'fa fa-list',
+  onClick: () => { }
+}] as TAdvMenuElem[]
+
+function reducer(state = initState, action: { type: string; payload?: any; }) {
+  if (action.type === 'setMenu') {
+    return action.payload
+  } else {
+    state[0].onClick = action.payload
+  }
+  return state;
+}
+
+export default function Table({ records, schema, callbackClick, deleteRecord, advMenu }: React.PropsWithoutRef<IProps>) {
 
   const { items, requestSort, sortConfig } = useSortableData(records);
 
   const [checkedRecords, setCheckedRecords] = React.useState<string[]>([])
+
+  const [menu, dispatch] = useReducer(reducer, initState);
+
+  useEffect(() => {
+    if (advMenu?.length) {
+      dispatch({ type: 'setMenu', payload: advMenu })
+    } else {
+      dispatch({ type: 'resetMenu', payload: () => alert(`Change Group for ${getCheckedRecords()?.length || 0} items.`) })
+    }
+  }, [advMenu, dispatch])
 
   const schemaOut = useMemo(() => getMapSchema(schema), [schema]);
 
@@ -41,9 +72,16 @@ export default function Table({ records, schema, callback, deleteRecord }: React
 
   return (
     <div onClick={ev => {
-      clickTable(ev, callback, deleteRecord);
+      clickTable(ev, callbackClick, deleteRecord);
       setCheckedRecords(getCheckedRecords() || []);
     }}>
+      {!!checkedRecords.length && !!menu?.length &&
+        <div className={s['chk_menu']}>
+          {menu.map((item: TAdvMenuElem, idx: number) => {
+            return <button key={idx} onClick={item.onClick}><i className={item.className} />{item.lable}</button>
+          })}
+        </div>
+      }
       <table id='table'>
         <thead>
           <tr>

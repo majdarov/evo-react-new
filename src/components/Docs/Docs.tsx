@@ -17,8 +17,8 @@ const Docs = () => {
     const [filterDocs, setFilterDocs] = useState([] as any[])
     const baseUrl = useAppSelector(state => state.settings.documents.baseUrl)
     const dispatch = useAppDispatch();
-    const [ rootLevel, setRootLevevl] = useState<'seller' | 'docDate'>('seller')
-    const [ rootLabel, setRootLabel ] = useState('')
+    const [rootLevel, setRootLevevl] = useState<'seller' | 'docDate'>('seller')
+    const [rootLabel, setRootLabel] = useState('')
 
     const getDocs = async () => {
         return await apiBack.getDocs(baseUrl)
@@ -29,22 +29,23 @@ const Docs = () => {
     })
 
     useEffect(() => {
-        getDocs().then( res => {
+        getDocs().then(res => {
             let _docs = res.items.map((d: DocType) => {
                 let date = new Date(d.docDate)
                 date.setHours(0, 0, 0)
-                return {...d, docDate: date.getTime()}
+                return { ...d, docDate: date.getTime() }
             })
-            dispatch(setDocs(_docs))}
+            dispatch(setDocs(_docs))
+        }
         )
     }, [])
 
     useEffect(() => {
         if (docsPid === '0') {
-            setFilterDocs(stateDocs.map(d => ({...d, docDate: new Date(d.docDate).toLocaleDateString()})))
+            setFilterDocs(stateDocs.map(d => ({ ...d, docDate: new Date(d.docDate).toLocaleDateString() })))
         } else {
             const _fDocs = stateDocs.filter(d => getFilterDocs(rootLevel, d, docsPid))
-            setFilterDocs(_fDocs.map(d => ({...d, docDate: new Date(d.docDate).toLocaleDateString()})))
+            setFilterDocs(_fDocs.map(d => ({ ...d, docDate: new Date(d.docDate).toLocaleDateString() })))
         }
     }, [docsPid])
 
@@ -59,28 +60,28 @@ const Docs = () => {
         <div className={s.parent}>
             <div className={s.docnumber}>
                 <button
-                className='fa fa-search'
-                onClick={() => setRootLevevl(rootLevel === 'seller' ? 'docDate' : 'seller' )}
-                style={{margin: 0.5, padding: 5, display: 'inline-flex'}}
-                >{ rootLevel === 'seller' ? 'setDates' : 'setSellers' }</button>
+                    className='fa fa-search'
+                    onClick={() => setRootLevevl(rootLevel === 'seller' ? 'docDate' : 'seller')}
+                    style={{ margin: 0.5, padding: 5, display: 'inline-flex' }}
+                >{rootLevel === 'seller' ? 'setDates' : 'setSellers'}</button>
 
                 <Tree
                     pId='0'
-                    data={ docsTree }
-                    rootLabel={ rootLabel }
+                    data={docsTree}
+                    rootLabel={rootLabel}
                     treeLabel=''
-                    callback={ callbackTree }
+                    callback={callbackTree}
                     viewEdit={false}
                     key='docs_tree'
                 />
             </div>
             <div className={s.docdetail}>
-                { !!filterDocs.length &&
+                {!!filterDocs.length &&
                     <Table
-                        records={ filterDocs }
-                        callback={ null }
-                        deleteRecord={ null }
-                        schema={ docsSchema }
+                        records={filterDocs}
+                        callbackTree={null}
+                        deleteRecord={null}
+                        schema={docsSchema}
                     />
                 }
             </div>

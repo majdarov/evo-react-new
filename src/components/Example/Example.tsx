@@ -22,7 +22,7 @@ const Example = () => {
         let _docs = getDocs.items.map(d => {
             let date = new Date(d.docDate)
             date.setHours(0, 0, 0)
-            return {...d, docDate: date.getTime()}
+            return { ...d, docDate: date.getTime() }
         })
         dispatch(setDocs(_docs))
     }, [])
@@ -44,7 +44,7 @@ const Example = () => {
 
 
     // let sellers: {sellerId: string, dates: number[]}[] = []
-    let dates: {timestamp: number, sellers: string[]}[] = []
+    let dates: { timestamp: number, sellers: string[] }[] = []
     let docsTree: TreeNode[] = []
 
     stateDocs.forEach((d) => {
@@ -77,34 +77,34 @@ const Example = () => {
 
     const callbackTree = (id: string, tagName: string, className: string) => {
         dispatch(setDocsPid(id))
-      }
+    }
 
     return (
         <>
             <div className="parent">
                 <div id='1' className="section yellow">
-                {/* <li>{match.url}</li>
+                    {/* <li>{match.url}</li>
                 <li>{match.path}</li>
                 <li>{match.params.id}</li> */}
 
-                <Tree
-                    pId='0'
-                    data={ docsTree }
-                    rootLabel='Sellers'
-                    treeLabel='Docs'
-                    callback={ callbackTree }
-                    viewEdit={true}
-                    key='docs_tree'
-                />
+                    <Tree
+                        pId='0'
+                        data={docsTree}
+                        rootLabel='Sellers'
+                        treeLabel='Docs'
+                        callback={callbackTree}
+                        viewEdit={true}
+                        key='docs_tree'
+                    />
                 </div>
                 <div id='2' className="section blue">
-                { !!filterDocs.length &&
-                    <Table
-                        records={ filterDocs }
-                        callback={ null }
-                        deleteRecord={ null }
-                        schema={ docsSchema }
-                    />}
+                    {!!filterDocs.length &&
+                        <Table
+                            records={filterDocs}
+                            callbackTree={null}
+                            deleteRecord={null}
+                            schema={docsSchema}
+                        />}
                 </div>
             </div>
         </>
