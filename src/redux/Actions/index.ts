@@ -6,6 +6,7 @@ export {
   initializeApp,
   setLastUpdate,
   setPeriodUpdate,
+  setCheckedRecords,
   // setSyncData,
   // clearSyncData
 } from './appActionsNew';

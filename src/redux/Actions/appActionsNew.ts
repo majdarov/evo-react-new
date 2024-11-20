@@ -5,9 +5,9 @@ import {
   setStoresAC,
   setLastUpdateAC,
   setPeriodUpdateAC,
+  setCheckedRecordsAC,
   // setSyncDataAC,
   // clearSyncDataAC,
-
 } from '../appSlice';
 import { AppDispatch } from '../redux-store';
 
@@ -40,7 +40,7 @@ export const initializeApp = () => (dispatch: AppDispatch) => {
     if (localStorage.periodUpdate) {
       dispatch(setPeriodUpdate(+localStorage.periodUpdate));
     } else {
-      localStorage.setItem('periodUpdate', '24')
+      localStorage.setItem('periodUpdate', '24');
     }
   }
 };
@@ -49,9 +49,15 @@ export const setLastUpdate = () => (dispatch: AppDispatch) => {
   dispatch(setLastUpdateAC(+localStorage.lastUpdate));
 };
 
-export const setPeriodUpdate = (periodUpdate: number) => (dispatch: AppDispatch) => {
-  dispatch(setPeriodUpdateAC(periodUpdate));
-};
+export const setPeriodUpdate =
+  (periodUpdate: number) => (dispatch: AppDispatch) => {
+    dispatch(setPeriodUpdateAC(periodUpdate));
+  };
+
+export const setCheckedRecords =
+  (records: string[]) => (dispatch: AppDispatch) => {
+    dispatch(setCheckedRecordsAC(records));
+  };
 
 // export const setSyncData = ({ products, groups }: { products: any[], groups: any[] }) => (dispatch: AppDispatch) => {
 //   dispatch(setSyncDataAC({ products, groups }));

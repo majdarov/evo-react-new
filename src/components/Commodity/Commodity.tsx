@@ -10,7 +10,7 @@ import GroupsTree from "../common/GroupsTree";
 import { Modal } from "../common/Modal/Modal";
 import type { CommodityProps } from "./CommodityContainer";
 import { getPaging } from "../common/utillites";
-import { useAppStore } from "../../redux/hooks";
+import { useAppSelector, useAppStore } from "../../redux/hooks";
 
 const Commodity: React.FC<CommodityProps> = (props) => {
 
@@ -23,6 +23,8 @@ const Commodity: React.FC<CommodityProps> = (props) => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(20)
+
+  const checkedRecords = useAppSelector(state => state.app.checkedRecords);
 
   if (error) {
     alert(`${error.name}\n\r${error.message}`);
@@ -156,11 +158,18 @@ const Commodity: React.FC<CommodityProps> = (props) => {
                 callbackClick={getProductId}
                 deleteRecord={deleteProduct}
                 schema={schema}
-              // advMenu={[{
-              //   lable: 'Test',
-              //   className: 'fa fa-bomb',
-              //   onClick: () => alert('test')
-              // }]}
+                advMenu={[
+                  {
+                    lable: 'Test',
+                    className: 'fa fa-bomb',
+                    onClick: () => alert(`Test ${checkedRecords.length} items.`)
+                  },
+                  {
+                    lable: 'Test2',
+                    className: 'fa fa-home',
+                    onClick: () => alert('test2')
+                  },
+                ]}
               />}
           </div>
         </div>

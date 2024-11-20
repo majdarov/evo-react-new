@@ -6,14 +6,15 @@ import { createSlice } from '@reduxjs/toolkit';
 // }
 
 export type AppState = {
-  appKey: string | null
-  storeKey: string | null
-  isInit: boolean
-  stores: string[]
-  lastUpdate: number
-  periodUpdate: number
+  appKey: string | null;
+  storeKey: string | null;
+  isInit: boolean;
+  stores: string[];
+  lastUpdate: number;
+  periodUpdate: number;
+  checkedRecords: string[];
   // syncData?: SyncDataType
-}
+};
 
 const initialState: AppState = {
   appKey: null,
@@ -22,6 +23,7 @@ const initialState: AppState = {
   stores: [],
   lastUpdate: 0,
   periodUpdate: 24,
+  checkedRecords: [],
   // syncData: {
   //   products: [],
   //   groups: [],
@@ -29,36 +31,35 @@ const initialState: AppState = {
 };
 
 const appSlice = createSlice({
-    name: 'app',
-    initialState,
-    reducers: {
+  name: 'app',
+  initialState,
+  reducers: {
     // case SET_APP_KEY:
     setAppKeyAC(state, action) {
-      state.appKey = action.payload
+      state.appKey = action.payload;
     },
     // case SET_STORE_KEY:
     setStoreKeyAC(state, action) {
-      state.storeKey = action.payload
+      state.storeKey = action.payload;
     },
     // case INIT_APP:
-      // return { ...state, isInit: action.init };
+    // return { ...state, isInit: action.init };
     toggleInitAppAC(state, action) {
-      state.isInit = action.payload
+      state.isInit = action.payload;
     },
     // case SET_STORES:
     // return { ...state, stores: [...action.stores] };
     setStoresAC(state, action) {
-      state.stores = [...action.payload]
+      state.stores = [...action.payload];
     },
     // case SET_LAST_UPDATE:
     // return { ...state, lastUpdate: +action.dateUpdate };
     setLastUpdateAC(state, action) {
-      state.lastUpdate = +action.payload
+      state.lastUpdate = +action.payload;
     },
     // case SET_PERIOD_UPDATE:
     // return { ...state, periodUpdate: action.periodUpdate };
     setPeriodUpdateAC(state, action) {
-
       let { periodUpdate } = action.payload;
 
       if (isNaN(+periodUpdate)) {
@@ -71,17 +72,20 @@ const appSlice = createSlice({
         periodUpdate = +periodUpdate;
       }
 
-      state.periodUpdate = periodUpdate
+      state.periodUpdate = periodUpdate;
+    },
+    setCheckedRecordsAC(state, action) {
+      state.checkedRecords = [...action.payload];
     },
 
     // case SET_SYNC_DATA:
-      // return {
-      //   ...state,
-      //   syncData: {
-      //     products: [...action.products],
-      //     groups: [...action.groups],
-      //   },
-      // };
+    // return {
+    //   ...state,
+    //   syncData: {
+    //     products: [...action.products],
+    //     groups: [...action.groups],
+    //   },
+    // };
     // setSyncDataAC(state, action) {
 
     //   const { products, groups } = action.payload;
@@ -94,12 +98,17 @@ const appSlice = createSlice({
     // clearSyncDataAC(state) {
     //   state.syncData = { products: [], groups: [] }
     // },
-
-  }
+  },
 });
 
 export const {
-  setAppKeyAC, setStoreKeyAC, toggleInitAppAC, setStoresAC, setLastUpdateAC, setPeriodUpdateAC/* , setSyncDataAC, clearSyncDataAC */
-} = appSlice.actions
+  setAppKeyAC,
+  setStoreKeyAC,
+  toggleInitAppAC,
+  setStoresAC,
+  setLastUpdateAC,
+  setPeriodUpdateAC,
+  setCheckedRecordsAC /* , setSyncDataAC, clearSyncDataAC */,
+} = appSlice.actions;
 
 export default appSlice;

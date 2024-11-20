@@ -35,7 +35,7 @@ export interface Group {
 
 export type CommodityState = {
   groups: Group[];
-  commodities: IFormData[]; // TODO - define type of Product/commodities
+  commodities: IFormData[];
   pid: string;
   isLoaded: boolean;
   comIsLoaded: boolean;
