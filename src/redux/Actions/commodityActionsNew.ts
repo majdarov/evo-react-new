@@ -64,11 +64,7 @@ export const setFormData = (formData: any) => (dispatch: AppDispatch) => {
 };
 
 export const postFormData =
-  (
-    typeData: 'product' | 'group',
-    typeQuery: 'post' | 'put',
-    body: IFormData, // TODO define type of Body
-  ) =>
+  (typeData: 'product' | 'group', typeQuery: 'post' | 'put', body: IFormData) =>
   (dispatch: AppDispatch) => {
     let path;
     switch (typeData) {

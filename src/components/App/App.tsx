@@ -18,7 +18,6 @@ import {
   setStoreKey,
   setLastUpdate,
   setPeriodUpdate,
-  setCheckedRecords,
 } from '../../redux/Actions';
 import { connect, ConnectedProps } from "react-redux";
 import Documents from "../Documents";
@@ -83,7 +82,6 @@ const mapDispatch = {
   setStoreKey,
   setLastUpdate,
   setPeriodUpdate,
-  setCheckedRecords
 }
 
 const connector = connect(mapState, mapDispatch)

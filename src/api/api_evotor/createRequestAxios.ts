@@ -1,6 +1,6 @@
 import { AxiosRequestConfig } from 'axios';
 import { ActionType } from '../types';
-import api_v2 from './api_v2_config'
+import api_v2 from './api_v2_config';
 
 async function createRequest(action: ActionType) {
   api_v2.headers!['X-Authorization'] = localStorage.appKey;
@@ -186,7 +186,6 @@ function selectOption(action: ActionType): AxiosRequestConfig {
 
     default:
       return api_v2;
-      break;
   }
 }
 

@@ -11,6 +11,7 @@ import { Modal } from "../common/Modal/Modal";
 import type { CommodityProps } from "./CommodityContainer";
 import { getPaging } from "../common/utillites";
 import { useAppSelector, useAppStore } from "../../redux/hooks";
+import { FormBulk } from "./Forms/FormBulk";
 
 const Commodity: React.FC<CommodityProps> = (props) => {
 
@@ -24,7 +25,18 @@ const Commodity: React.FC<CommodityProps> = (props) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(20)
 
+  /* Handless of checkedRecords */
   const checkedRecords = useAppSelector(state => state.app.checkedRecords);
+  const [viewFormBulk, setViewFormBulk] = useState(false);
+
+  function formBulkSubmit() {
+    setViewFormBulk(false)
+  }
+
+  function formBulkView() {
+    setViewFormBulk(true)
+  }
+  /*Handless of checkedRecords */
 
   if (error) {
     alert(`${error.name}\n\r${error.message}`);
@@ -81,7 +93,6 @@ const Commodity: React.FC<CommodityProps> = (props) => {
 
 
   function changePid(eId: string) {
-    // if (props.pid === eId) return;
     setPid(eId);
     setCurrentPage(1);
   }
@@ -149,9 +160,15 @@ const Commodity: React.FC<CommodityProps> = (props) => {
             label={labelGroup}
             countP={commodities.length}
             viewEdit={true}
+            disabled={false}
           />
           <div className={s.list}>
             {!props.comIsLoaded && <ProgressBar limit={20} text={'Processing...'} />}
+            {!!viewFormBulk && <FormBulk
+              items={checkedRecords}
+              onSubmit={formBulkSubmit}
+              onAbort={() => setViewFormBulk(false)}
+            />}
             {props.comIsLoaded && !!productsWithPaging.length &&
               <Table
                 records={ /*commodities*/ productsWithPaging}
@@ -167,7 +184,7 @@ const Commodity: React.FC<CommodityProps> = (props) => {
                   {
                     lable: 'Test2',
                     className: 'fa fa-home',
-                    onClick: () => alert('test2')
+                    onClick: formBulkView
                   },
                 ]}
               />}

@@ -41,22 +41,22 @@ const mapState = (state: RootState) => {
 };
 
 const mapDispatch = {
-    getGroups,
-    getProducts,
-    setPid,
-    setViewForm,
-    getProductId,
-    deleteProduct,
-    setFormData,
-    toggleFormPost,
-    postFormData,
-    setFormError,
-    setError,
-    setCommodities,
-}
+  getGroups,
+  getProducts,
+  setPid,
+  setViewForm,
+  getProductId,
+  deleteProduct,
+  setFormData,
+  toggleFormPost,
+  postFormData,
+  setFormError,
+  setError,
+  setCommodities,
+};
 
-const connector = connect(mapState, mapDispatch)
+const connector = connect(mapState, mapDispatch);
 
-export type CommodityProps = ConnectedProps<typeof connector>
+export type CommodityProps = ConnectedProps<typeof connector>;
 
 export default connector(Commodity);

@@ -5,7 +5,7 @@ import {
   setStoresAC,
   setLastUpdateAC,
   setPeriodUpdateAC,
-  setCheckedRecordsAC,
+  // setCheckedRecordsAC,
   // setSyncDataAC,
   // clearSyncDataAC,
 } from '../appSlice';
@@ -54,10 +54,10 @@ export const setPeriodUpdate =
     dispatch(setPeriodUpdateAC(periodUpdate));
   };
 
-export const setCheckedRecords =
-  (records: string[]) => (dispatch: AppDispatch) => {
-    dispatch(setCheckedRecordsAC(records));
-  };
+// export const setCheckedRecords =
+//   (records: string[]) => (dispatch: AppDispatch) => {
+//     dispatch(setCheckedRecordsAC(records));
+//   };
 
 // export const setSyncData = ({ products, groups }: { products: any[], groups: any[] }) => (dispatch: AppDispatch) => {
 //   dispatch(setSyncDataAC({ products, groups }));

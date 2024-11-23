@@ -1,18 +1,32 @@
-import React from 'react';
 import { apiIDB } from '../../../api/apiIDB';
 import { Modal } from '../Modal/Modal';
 import Tree from '../Tree/Tree';
 import s from './GroupsTree.module.css';
 import { tGroup } from '../../../types';
 
+interface IProps {
+    groups: tGroup[];
+    treeView: boolean;
+    onClick: Function;
+    callbackTree: Function;
+    parent_id: string;
+    isEmpty: boolean;
+    deleteProduct: (id: string, type: string) => void;
+    getProductId: (id: string, isGroup: boolean) => void;
+    label: string;
+    countP: number;
+    viewEdit: boolean;
+    disabled?: boolean;
+}
 
-const GroupsTree = (props: any) => {
+
+const GroupsTree = (props: IProps) => {
 
     const { groups, treeView, onClick, callbackTree, parent_id, isEmpty, deleteProduct, getProductId, label, countP, viewEdit } = props;
 
-    let g = groups.find((item: tGroup )=> item.id === parent_id);
+    let g = groups.find((item: tGroup) => item.id === parent_id);
     let gLabel = `${g ? g.label : 'Root'}( ${countP} )`;
-    let onDivClick = props.disabled ? null : onClick;
+    let onDivClick = props.disabled ? () => { } : onClick;
 
     async function delGroup() {
         let confirmDel = window.confirm(`Вы действительно хотите удалить группу\n\r${gLabel}\n\rid: ${parent_id}?`)
@@ -48,7 +62,7 @@ const GroupsTree = (props: any) => {
                     <i className='fa fa-edit fa-1x'></i>
                 </div>
             }
-            <div className={s['g-tree']} onClick={onDivClick}>
+            <div className={s['g-tree']} onClick={() => onDivClick()}>
                 <div className='parent_id'>
                     {label || gLabel}
                     {/* <i className='fa fa-share-alt fa-1x'></i> */}

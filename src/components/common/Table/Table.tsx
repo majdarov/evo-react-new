@@ -4,14 +4,14 @@ import s from './Table.module.css'
 import { clickTable, getMapSchema, getCheckedRecords } from './utilsTable';
 import { schemaTableType } from '../../../redux/settingsSlice';
 import { useAppDispatch } from '../../../redux/hooks';
-import { setCheckedRecords } from '../../../redux/Actions';
+import { setCheckedRecordsAC } from '../../../redux/appSlice';
 
 interface IProps {
   records: Record<string, any>[];
   schema: schemaTableType;
   callbackClick: (row: string) => void | null;
   deleteRecord: (id: string, path: string) => any | null;
-  advMenu?: TAdvMenuElem[] | null;// TODO:add advanse menu
+  advMenu?: TAdvMenuElem[] | null; //add advanse menu
 }
 export type TAdvMenuElem = {
   lable: string;
@@ -19,19 +19,19 @@ export type TAdvMenuElem = {
   onClick: () => void | null;
 }
 
-const initState = [{
+const initMenu = [{
   lable: 'Change Group',
   className: 'fa fa-list',
   onClick: () => { }
 }] as TAdvMenuElem[]
 
-function reducer(state = initState, action: { type: string; payload?: any; }) {
+function reducer(menu = initMenu, action: { type: string; payload?: any; }) {
   if (action.type === 'setMenu') {
     return action.payload
   } else {
-    state[0].onClick = action.payload
+    menu[0].onClick = action.payload
   }
-  return state;
+  return menu;
 }
 
 export default function Table({ records, schema, callbackClick, deleteRecord, advMenu }: React.PropsWithoutRef<IProps>) {
@@ -40,7 +40,7 @@ export default function Table({ records, schema, callbackClick, deleteRecord, ad
 
   const [checked, setChecked] = React.useState<string[]>([])
 
-  const [menu, dispatch] = useReducer(reducer, initState);
+  const [menu, dispatch] = useReducer(reducer, initMenu);
 
   useEffect(() => {
     if (advMenu?.length) {
@@ -52,7 +52,7 @@ export default function Table({ records, schema, callbackClick, deleteRecord, ad
 
   const appDispatch = useAppDispatch()
   useEffect(() => {
-    setCheckedRecords(checked)(appDispatch)
+    appDispatch(setCheckedRecordsAC(checked));
   }, [appDispatch, checked])
 
   const schemaOut = useMemo(() => getMapSchema(schema), [schema]);

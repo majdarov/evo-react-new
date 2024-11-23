@@ -49,7 +49,7 @@ const FormProduct = props => {
       alert(err.message);
       props.setFormError(null);
     }
-  }, [props.formError, state.code])
+  }, [props, props.formError, state, state.code])
 
   const { attributesP, getAttributes } = useModifications(state.parent_id);
 
