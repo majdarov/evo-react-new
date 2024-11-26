@@ -3,6 +3,9 @@ import { ActionType } from '../types';
 import api_v2 from './api_v2_config';
 
 async function createRequest(action: ActionType) {
+  if (action.type.indexOf('array') !== -1) {
+    api_v2.headers!['Content-Type'] = 'application/vnd.evotor.v2+bulk+json';
+  }
   api_v2.headers!['X-Authorization'] = localStorage.appKey;
   action.storeUuid = localStorage.storeKey;
   api_v2.params = action.cursor ? { cursor: action.cursor } : null;
@@ -145,23 +148,15 @@ function selectOption(action: ActionType): AxiosRequestConfig {
         return {};
       }
       method = 'PUT';
-      headers = {
-        ...api_v2.headers,
-        'Content-Type': 'application/vnd.evotor.v2+bulk+json',
-      };
       url = 'stores/' + action.storeUuid + '/products';
       data = JSON.stringify(action.body);
-      return { ...api_v2, method, headers, url, data };
+      return { ...api_v2, method, url, data };
 
     case 'put_array_groups_v2':
       method = 'PUT';
-      headers = {
-        ...api_v2.headers,
-        'Content-Type': 'application/vnd.evotor.v2+bulk+json',
-      };
       url = 'stores/' + action.storeUuid + '/product-groups';
       data = JSON.stringify(action.body);
-      return { ...api_v2, method, headers, url, data };
+      return { ...api_v2, method, url, data };
 
     case 'get_ofd_documents':
       method = 'GET';

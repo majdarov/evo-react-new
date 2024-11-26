@@ -12,13 +12,15 @@ import {
   setFormError,
   setError,
   setCommodities,
+  setCheckedRecords,
 } from '../../redux/Actions';
 import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '../../redux/redux-store';
 
 const mapState = (state: RootState) => {
   const isInit = state.app.isInit;
-  let sch = state.settings.products.table.schema;
+  const sch = state.settings.products.table.schema;
+  const checkedRecords = state.app.checkedRecords;
 
   let _state = state.commodity;
   return {
@@ -37,6 +39,7 @@ const mapState = (state: RootState) => {
     formError: _state.form.formError,
     isInit,
     schema: sch,
+    checkedRecords,
   };
 };
 
@@ -53,6 +56,7 @@ const mapDispatch = {
   setFormError,
   setError,
   setCommodities,
+  setCheckedRecords,
 };
 
 const connector = connect(mapState, mapDispatch);

@@ -5,12 +5,14 @@ import { clickTable, getMapSchema, getCheckedRecords } from './utilsTable';
 import { schemaTableType } from '../../../redux/settingsSlice';
 import { useAppDispatch } from '../../../redux/hooks';
 import { setCheckedRecordsAC } from '../../../redux/appSlice';
+import { apiIDB } from '../../../api/apiIDB';
 
 interface IProps {
   records: Record<string, any>[];
   schema: schemaTableType;
   callbackClick: (row: string) => void | null;
-  deleteRecord: (id: string, path: string) => any | null;
+  deleteRecord: Function/* (id: string, path: string) => any  */ | null;
+  checkedHandler: Function;
   advMenu?: TAdvMenuElem[] | null; //add advanse menu
 }
 export type TAdvMenuElem = {
@@ -34,7 +36,7 @@ function reducer(menu = initMenu, action: { type: string; payload?: any; }) {
   return menu;
 }
 
-export default function Table({ records, schema, callbackClick, deleteRecord, advMenu }: React.PropsWithoutRef<IProps>) {
+export default function Table({ records, schema, callbackClick, deleteRecord, advMenu, checkedHandler }: React.PropsWithoutRef<IProps>) {
 
   const { items, requestSort, sortConfig } = useSortableData(records);
 
@@ -52,8 +54,14 @@ export default function Table({ records, schema, callbackClick, deleteRecord, ad
 
   const appDispatch = useAppDispatch()
   useEffect(() => {
-    appDispatch(setCheckedRecordsAC(checked));
-  }, [appDispatch, checked])
+    const checkedRecords = [] as any[]
+    checked.forEach(async id => {
+      // const item = await checkedHandler(id)
+      const item = await apiIDB.getProduct(id)
+      checkedRecords.push(item);
+      appDispatch(setCheckedRecordsAC(checkedRecords));
+    })
+  }, [checked])
 
   const schemaOut = useMemo(() => getMapSchema(schema), [schema]);
 

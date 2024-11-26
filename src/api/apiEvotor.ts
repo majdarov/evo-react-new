@@ -1,5 +1,8 @@
 import { createRequest, fetchEvo } from './api_evotor';
 
+const paths = ['product', 'group', 'array_products', 'array_groups'] as const;
+export type Path = (typeof paths)[number];
+
 const apiEvotor = {
   async getStores() {
     let request = await createRequest({ type: 'store_v2' });
@@ -28,20 +31,16 @@ const apiEvotor = {
     let request = await createRequest({ type: 'products_v2' });
     return await fetchEvo(request);
   },
-  // async fetchProductsEvo() {
-  //   let request = await createRequest({ type: 'products_v2' });
-  //   return await fetchEvo(request);
-  // },
 
-  async postData(path: string, body: any) {
+  async postData(path: Path, body: any) {
     let request = await createRequest({ type: `post_${path}_v2`, body });
     return await fetchEvo(request);
   },
-  async putData(path: string, body: any) {
+  async putData(path: Path, body: any) {
     let request = await createRequest({ type: `put_${path}_v2`, body });
     return await fetchEvo(request);
   },
-  async deleteData(path: string, id: string) {
+  async deleteData(path: 'group' | 'product', id: string) {
     let request = await createRequest({ type: `delete_${path}_v2`, id });
     return await fetchEvo(request);
   },

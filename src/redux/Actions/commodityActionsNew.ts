@@ -1,4 +1,5 @@
 import { apiEvotor } from '../../api';
+import { Path } from '../../api/apiEvotor';
 import { apiIDB } from '../../api/apiIDB';
 import { chooseError } from '../../components/Errors/chooseError';
 import {
@@ -64,20 +65,14 @@ export const setFormData = (formData: any) => (dispatch: AppDispatch) => {
 };
 
 export const postFormData =
-  (typeData: 'product' | 'group', typeQuery: 'post' | 'put', body: IFormData) =>
+  (
+    typeData: Path = 'product',
+    typeQuery: 'post' | 'put', //   .then(dispatch(setPidAC(pid)));
+
+    body: IFormData | IFormData[],
+  ) =>
   (dispatch: AppDispatch) => {
-    let path;
-    switch (typeData) {
-      case 'product':
-        path = 'product';
-        break;
-      case 'group':
-        path = 'group';
-        break;
-      default:
-        path = 'product';
-        break;
-    }
+    let path = typeData;
     let callbackApi;
     switch (typeQuery) {
       case 'post':
@@ -90,10 +85,17 @@ export const postFormData =
         callbackApi = apiEvotor.postData;
         break;
     }
-    callbackApi(path, body)
+    callbackApi(path, body) // Выполняю запрос к api Evotor
       .then((res: any) => {
         if (res.status < 400 || res.id) {
-          apiIDB.putData(`${path}s`, res);
+          // Сохраняю результат в IDB
+          if (typeData.indexOf('array') > -1) {
+            const store =
+              typeData.indexOf('products') > -1 ? 'products' : 'groups';
+            apiIDB.pushItems(store, body);
+          } else {
+            apiIDB.putData(`${path}s`, res);
+          }
         } else {
           throw chooseError(res);
         }
@@ -112,7 +114,6 @@ export const postFormData =
             dispatch(setGroupsAC(res));
             dispatch(setPidAC(pid));
           });
-          //   .then(dispatch(setPidAC(pid)));
         } else {
           dispatch(setPidAC(pid));
         }
@@ -126,8 +127,7 @@ export const postFormData =
   };
 
 export const deleteProduct =
-  (id: string, path = 'product') =>
-  async (dispatch: AppDispatch) => {
+  (id: string, path: 'product' | 'group') => async (dispatch: AppDispatch) => {
     try {
       let pid = store.getState().commodity.pid;
       let res = await apiEvotor.deleteData(path, id);
@@ -146,6 +146,7 @@ export const deleteProduct =
     } catch (err) {
       console.dir(err);
       dispatch(setErrorAC(chooseError(err)));
+      return err;
     }
   };
 

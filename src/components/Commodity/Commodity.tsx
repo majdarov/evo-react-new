@@ -10,13 +10,15 @@ import GroupsTree from "../common/GroupsTree";
 import { Modal } from "../common/Modal/Modal";
 import type { CommodityProps } from "./CommodityContainer";
 import { getPaging } from "../common/utillites";
-import { useAppSelector, useAppStore } from "../../redux/hooks";
+import { useAppStore } from "../../redux/hooks";
 import { FormBulk } from "./Forms/FormBulk";
+import { apiIDB } from "../../api/apiIDB";
 
 const Commodity: React.FC<CommodityProps> = (props) => {
 
   const { commodities, schema, isLoaded, isInit, comIsLoaded, error, pid } = props;
   const { setPid, getGroups, getProducts, setError, setCommodities, getProductId, deleteProduct } = props;
+  const { checkedRecords, setCheckedRecords, postFormData } = props;
   const { items, setFilterConfig } = useFilteredData(/* props.commodities */);
   const [labelGroup, setLabelGroup] = useState('');
   const [isSearching, setIsSearching] = useState(false);
@@ -25,18 +27,28 @@ const Commodity: React.FC<CommodityProps> = (props) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(20)
 
-  /* Handless of checkedRecords */
-  const checkedRecords = useAppSelector(state => state.app.checkedRecords);
+  /* Handlers of checkedRecords */
   const [viewFormBulk, setViewFormBulk] = useState(false);
 
-  function formBulkSubmit() {
+  function formBulkSubmit(parent_id: string) {
+    const newCheckedRecords: typeof checkedRecords = [];
+    checkedRecords.forEach(item => {
+      newCheckedRecords.push({ ...item, parent_id });
+    })
+    // setCheckedRecords(newCheckedRecords);
+    postFormData('array_products', "put", newCheckedRecords)
     setViewFormBulk(false)
+    setCheckedRecords([]);
   }
 
   function formBulkView() {
     setViewFormBulk(true)
   }
-  /*Handless of checkedRecords */
+
+  const handleCheckedRecords = async (id: string) => {
+    return await apiIDB.getProduct(id);
+  };
+  /*Handlers of checkedRecords */
 
   if (error) {
     alert(`${error.name}\n\r${error.message}`);
@@ -175,6 +187,7 @@ const Commodity: React.FC<CommodityProps> = (props) => {
                 callbackClick={getProductId}
                 deleteRecord={deleteProduct}
                 schema={schema}
+                checkedHandler={handleCheckedRecords}
                 advMenu={[
                   {
                     lable: 'Test',

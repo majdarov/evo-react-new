@@ -12,7 +12,7 @@ export type AppState = {
   stores: string[];
   lastUpdate: number;
   periodUpdate: number;
-  checkedRecords: string[];
+  checkedRecords: any[];
   // syncData?: SyncDataType
 };
 

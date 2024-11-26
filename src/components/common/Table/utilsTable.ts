@@ -18,7 +18,7 @@ export function clickCell(ev: React.MouseEvent<HTMLElement, MouseEvent>) {
 export function clickTable(
   ev: React.MouseEvent<HTMLElement, MouseEvent>,
   callback: (row: string) => void | null,
-  delRowCallback: (id: string, path: string) => void | null,
+  delRowCallback: Function | null /* (id: string, path: string) => any */,
 ) {
   let elem = ev.target as HTMLElement;
   if (elem.id === 'chkAll') {
@@ -36,10 +36,10 @@ export function clickTable(
         `${elem.innerText}\n\rYou'r realy wanted delete this product?`,
       );
 
-    if (isRealyDelete) {
+    if (isRealyDelete && !!delRowCallback) {
       let id = result.row;
       let res = delRowCallback(id, 'product');
-      console.log(res);
+      // console.log(res);
       alert(`Product id: ${res}\n\rDELETED!`);
     } else {
       alert('CANCEL DELETED!');

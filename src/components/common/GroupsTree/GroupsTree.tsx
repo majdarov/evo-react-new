@@ -11,7 +11,7 @@ interface IProps {
     callbackTree: Function;
     parent_id: string;
     isEmpty: boolean;
-    deleteProduct: (id: string, type: string) => void;
+    deleteProduct: Function/* (id: string, type: string) => void */;
     getProductId: (id: string, isGroup: boolean) => void;
     label: string;
     countP: number;
