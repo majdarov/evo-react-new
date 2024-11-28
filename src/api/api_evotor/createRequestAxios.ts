@@ -13,7 +13,7 @@ async function createRequest(action: ActionType) {
 }
 
 function selectOption(action: ActionType): AxiosRequestConfig {
-  let url, method, headers, data;
+  let url, method, data;
 
   switch (action.type) {
     case 'store_v2':

@@ -25,7 +25,7 @@
     }
 */
 
-import { TreeNode } from "./types";
+import { TreeNode } from './types';
 
 function createNode(item: TreeNode) {
   let node = { ...item };
@@ -37,8 +37,8 @@ function addNode(subNode: TreeNode, parentNode: TreeNode) {
   let pNode = findNode(subNode.pid ?? '0', parentNode);
   try {
     if (pNode === undefined) return subNode;
-    pNode.childs.push(subNode);
-    pNode.childs.sort((a: TreeNode, b: TreeNode) => {
+    pNode.childs?.push(subNode);
+    pNode.childs?.sort((a: TreeNode, b: TreeNode) => {
       if (a.label > b.label) return 1;
       if (a.label < b.label) return -1;
       return 0;
@@ -51,7 +51,8 @@ function addNode(subNode: TreeNode, parentNode: TreeNode) {
 
 function findNode(pid: string, pNode: TreeNode): TreeNode | undefined {
   // if (!pid || pid === null) pid = '0';
-  let result = pNode.childs.find((item) => item.id === pid);
+  if (!pNode.childs?.length) return undefined;
+  let result = pNode.childs?.find((item) => item.id === pid);
   if (result === undefined) {
     for (let node of pNode.childs) {
       result = findNode(pid, node);
@@ -83,7 +84,8 @@ export function chooseNotHiddenGroups(startId = '0', groups: TreeNode[] = []) {
   let arr = [];
   let current = groups.find((g) => g.id === startId);
   if (!current || !current.pid) return [];
-  while (current.pid !== '0') {
+  while (current.pid !== '0' || !current.pid) {
+    // eslint-disable-next-line no-loop-func
     let elem = groups.find((g) => g.id === current!.pid);
     if (!elem) break;
     arr.push(elem.id);

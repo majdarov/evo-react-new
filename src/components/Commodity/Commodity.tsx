@@ -88,9 +88,12 @@ const Commodity: React.FC<CommodityProps> = (props) => {
     setCurrentPage(currentPage - 1)
   }
 
+  const testTagName = (tagName: string) => tagName === 'SPAN';
+  const testClassName = (className: string) => className === 'fa fa-edit';
+
   const callbackTree = (id: string, tagName: string, className: string) => {
-    const isSpan = tagName === 'SPAN';
-    const isEditIcon = className === 'fa fa-edit';
+    const isSpan = testTagName(tagName);
+    const isEditIcon = testClassName(className);
 
     if (!isSpan && !isEditIcon) return;
 
@@ -176,11 +179,13 @@ const Commodity: React.FC<CommodityProps> = (props) => {
           />
           <div className={s.list}>
             {!props.comIsLoaded && <ProgressBar limit={20} text={'Processing...'} />}
-            {!!viewFormBulk && <FormBulk
-              items={checkedRecords}
-              onSubmit={formBulkSubmit}
-              onAbort={() => setViewFormBulk(false)}
-            />}
+            {viewFormBulk &&
+              <FormBulk
+                items={checkedRecords}
+                onSubmit={formBulkSubmit}
+                onAbort={() => setViewFormBulk(false)}
+              />
+            }
             {props.comIsLoaded && !!productsWithPaging.length &&
               <Table
                 records={ /*commodities*/ productsWithPaging}

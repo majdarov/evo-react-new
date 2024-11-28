@@ -8,13 +8,13 @@ interface IProps {
     groups: tGroup[];
     treeView: boolean;
     onClick: Function;
-    callbackTree: Function;
+    callbackTree: Function; // Callback for <Tree />
     parent_id: string;
     isEmpty: boolean;
-    deleteProduct: Function/* (id: string, type: string) => void */;
-    getProductId: (id: string, isGroup: boolean) => void;
+    deleteProduct?: Function/* (id: string, type: string) => void */;
+    getProductId?: (id: string, isGroup: boolean) => void;
     label: string;
-    countP: number;
+    countP?: number;
     viewEdit: boolean;
     disabled?: boolean;
 }
@@ -25,10 +25,11 @@ const GroupsTree = (props: IProps) => {
     const { groups, treeView, onClick, callbackTree, parent_id, isEmpty, deleteProduct, getProductId, label, countP, viewEdit } = props;
 
     let g = groups.find((item: tGroup) => item.id === parent_id);
-    let gLabel = `${g ? g.label : 'Root'}( ${countP} )`;
+    let gLabel = `${g ? g.label : 'Root'}( ${countP || ''} )`;
     let onDivClick = props.disabled ? () => { } : onClick;
 
     async function delGroup() {
+        if (!deleteProduct) return;
         let confirmDel = window.confirm(`Вы действительно хотите удалить группу\n\r${gLabel}\n\rid: ${parent_id}?`)
         if (confirmDel) {
             let parentGroup = (await apiIDB.getGroup(parent_id)).parent_id;
@@ -57,7 +58,7 @@ const GroupsTree = (props: IProps) => {
                 </Modal>
                 // </div>
             }
-            {parent_id !== '0' &&
+            {parent_id !== '0' && !!getProductId &&
                 <div onClick={() => getProductId(parent_id, true)} className={s.edit}>
                     <i className='fa fa-edit fa-1x'></i>
                 </div>
