@@ -9,7 +9,10 @@
     "src/**/*"
   ],
   "compilerOptions": {
-    "types": ["vite/client", "vite-plugin-svgr/client"],
+    "types": [
+      "vite/client",
+      "vite-plugin-svgr/client"
+    ],
     "target": "ESNext",
     "module": "esnext",
     "outDir": "build",
@@ -32,6 +35,6 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "noImplicitAny": true
+    "noImplicitAny": true,
   }
 }

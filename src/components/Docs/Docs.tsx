@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { DocType, setDocs, setDocsPid } from '../../redux/docsSlice';
 import { apiBack } from '../../api'
 import { createDocsTree, getFilterDocs } from './docsUtils';
-import { Callback } from '../common/Tree/types';
+import { TreeCallback } from '../common/Tree/types';
 
 const Docs = () => {
 
@@ -52,7 +52,7 @@ const Docs = () => {
 
     const docsTree = createDocsTree(stateDocs, rootLevel)
 
-    const callbackTree: Callback = (id: string, tagName: string, className: string) => {
+    const callbackTree: TreeCallback = (id: string, tagName: string, className: string) => {
         dispatch(setDocsPid(id))
     }
 

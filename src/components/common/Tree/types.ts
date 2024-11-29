@@ -9,8 +9,12 @@ export interface TreeProps {
   treeLabel: string;
   pId: string;
   data: TreeNode[];
-  callback: Function | null;
+  callback: TreeCallback | null;
   viewEdit: boolean;
 }
 
-export type Callback = (id: string, tagName: string, className: string) => void;
+export type TreeCallback = (
+  id: string,
+  tagName?: string,
+  className?: string,
+) => void;

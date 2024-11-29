@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import ComponentsSearch from './schemas/ComponentsSearch';
 import s from './FormSearch.module.css';
 import { useAppSelector } from "../../../redux/hooks";
+import { clearFormElements } from "./frmUtilites";
 
 const initialPeriod = {
   created_at: false,
@@ -11,6 +12,11 @@ const initialPeriod = {
 }
 
 const FormSearch = (props) => {
+
+  const cleanFlag = props.cleanFlag;
+  useEffect(() => {
+    if (cleanFlag) clearSearch();
+  }, [cleanFlag]);
 
   const [view, setView] = useState(false);
   const [formData, setFormData] = useState({});
@@ -96,21 +102,8 @@ const FormSearch = (props) => {
     if (!isSearching) setIsSearching(true);
   };
 
-  function clearSearch(ev) {
-    // if (ev.target.tagName !== 'I') return;
-    let form = document.forms['form-search'];
-    Array.from(form.elements).forEach(elem => {
-      if (elem.tagName === 'INPUT') {
-        if (elem.type === 'checkbox') {
-          elem.checked = false;
-        } else {
-          elem.value = '';
-        }
-      }
-    })
-    form['name'].focus();
-    // console.log(form.elements)
-    // e.target.closest('div').querySelector('input').value = '';
+  function clearSearch() {
+    clearFormElements('form-search')
     setFormData({});
     setName('');
     setPeriod(initialPeriod);

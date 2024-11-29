@@ -13,6 +13,7 @@ import { getPaging } from "../common/utillites";
 import { useAppStore } from "../../redux/hooks";
 import { FormBulk } from "./Forms/FormBulk";
 import { apiIDB } from "../../api/apiIDB";
+import { TreeCallback } from "../common/Tree/types";
 
 const Commodity: React.FC<CommodityProps> = (props) => {
 
@@ -29,6 +30,7 @@ const Commodity: React.FC<CommodityProps> = (props) => {
 
   /* Handlers of checkedRecords */
   const [viewFormBulk, setViewFormBulk] = useState(false);
+  const [cleanFlag, setCleanFlag] = useState(false);
 
   function formBulkSubmit(parent_id: string) {
     const newCheckedRecords: typeof checkedRecords = [];
@@ -36,9 +38,10 @@ const Commodity: React.FC<CommodityProps> = (props) => {
       newCheckedRecords.push({ ...item, parent_id });
     })
     // setCheckedRecords(newCheckedRecords);
-    postFormData('array_products', "put", newCheckedRecords)
+    postFormData('array_products', 'put', newCheckedRecords)
     setViewFormBulk(false)
     setCheckedRecords([]);
+    if (isSearching) setCleanFlag(true);
   }
 
   function formBulkView() {
@@ -88,10 +91,10 @@ const Commodity: React.FC<CommodityProps> = (props) => {
     setCurrentPage(currentPage - 1)
   }
 
-  const testTagName = (tagName: string) => tagName === 'SPAN';
-  const testClassName = (className: string) => className === 'fa fa-edit';
+  const testTagName = (tagName: string | undefined) => tagName === 'SPAN';
+  const testClassName = (className: string | undefined) => className === 'fa fa-edit';
 
-  const callbackTree = (id: string, tagName: string, className: string) => {
+  const callbackTree: TreeCallback = (id: string, tagName?: string, className?: string) => {
     const isSpan = testTagName(tagName);
     const isEditIcon = testClassName(className);
 
@@ -117,6 +120,7 @@ const Commodity: React.FC<CommodityProps> = (props) => {
     getProducts(pid);
     setIsSearching(false);
     setLabelGroup('');
+    if (cleanFlag) setCleanFlag(false);
   }
 
   function selectPageSize(e: React.SyntheticEvent<HTMLSelectElement>) {
@@ -125,7 +129,7 @@ const Commodity: React.FC<CommodityProps> = (props) => {
     setPageSize(pSize);
   }
 
-  const formSearchProps = { setFilterConfig, returnBeforeSearch, isSearching, setIsSearching }
+  const formSearchProps = { setFilterConfig, returnBeforeSearch, isSearching, setIsSearching, cleanFlag }
 
   if (error) {
     return <div>Ошибка...{error.message}</div>;
@@ -200,8 +204,8 @@ const Commodity: React.FC<CommodityProps> = (props) => {
                     onClick: () => alert(`Test ${checkedRecords.length} items.`)
                   },
                   {
-                    lable: 'Test2',
-                    className: 'fa fa-home',
+                    lable: 'Change Group',
+                    className: 'fa fa-exchange-alt',
                     onClick: formBulkView
                   },
                 ]}

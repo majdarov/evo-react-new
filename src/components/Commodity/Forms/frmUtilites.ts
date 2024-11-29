@@ -19,7 +19,7 @@ export function newBarcode(code: string, prefix = '0000') {
     code += randomMax(9).toString();
   }
   let A1 = '20'.concat(prefix) + code;
-    // '0'.repeat(6 - code.toString().length) + code.toString();
+  // '0'.repeat(6 - code.toString().length) + code.toString();
   let A2 = 0;
   A1.split('').forEach((item, i) => {
     if (i % 2 !== 0) {
@@ -53,7 +53,9 @@ export function viewBarcode(barcode: string) {
     let n = Number(bcStr);
 
     for (let i = 1; i <= 6; i++) {
-      bcStr += String.fromCharCode(Number(barcode.slice(i, i + 1)) + s[n][i - 1]);
+      bcStr += String.fromCharCode(
+        Number(barcode.slice(i, i + 1)) + s[n][i - 1],
+      );
     }
     bcStr += String.fromCharCode(42);
     for (let i = 7; i <= 12; i++) {
@@ -68,11 +70,10 @@ export function viewBarcode(barcode: string) {
 }
 
 export function validateBarcode(barcode: string) {
-
   function testBarcode(barcode: string) {
     if (isNaN(Number(barcode))) return false;
     if (![7, 8, 12, 13].includes(barcode.length)) {
-      return false;//`Not valid Length barcode: ${barcode.length}`;
+      return false; //`Not valid Length barcode: ${barcode.length}`;
     }
     let res = 0;
     barcode.split('').forEach((item, i) => {
@@ -106,7 +107,7 @@ export function validateBarcode(barcode: string) {
   return res;
 }
 
-export function validateZeroData(curr: any/* , prev */) {
+export function validateZeroData(curr: any /* , prev */) {
   for (let key in curr) {
     /* let arrNotChanged = false;
     if (Array.isArray(curr[key])) {
@@ -171,4 +172,18 @@ export function dateToLocaleString(date = new Date()) {
   let days = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пят', 'Суб'];
   let day = date.getDay();
   return `${days[day]} ${date.toLocaleString()}`;
+}
+
+export function clearFormElements(formName: any) {
+  let form: HTMLFormElement = document.forms[formName];
+  Array.from(form.elements).forEach((elem: any) => {
+    if (elem.tagName === 'INPUT') {
+      if (elem.type === 'checkbox') {
+        elem.checked = false;
+      } else {
+        elem.value = '';
+      }
+    }
+  });
+  // form['name'].focus();
 }

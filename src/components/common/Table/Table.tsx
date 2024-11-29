@@ -6,6 +6,7 @@ import { schemaTableType } from '../../../redux/settingsSlice';
 import { useAppDispatch } from '../../../redux/hooks';
 import { setCheckedRecordsAC } from '../../../redux/appSlice';
 import { apiIDB } from '../../../api/apiIDB';
+import { Button } from '../Button/Button';
 
 interface IProps {
   records: Record<string, any>[];
@@ -44,6 +45,8 @@ export default function Table({ records, schema, callbackClick, deleteRecord, ad
 
   const [menu, dispatch] = useReducer(reducer, initMenu);
 
+  const ids = ['uuid', 'id', '_id'];
+
   useEffect(() => {
     if (advMenu?.length) {
       dispatch({ type: 'setMenu', payload: advMenu })
@@ -61,7 +64,7 @@ export default function Table({ records, schema, callbackClick, deleteRecord, ad
       checkedRecords.push(item);
       appDispatch(setCheckedRecordsAC(checkedRecords));
     })
-  }, [checked])
+  }, [appDispatch, checked])
 
   const schemaOut = useMemo(() => getMapSchema(schema), [schema]);
 
@@ -94,7 +97,10 @@ export default function Table({ records, schema, callbackClick, deleteRecord, ad
       {!!checked.length && !!menu?.length &&
         <div className={s['chk_menu']}>
           {menu.map((item: TAdvMenuElem, idx: number) => {
-            return <button key={idx} onClick={item.onClick}><i className={item.className} />{item.lable}</button>
+            // return <button key={idx} onClick={item.onClick}><i className={item.className} />{item.lable}</button>
+            return <Button
+              label={item.lable} key={idx} callback={item.onClick} icon={item.className}
+            />
           })}
         </div>
       }
@@ -104,31 +110,32 @@ export default function Table({ records, schema, callbackClick, deleteRecord, ad
             <th key='chk' id='chk'><input id='chkAll' type='checkbox' /></th>
             {
               headers.map((item: string, idx: number) => {
-                if (item === 'uuid' || item === 'id' || item === '_id') return null;
-                return <th
-                  key={item}
-                  onClick={() => requestSort(schemaOut[idx][0])}
-                >{item}<i className={getClassName(schemaOut[idx][0])}></i></th>
+                if (ids.includes(item[0])) return null;
+                return <th key={item} onClick={() => requestSort(schemaOut[idx][0])}>
+                  {item}<i className={getClassName(schemaOut[idx][0])}></i>
+                </th>;;
               })
             }
           </tr>
         </thead>
         <tbody>
-          {items.map(record => (
-            <tr key={record.uuid || record.id || record._id} id={record.uuid || record.id || record._id}>
-              <td
-                key={`chk_${record.id || record.uuid || record._id}`}
-                id={`chk_${record.id || record.uuid || record._id}`}
-              >
-                <input type='checkbox' />
-              </td>
-              {schemaOut.map((item: [string, string]) => {
-                if (item[0] === 'uuid' || item[0] === 'id' || item[0] === '_id') return null;
-                return <td key={`${item[0]}_${record.id || record.uuid || record._id}`} id={item[0]}>{record[item[0]]}</td>
-              })}
-              <td key={`del_${record.id || record.uuid || record._id}`}><span className={s.del}></span></td>
-            </tr>
-          ))}
+          {
+            items.map(record => {
+              const id = record.uuid || record.id || record._id;
+              return (
+                <tr key={id} id={id}>
+                  <td key={`chk_${id}`} id={`chk_${id}`}>
+                    <input type='checkbox' />
+                  </td>
+                  {schemaOut.map((item: [string, string]) => {
+                    if (ids.includes(item[0])) return null;
+                    return <td key={`${item[0]}_${id}`} id={item[0]}>{record[item[0]]}</td>
+                  })}
+                  <td key={`del_${id}`}><span className={s.del}></span></td>
+                </tr>
+              )
+            })
+          }
         </tbody>
       </table>
     </div>

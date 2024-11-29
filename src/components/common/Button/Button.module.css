@@ -1,0 +1,28 @@
+.filter-button {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 0.2rem;
+}
+
+.filter:hover {
+    background-color: lavender;
+}
+
+.filter-button i {
+    margin-left: .5rem;
+}
+
+.filter {
+    color: var(--icon-color);
+    cursor: pointer;
+    border: 1px solid var(--icon-color);
+    font-family: var(--icon-font);
+    font-weight: bold;
+    border-radius: 0.5rem;
+    padding: 0.3rem;
+}
+
+.hidden {
+    display: none;
+}

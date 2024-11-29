@@ -5,7 +5,8 @@
   --color-form-font: darkblue;
 }
 
-#form-product {
+#form-product,
+#form-bulk {
   display: inline-block;
   font-family: var(--icon-font);
   background-color: var(--color-form-background);

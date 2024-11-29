@@ -29,17 +29,22 @@ export async function initDb() {
 }
 
 export const apiIDB = {
+
   async getGroup(id) {
-    const db = await initDb();
-    let group;
-    if (id === 'all') {
-      group = await db.getAll('groups');
-    } else if (id === '0') {
-      return { name: 'Root', id: '0' };
-    } else {
-      group = await db.get('groups', id);
+    try {
+      const db = await initDb();
+      let group;
+      if (id === 'all') {
+        group = await db.getAll('groups');
+      } else if (id === '0') {
+        return { name: 'Root', id: '0' };
+      } else {
+        group = await db.get('groups', id);
+      }
+      return group;
+    } catch (e) {
+      console.error(e);
     }
-    return group;
   },
 
   async getProduct(id) {

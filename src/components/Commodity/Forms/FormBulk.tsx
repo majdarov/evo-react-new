@@ -1,13 +1,14 @@
 import { useState } from "react"
 import { useAppSelector } from "../../../redux/hooks"
 import { Modal } from "../../common/Modal/Modal"
-// import Tree from "../../common/Tree"
 import GroupsTree from "../../common/GroupsTree"
+import s from './Form.module.css';
+import { Button } from "../../common/Button/Button";
 
 interface IProps {
     items: any[]
     onSubmit: Function
-    onAbort: (e: React.FormEvent<HTMLFormElement>) => void
+    onAbort: Function// (e: React.FormEvent<HTMLFormElement>) => void
 }
 
 export const FormBulk: React.FC<IProps> = ({ items, onSubmit, onAbort }) => {
@@ -21,33 +22,55 @@ export const FormBulk: React.FC<IProps> = ({ items, onSubmit, onAbort }) => {
         return groups.find(group => group.id === id)?.label || 'No Group'
     }
 
-    const testTagName = (tagName: string) => tagName === 'SPAN';
+    const testTagNameIsSpan = (tagName: string | undefined) => tagName === 'SPAN';
 
     return (
         <Modal>
-            <form onSubmit={() => onSubmit(selectedGroup)} onReset={onAbort}>
-                <div>
-                    <span>Selected group: {getGroupName(selectedGroup) || 'undefined'}</span>
+            <form id={s['form-bulk']} /* onSubmit={() => onSubmit(selectedGroup)} onReset={onAbort} */>
+                <fieldset className={s['product-info']}>
+                    <legend>Select new group</legend>
+                    <div className={s.propertyes}>
+                        <ul>
+                            {items.map(item => <li key={item.id}>
+                                {item.name}
+                                <strong style={{ color: 'red' }}>{getGroupName(item.parent_id)}</strong>
+                            </li>)}
+                        </ul>
+                    </div>
+                    <GroupsTree
+                        groups={groups}
+                        callbackTree={
+                            (id: string, tagName?: string, className?: string) => {
+                                if (!testTagNameIsSpan(tagName)) return;
+                                setSelectedGroup(id)
+                                setShowTree(false)
+                            }
+                        }
+                        label={getGroupName(selectedGroup)}
+                        viewEdit={false}
+                        isEmpty={false}
+                        onClick={() => setShowTree(!showTree)}
+                        treeView={showTree}
+                        parent_id="0"
+                    />
+                </fieldset>
+                <div className={s['buttons']}>
+                    <Button
+                        label="Change group"
+                        type="submit"
+                        icon="fa fa-save"
+                        callback={() => onSubmit(selectedGroup)}
+                    />
+                    <Button
+                        label="Reset"
+                        type="reset"
+                        icon="fa fa-undo"
+                        callback={onAbort}
+                    />
                 </div>
-                <ul>
-                    {items.map(item => <li key={item.id}>{item.name} group:{getGroupName(item.parent_id)}</li>)}
-                </ul>
-                <input type="submit" value="Submit" />
-                <input type="reset" value="Reset" />
-                <GroupsTree
-                    groups={groups}
-                    callbackTree={(id: string, tagName: string, className: string) => {
-                        if (!testTagName(tagName)) return;
-                        setSelectedGroup(id)
-                        setShowTree(false)
-                    }}
-                    label=""
-                    viewEdit={false}
-                    isEmpty={false}
-                    onClick={() => setShowTree(!showTree)}
-                    treeView={showTree}
-                    parent_id="0"
-                />
+                {/* <input type="submit" value="Submit" /> */}
+                {/* <input type="reset" value="Reset" /> */}
+
             </form>
         </Modal>
     )

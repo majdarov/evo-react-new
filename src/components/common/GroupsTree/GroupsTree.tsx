@@ -3,12 +3,13 @@ import { Modal } from '../Modal/Modal';
 import Tree from '../Tree/Tree';
 import s from './GroupsTree.module.css';
 import { tGroup } from '../../../types';
+import { TreeCallback } from '../Tree/types';
 
 interface IProps {
     groups: tGroup[];
     treeView: boolean;
     onClick: Function;
-    callbackTree: Function; // Callback for <Tree />
+    callbackTree: TreeCallback; // Callback for <Tree />
     parent_id: string;
     isEmpty: boolean;
     deleteProduct?: Function/* (id: string, type: string) => void */;

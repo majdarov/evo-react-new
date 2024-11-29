@@ -21,6 +21,7 @@ td:hover {
 }
 
 .chk_menu {
+  display: flex;
   background-color: lightcyan;
 }
 
