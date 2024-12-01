@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { apiBack, apiEvotor } from '../../api';
 import ProgressBar from '../common/ProgressBar/ProgressBar';
 import { dateToString, getMinData } from '../common/utillites/utilites';
@@ -171,9 +171,10 @@ const Documents = () => {
                     ((docType === 'invoice') &&
                         <Table
                             records={docs}
-                            callbackTree={null}
+                            callbackClick={null}
                             deleteRecord={null}
                             schema={docsSchema}
+                            checkedHandler={null}
                         />) ||
                     <ul>
                         {

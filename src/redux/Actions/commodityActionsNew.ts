@@ -92,7 +92,7 @@ export const postFormData =
           if (typeData.indexOf('array') > -1) {
             const store =
               typeData.indexOf('products') > -1 ? 'products' : 'groups';
-            apiIDB.pushItems(store, body);
+            apiIDB.pushItems(store, body as IFormData[]);
           } else {
             apiIDB.putData(`${path}s`, res);
           }

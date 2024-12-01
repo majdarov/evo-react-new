@@ -11,9 +11,9 @@ import { Button } from '../Button/Button';
 interface IProps {
   records: Record<string, any>[];
   schema: schemaTableType;
-  callbackClick: (row: string) => void | null;
+  callbackClick: ((row: string) => void) | null;
   deleteRecord: Function/* (id: string, path: string) => any  */ | null;
-  checkedHandler: Function;
+  checkedHandler: Function | null;
   advMenu?: TAdvMenuElem[] | null; //add advanse menu
 }
 export type TAdvMenuElem = {
