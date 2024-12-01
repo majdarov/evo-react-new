@@ -31,6 +31,8 @@ export async function initDb() {
 export const apiIDB = {
 
   async getGroup(id) {
+    console.log(id)
+    if (!id) return { name: 'Root', id: '0' };
     try {
       const db = await initDb();
       let group;
