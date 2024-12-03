@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import s from './Docs.module.css'
 import Table from '../common/Table';
-import Tree, { TreeNode } from '../common/Tree';
+import Tree from '../common/Tree';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { DocType, setDocs, setDocsPid } from '../../redux/docsSlice';
 import { apiBack } from '../../api'
@@ -20,15 +20,15 @@ const Docs = () => {
     const [rootLevel, setRootLevevl] = useState<'seller' | 'docDate'>('seller')
     const [rootLabel, setRootLabel] = useState('')
 
-    const getDocs = async () => {
-        return await apiBack.getDocs(baseUrl)
-    }
-
     useEffect(() => {
         rootLevel === 'seller' ? setRootLabel('Sellers') : setRootLabel('Dates')
-    })
+    }, [rootLevel])
 
     useEffect(() => {
+
+        const getDocs = async () => {
+            return await apiBack.getDocs(baseUrl)
+        }
         getDocs().then(res => {
             let _docs = res.items.map((d: DocType) => {
                 let date = new Date(d.docDate)
@@ -38,7 +38,8 @@ const Docs = () => {
             dispatch(setDocs(_docs))
         }
         )
-    }, [])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [baseUrl])
 
     useEffect(() => {
         if (docsPid === '0') {
@@ -47,12 +48,12 @@ const Docs = () => {
             const _fDocs = stateDocs.filter(d => getFilterDocs(rootLevel, d, docsPid))
             setFilterDocs(_fDocs.map(d => ({ ...d, docDate: new Date(d.docDate).toLocaleDateString() })))
         }
-    }, [docsPid])
+    }, [docsPid, rootLevel, stateDocs])
 
 
     const docsTree = createDocsTree(stateDocs, rootLevel)
 
-    const callbackTree: TreeCallback = (id: string, tagName: string, className: string) => {
+    const callbackTree: TreeCallback = (id: string, tagName?: string, className?: string) => {
         dispatch(setDocsPid(id))
     }
 
@@ -79,9 +80,10 @@ const Docs = () => {
                 {!!filterDocs.length &&
                     <Table
                         records={filterDocs}
-                        callbackTree={null}
+                        callbackClick={null}
                         deleteRecord={null}
                         schema={docsSchema}
+                        checkedHandler={null}
                     />
                 }
             </div>

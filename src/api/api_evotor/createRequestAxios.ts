@@ -5,6 +5,8 @@ import api_v2 from './api_v2_config';
 async function createRequest(action: ActionType) {
   if (action.type.indexOf('array') !== -1) {
     api_v2.headers!['Content-Type'] = 'application/vnd.evotor.v2+bulk+json';
+  } else {
+    api_v2.headers!['Content-Type'] = 'application/vnd.evotor.v2+json';
   }
   api_v2.headers!['X-Authorization'] = localStorage.appKey;
   action.storeUuid = localStorage.storeKey;

@@ -75,7 +75,7 @@ const Example = () => {
         }
     });
 
-    const callbackTree = (id: string, tagName: string, className: string) => {
+    const callbackTree = (id: string, tagName?: string, className?: string) => {
         dispatch(setDocsPid(id))
     }
 
@@ -101,9 +101,10 @@ const Example = () => {
                     {!!filterDocs.length &&
                         <Table
                             records={filterDocs}
-                            callbackTree={null}
+                            callbackClick={null}
                             deleteRecord={null}
                             schema={docsSchema}
+                            checkedHandler={null}
                         />}
                 </div>
             </div>

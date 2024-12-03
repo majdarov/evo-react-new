@@ -54,7 +54,7 @@ const FormProduct = props => {
   const { attributesP, getAttributes } = useModifications(state.parent_id);
 
   useEffect(() => {
-    getAttributes({ parentId: state.parent_id })
+    getAttributes(state.parent_id)
   }, [getAttributes, state.parent_id])
 
   useEffect(() => { //cleare URL objects Photo

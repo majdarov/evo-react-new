@@ -4,7 +4,7 @@ import { randomMax } from '../../common/utillites/utilites';
 export const setNewCode = async () => {
   //let maxCode = Math.floor(Math.random() * 1e5);
   //await productsApi.getData('products', { max: 'code' });
-  let arr: any[] = await apiIDB.getProduct();
+  let arr: any[] = await apiIDB.getProduct('all');
   // debugger
   let codes = arr.map((item) => +item.code || 0);
   let maxCode = Math.max.apply(null, codes);

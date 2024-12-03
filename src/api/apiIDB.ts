@@ -3,7 +3,7 @@ import { deleteDB, openDB } from 'idb';
 export async function initDb() {
   const db = await openDB('Evo', 4, {
     async upgrade(db, oldVersion, newVersion) {
-      if (oldVersion < newVersion) {
+      if (!!newVersion && oldVersion < newVersion) {
         alert('База данных будет обновлена до версии: ' + newVersion);
         // await db.delete();
         console.log(`New version: ${newVersion}`);
@@ -29,8 +29,8 @@ export async function initDb() {
 }
 
 export const apiIDB = {
-
-  async getGroup(id) {
+  async getGroup(id: string | undefined) {
+    if (!id) return { name: 'Root', id: '0' };
     try {
       const db = await initDb();
       let group;
@@ -47,7 +47,7 @@ export const apiIDB = {
     }
   },
 
-  async getProduct(id) {
+  async getProduct(id?: string | 'all') {
     const db = await initDb();
     let product;
     if (id === 'all' || !id) {
@@ -58,25 +58,25 @@ export const apiIDB = {
     return product;
   },
 
-  async getGroupsPid(pid) {
+  async getGroupsPid(pid: string) {
     const db = await initDb();
     const groups = await db.getAllFromIndex('groups', 'parent_id', pid);
     return groups;
   },
-  async getProductsPid(pid) {
+  async getProductsPid(pid: string) {
     const db = await initDb();
     const products = await db.getAllFromIndex('products', 'parent_id', pid);
     return products;
   },
 
-  async getProductsName(name) {
+  async getProductsName(name: string) {
     const db = await initDb();
     const products = await db.getAllFromIndex('products', 'name', name);
     return products;
   },
 
-  async pushItems(store, items) {
-    let resItems = [];
+  async pushItems(store: string, items: any[]) {
+    let resItems: any[] = [];
     items.forEach((item) => {
       resItems.push(item);
     });
@@ -86,27 +86,28 @@ export const apiIDB = {
     const promises = resItems.map((item) => {
       return tx.store.put(item);
     });
-    promises.push(tx.done);
+    // promises.push(tx.done);
     await Promise.all(promises);
+    await tx.done;
   },
 
-  async delDb(nameDb) {
+  async delDb(nameDb: string) {
     await deleteDB(nameDb);
   },
 
-  async putData(storeName, data) {
+  async putData(storeName: string, data: any) {
     const db = await initDb();
     await db.put(storeName, data);
     return data;
   },
 
-  async deleteData(storeName, id) {
+  async deleteData(storeName: string, id: string) {
     const db = await initDb();
     await db.delete(storeName, id);
     return id;
   },
 
-  async clearStore(storeName) {
+  async clearStore(storeName: string) {
     const db = await initDb();
     await db.clear(storeName);
     return true;

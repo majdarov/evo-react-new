@@ -17,7 +17,7 @@ export function clickCell(ev: React.MouseEvent<HTMLElement, MouseEvent>) {
 
 export function clickTable(
   ev: React.MouseEvent<HTMLElement, MouseEvent>,
-  callback: (row: string) => void | null,
+  callback: ((row: string) => void) | null,
   delRowCallback: Function | null /* (id: string, path: string) => any */,
 ) {
   let elem = ev.target as HTMLElement;
