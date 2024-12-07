@@ -1,12 +1,13 @@
-import { AxiosRequestConfig } from "axios";
+import { AxiosRequestConfig } from 'axios';
 
-console.log('MODE: ' + import.meta.env.MODE)
+console.log('MODE: ' + import.meta.env.MODE);
 
 const api_back: AxiosRequestConfig = {
-  // baseURL: localStorage.getItem('backURL') || '',
-  // baseURL: 'http://itk.galinka-malinka.ru/',
-}
+  headers: {
+    'Content-Type': 'application/json',
+  },
+};
 
-console.log('BaseURL: ' + api_back.baseURL)
+console.log('BaseURL: ' + api_back.baseURL);
 
 export default api_back;

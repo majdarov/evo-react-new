@@ -42,7 +42,10 @@ export function createDocsTree(
     // add root level
     if (!root) {
       root = {
-        rootId: rootLevel === 'seller' ? d.seller._id : d.docDate,
+        rootId:
+          rootLevel === 'seller'
+            ? d.seller._id ?? `seller_${d._id}`
+            : d.docDate,
         children: [],
       };
       roots.push(root);

@@ -51,7 +51,13 @@ const Docs = () => {
     }, [docsPid, rootLevel, stateDocs])
 
 
-    const docsTree = createDocsTree(stateDocs, rootLevel)
+    let docsTree, treeError = null
+    try {
+        docsTree = createDocsTree(stateDocs, rootLevel)
+    } catch (e: any) {
+        docsTree = null;
+        treeError = e.message;
+    }
 
     const callbackTree: TreeCallback = (id: string, tagName?: string, className?: string) => {
         dispatch(setDocsPid(id))
@@ -65,16 +71,19 @@ const Docs = () => {
                     onClick={() => setRootLevevl(rootLevel === 'seller' ? 'docDate' : 'seller')}
                     style={{ margin: 0.5, padding: 5, display: 'inline-flex' }}
                 >{rootLevel === 'seller' ? 'setDates' : 'setSellers'}</button>
-
-                <Tree
-                    pId='0'
-                    data={docsTree}
-                    rootLabel={rootLabel}
-                    treeLabel=''
-                    callback={callbackTree}
-                    viewEdit={false}
-                    key='docs_tree'
-                />
+                {
+                    !!treeError && <div className='treeError'>{treeError}</div>
+                }
+                {!!docsTree &&
+                    <Tree
+                        pId='0'
+                        data={docsTree}
+                        rootLabel={rootLabel}
+                        treeLabel=''
+                        callback={callbackTree}
+                        viewEdit={false}
+                        key='docs_tree'
+                    />}
             </div>
             <div className={s.docdetail}>
                 {!!filterDocs.length &&
