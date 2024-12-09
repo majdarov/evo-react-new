@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './example.css'
 import getDocs from '../Docs/get.docs.json'
 import Tree, { TreeNode } from '../common/Tree';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { DocType, setDocs, setDocsPid } from '../../redux/docsSlice';
 import Table from '../common/Table';
-import { useRouteMatch } from 'react-router-dom';
+import { MyForm } from './Formik';
+import { Modal } from '../common/Modal/Modal';
+import { Button } from '../common/Forms';
 
 const Example = () => {
-
-    // let match = useRouteMatch()
 
     const docsSchema = useAppSelector(state => state.settings.documents.table.schema)
     const stateDocs = useAppSelector(state => state.docs.docs)
@@ -18,6 +18,9 @@ const Example = () => {
     const [filterDocs, setFilterDocs] = useState([] as DocType[])
     const dispatch = useAppDispatch();
 
+    const [viewForm, setViewForm] = useState(false)
+    const [formData, setFormData] = useState<{ [key: string]: any }>({})
+
     useEffect(() => {
         let _docs = getDocs.items.map(d => {
             let date = new Date(d.docDate)
@@ -25,6 +28,7 @@ const Example = () => {
             return { ...d, docDate: date.getTime() }
         })
         dispatch(setDocs(_docs))
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useEffect(() => {
@@ -40,7 +44,7 @@ const Example = () => {
             })
             setFilterDocs(_fDocs)
         }
-    }, [docsPid])
+    }, [docsPid, stateDocs])
 
 
     // let sellers: {sellerId: string, dates: number[]}[] = []
@@ -79,14 +83,31 @@ const Example = () => {
         dispatch(setDocsPid(id))
     }
 
+    const callbackTable = (row: string) => {
+        const doc = filterDocs.find(d => d._id === row)
+        setFormData({ ...doc });
+        setViewForm(true)
+    }
+
     return (
         <>
+            <Button
+                icon='fa fa-home'
+                label='Test 2'
+            />
             <div className="parent">
                 <div id='1' className="section yellow">
                     {/* <li>{match.url}</li>
                 <li>{match.path}</li>
                 <li>{match.params.id}</li> */}
-
+                    {viewForm &&
+                        <Modal>
+                            <MyForm
+                                callback={() => setViewForm(false)}
+                                formData={formData}
+                            />
+                        </Modal>
+                    }
                     <Tree
                         pId='0'
                         data={docsTree}
@@ -101,7 +122,7 @@ const Example = () => {
                     {!!filterDocs.length &&
                         <Table
                             records={filterDocs}
-                            callbackClick={null}
+                            callbackClick={callbackTable}
                             deleteRecord={null}
                             schema={docsSchema}
                             checkedHandler={null}

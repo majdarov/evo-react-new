@@ -8,6 +8,7 @@ import FormImg from './FormImg';
 import FormModalWrapper from '../../common/Modal/FormModalWrapper';
 import { useModifications } from './schemas/useModifications';
 import { BlockMod } from '../../common/BlockMod';
+import { Modal } from '../../common/Modal/Modal';
 
 const FormProduct = props => {
 
@@ -333,9 +334,9 @@ const FormProduct = props => {
     return (
       <>
         {state.bigImg &&
-          <FormModalWrapper
-            form={<FormImg photo={state.bigImg} />}
-          />}
+          <Modal>
+            <FormImg photo={state.bigImg} />
+          </Modal>}
         <form id={s['form-product']} onSubmit={handleSubmit} >
           <div className={s['menu-buttons']}>
             <i className='fa fa-clone' id={s.copy} onClick={copyProduct}></i>

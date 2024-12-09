@@ -3,6 +3,7 @@ import ComponentsSearch from './schemas/ComponentsSearch';
 import s from './FormSearch.module.css';
 import { useAppSelector } from "../../../redux/hooks";
 import { clearFormElements } from "./frmUtilites";
+import { Button } from "../../common/Forms";
 
 const initialPeriod = {
   created_at: false,
@@ -13,10 +14,21 @@ const initialPeriod = {
 
 const FormSearch = (props) => {
 
+  const { setFilterConfig, returnBeforeSearch, isSearching, setIsSearching } = props
+
+  const clearSearch = useCallback(function () {
+    clearFormElements('form-search')
+    setFormData({});
+    setName('');
+    setPeriod(initialPeriod);
+    setView(false);
+    returnBeforeSearch();
+  }, [returnBeforeSearch])
+
   const cleanFlag = props.cleanFlag;
   useEffect(() => {
     if (cleanFlag) clearSearch();
-  }, [cleanFlag]);
+  }, [cleanFlag, clearSearch]);
 
   const [view, setView] = useState(false);
   const [formData, setFormData] = useState({});
@@ -25,7 +37,6 @@ const FormSearch = (props) => {
 
   const pId = useAppSelector(state => state.commodity.pid)
 
-  const { setFilterConfig, returnBeforeSearch, isSearching, setIsSearching } = props
 
   const getObj = useCallback(() => {
     let isCurrentGroup = document.forms['form-search']['current-pid'];
@@ -102,14 +113,7 @@ const FormSearch = (props) => {
     if (!isSearching) setIsSearching(true);
   };
 
-  function clearSearch() {
-    clearFormElements('form-search')
-    setFormData({});
-    setName('');
-    setPeriod(initialPeriod);
-    setView(false);
-    returnBeforeSearch();
-  }
+
 
   function changePeriod(ev) {
     let name = (ev.target.name).split('-')[0];
@@ -127,7 +131,7 @@ const FormSearch = (props) => {
       <form name='form-search' id={s['form-search']} onSubmit={handleSubmit}>
         <div className={s.search}>
           <div className={s['form-search-row']}>
-            <ComponentsSearch.Button
+            <Button
               label='Очистить фильтр'
               icon='fa fa-times'
               callback={clearSearch}
@@ -143,12 +147,12 @@ const FormSearch = (props) => {
               </label>
             </div>
           </div>
-          <ComponentsSearch.Button
+          <Button
             label='Расширенный фильтр'
             icon='fa fa-filter'
             callback={() => setView(view => !view)}
           />
-          <ComponentsSearch.Button
+          <Button
             label='Искать'
             icon='fa fa-search'
             callback={handleSubmit}

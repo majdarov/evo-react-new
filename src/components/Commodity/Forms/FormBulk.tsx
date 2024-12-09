@@ -3,12 +3,12 @@ import { useAppSelector } from "../../../redux/hooks"
 import { Modal } from "../../common/Modal/Modal"
 import GroupsTree from "../../common/GroupsTree"
 import s from './Form.module.css';
-import { Button } from "../../common/Button/Button";
+import { Button } from "../../common/Forms";
 
 interface IProps {
     items: any[]
     onSubmit: Function
-    onAbort: Function// (e: React.FormEvent<HTMLFormElement>) => void
+    onAbort: Function
 }
 
 export const FormBulk: React.FC<IProps> = ({ items, onSubmit, onAbort }) => {
@@ -65,7 +65,7 @@ export const FormBulk: React.FC<IProps> = ({ items, onSubmit, onAbort }) => {
                         label="Reset"
                         type="reset"
                         icon="fa fa-undo"
-                        callback={onAbort}
+                        callback={() => onAbort()}
                     />
                 </div>
                 {/* <input type="submit" value="Submit" /> */}

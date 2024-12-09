@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import s from './Docs.module.css'
 import Table from '../common/Table';
 import Tree from '../common/Tree';
@@ -7,6 +7,8 @@ import { DocType, setDocs, setDocsPid } from '../../redux/docsSlice';
 import { apiBack } from '../../api'
 import { createDocsTree, getFilterDocs } from './docsUtils';
 import { TreeCallback } from '../common/Tree/types';
+import { DocForm, IDocFormData } from './DocsForm';
+import { docLifeCircle, docPaymentStatus, docTypes } from '../../types/doc_types';
 
 const Docs = () => {
 
@@ -20,28 +22,34 @@ const Docs = () => {
     const [rootLevel, setRootLevevl] = useState<'seller' | 'docDate'>('seller')
     const [rootLabel, setRootLabel] = useState('')
 
+    const [viewForm, setViewForm] = useState(false)
+    const [formData, setFormData] = useState({}) as any
+
     useEffect(() => {
         rootLevel === 'seller' ? setRootLabel('Sellers') : setRootLabel('Dates')
     }, [rootLevel])
 
-    useEffect(() => {
+    useEffect(() => { // Get docs from backend service
 
         const getDocs = async () => {
             return await apiBack.getDocs(baseUrl)
         }
         getDocs().then(res => {
-            let _docs = res.items.map((d: DocType) => {
-                let date = new Date(d.docDate)
-                date.setHours(0, 0, 0)
-                return { ...d, docDate: date.getTime() }
-            })
-            dispatch(setDocs(_docs))
+            let _docs;
+            if (!!res?.items?.length) {
+                _docs = res.items.map((d: DocType) => {
+                    let date = new Date(d.docDate)
+                    date.setHours(0, 0, 0)
+                    return { ...d, docDate: date.getTime() }
+                })
+                dispatch(setDocs(_docs))
+            }
         }
         )
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [baseUrl])
 
-    useEffect(() => {
+    useEffect(() => { // Filter docs
         if (docsPid === '0') {
             setFilterDocs(stateDocs.map(d => ({ ...d, docDate: new Date(d.docDate).toLocaleDateString() })))
         } else {
@@ -55,6 +63,18 @@ const Docs = () => {
 
     const callbackTree: TreeCallback = (id: string, tagName?: string, className?: string) => {
         dispatch(setDocsPid(id))
+    }
+
+    const tableClick = (id: string) => {
+        const doc = filterDocs.find(d => d._id === id)
+        let formData: IDocFormData = {
+            ...doc,
+            createStatus: docLifeCircle[doc.createStatus],
+            docType: docTypes[doc.docType],
+            paymentStatus: docPaymentStatus[doc.paymentStatus],
+        }
+        setFormData(formData);
+        setViewForm(true);
     }
 
     return (
@@ -77,10 +97,16 @@ const Docs = () => {
                 />
             </div>
             <div className={s.docdetail}>
-                {!!filterDocs.length &&
+                {viewForm &&
+                    <DocForm
+                        formData={formData}
+                        callback={() => setViewForm(false)}
+                    />
+                }
+                {!!filterDocs.length && !viewForm &&
                     <Table
                         records={filterDocs}
-                        callbackClick={null}
+                        callbackClick={tableClick}
                         deleteRecord={null}
                         schema={docsSchema}
                         checkedHandler={null}

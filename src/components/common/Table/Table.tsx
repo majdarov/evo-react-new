@@ -6,7 +6,7 @@ import { schemaTableType } from '../../../redux/settingsSlice';
 import { useAppDispatch } from '../../../redux/hooks';
 import { setCheckedRecordsAC } from '../../../redux/appSlice';
 import { apiIDB } from '../../../api/apiIDB';
-import { Button } from '../Button/Button';
+import { Button } from '../Forms/Button/Button';
 
 interface IProps {
   records: Record<string, any>[];
