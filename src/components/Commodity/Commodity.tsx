@@ -129,7 +129,7 @@ const Commodity: React.FC<CommodityProps> = (props) => {
     setPageSize(pSize);
   }
 
-  const formSearchProps = { setFilterConfig, returnBeforeSearch, isSearching, setIsSearching, cleanFlag }
+  const formSearchProps = { setFilterConfig, returnBeforeSearch, isSearching, setIsSearching, cleanFlag, setCleanFlag }
 
   if (error) {
     return <div>Ошибка...{error.message}</div>;

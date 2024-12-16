@@ -14,7 +14,7 @@ const initialPeriod = {
 
 const FormSearch = (props) => {
 
-  const { setFilterConfig, returnBeforeSearch, isSearching, setIsSearching, cleanFlag } = props
+  const { setFilterConfig, returnBeforeSearch, isSearching, setIsSearching, cleanFlag, setCleanFlag } = props
 
   const [view, setView] = useState(false);
   const [formData, setFormData] = useState({});
@@ -132,7 +132,7 @@ const FormSearch = (props) => {
             <Button
               label='Очистить фильтр'
               icon='fa fa-times'
-              callback={clearSearch}
+              callback={() => setCleanFlag(true)}
             />
             <div className={s['search-name']}>
               <label htmlFor='name'>Поиск</label>
