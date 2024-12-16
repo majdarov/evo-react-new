@@ -14,7 +14,14 @@ const initialPeriod = {
 
 const FormSearch = (props) => {
 
-  const { setFilterConfig, returnBeforeSearch, isSearching, setIsSearching } = props
+  const { setFilterConfig, returnBeforeSearch, isSearching, setIsSearching, cleanFlag } = props
+
+  const [view, setView] = useState(false);
+  const [formData, setFormData] = useState({});
+  const [period, setPeriod] = useState(initialPeriod);
+  const [name, setName] = useState('');
+
+  const pId = useAppSelector(state => state.commodity.pid)
 
   const clearSearch = useCallback(function () {
     clearFormElements('form-search')
@@ -25,18 +32,9 @@ const FormSearch = (props) => {
     returnBeforeSearch();
   }, [returnBeforeSearch])
 
-  const cleanFlag = props.cleanFlag;
   useEffect(() => {
     if (cleanFlag) clearSearch();
   }, [cleanFlag, clearSearch]);
-
-  const [view, setView] = useState(false);
-  const [formData, setFormData] = useState({});
-  const [period, setPeriod] = useState(initialPeriod);
-  const [name, setName] = useState('');
-
-  const pId = useAppSelector(state => state.commodity.pid)
-
 
   const getObj = useCallback(() => {
     let isCurrentGroup = document.forms['form-search']['current-pid'];
