@@ -13,7 +13,7 @@
       "vite/client",
       "vite-plugin-svgr/client"
     ],
-    "target": "ESNext",
+    "target": "ES2017",
     "module": "esnext",
     "outDir": "build",
     "rootDir": "src",
@@ -36,5 +36,26 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "noImplicitAny": true,
+    "baseUrl": "src/",
+    "paths": {
+      "@/*": [
+        "./*"
+      ],
+      "@/components/*": [
+        "components/*"
+      ],
+      "@/Assets/*": [
+        "Assets/*"
+      ],
+      "@/api/*": [
+        "api/*"
+      ],
+      "@/redux/*": [
+        "redux/*"
+      ],
+      "@/types/*": [
+        "types/*"
+      ],
+    },
   }
 }
