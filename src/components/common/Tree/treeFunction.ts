@@ -81,7 +81,7 @@ export default createTree;
 
 export function chooseNotHiddenGroups(startId = '0', groups: TreeNode[] = []) {
   if (!startId || startId === '0' || !groups.length) return [];
-  let arr = [];
+  let arr: string[] = [];
   let current = groups.find((g) => g.id === startId);
   if (!current || !current.pid) return [];
   while (current.pid !== '0' || !current.pid) {
