@@ -2,19 +2,22 @@ import apiEvotor from './apiEvotor';
 import { apiIDB } from './apiIDB';
 
 export function compose(...fns: any) {
-  return (x: any) => fns.reduceRight((acc: any, fn: (...args: any | null) => {}) => fn(acc), x);
+  return (x: any) =>
+    fns.reduceRight((acc: any, fn: (...args: any | null) => {}) => fn(acc), x);
 }
 
 export function map(cb: (...args: any | null) => {}) {
   return (arr: any[]) => arr.map(cb);
 }
 
-export function testNeedUpdate(date: string | number, periodUpdate = 24) {
-  // debugger
+export function testNeedUpdate(
+  date: string | number | null,
+  periodUpdate = 24,
+) {
+  if (!date) return true;
   if (typeof date === 'string') {
     date = new Date(date).getTime();
   }
-  if (!date) return true;
   let needUpdate = (Date.now() - date) / 1000 / 3600;
   if (needUpdate > periodUpdate) {
     return true;
@@ -64,7 +67,7 @@ export async function syncGroupsProducts(callback: Function | null = null) {
   const log = (text: string, progress: number) => {
     console.log(text);
     if (callback) callback(text, progress);
-  }
+  };
   try {
     // Get groups
     log('Get groups...', 0.25);

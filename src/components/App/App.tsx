@@ -1,15 +1,15 @@
 import React, { useEffect } from "react";
 import "./App.css";
-import "../../Assets/css/fontawesome.css";
-import "../../Assets/css/solid.css";
-import "../../Assets/css/regular.css";
-import "../../Assets/css/brands.css";
+import "@/Assets/css/fontawesome.css";
+import "@/Assets/css/solid.css";
+import "@/Assets/css/regular.css";
+import "@/Assets/css/brands.css";
 import { Route } from "react-router-dom";
-import Game from "../Game/Game";
-import HeaderContainer from "../Header/HeaderContainer";
-import CommodityContainer from "../Commodity";
-import ImpExcel from "../ImpExcel/ImpExcel";
-import IdbTest from "../IdbTest/IdbTest";
+import Game from "@/components/Game";
+import HeaderContainer from "@/components/Header/HeaderContainer";
+import CommodityContainer from "@/components/Commodity";
+import ImpExcel from "@/components/ImpExcel/ImpExcel";
+import IdbTest from "@/components/IdbTest/IdbTest";
 import MainSettings from "../Settings/MainSettings";
 import {
   initializeApp,
@@ -21,10 +21,10 @@ import {
 } from '../../redux/Actions';
 import { connect, ConnectedProps } from "react-redux";
 import Documents from "../Documents";
-import { syncGroupsProducts, testNeedUpdate } from "../../api/apiUtils";
-import { RootState } from "../../redux/redux-store";
-import Example from "../Example/Example";
-import Docs from "../Docs/Docs";
+import { syncGroupsProducts, testNeedUpdate } from "@/api/apiUtils";
+import { RootState } from "@/redux/redux-store";
+import Example from "@/components/Example";
+import Docs from "@/components/Docs/";
 
 const App = (props: Props) => {
 

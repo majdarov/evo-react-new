@@ -1,26 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import s from './Header.module.css';
-import logo from '../../Assets/img/terminal-5.png';
-import ProgressBar from '../common/ProgressBar/ProgressBar';
-import { /* fetchGroupsProducts, */ syncGroupsProducts, testNeedUpdate } from '../../api/apiUtils';
-import NavbarContainer from '../Navbar/NavbarContainer';
-import { useAppSelector } from '../../redux/hooks';
-// import ProgressBar2 from '../common/ProgressBar/ProgressBar2';
+import logo from '@/Assets/img/terminal-5.png';
+import ProgressBar from '@/components/common/ProgressBar/ProgressBar';
+import { syncGroupsProducts, testNeedUpdate } from '@/api/apiUtils';
+import NavbarContainer from '@/components/Navbar/NavbarContainer';
+import { THeaderProps } from './HeaderContainer';
 
-const Header = (props) => {
+const Header: React.FC<THeaderProps & { path: string }> = (props) => {
 
     const [progressValue, setProgressValue] = useState(0);
 
     const [isInit, setIsInit] = useState(false);
-    const [lastUpdate, setLastUpdate] = useState(null);
+    const [lastUpdate, setLastUpdate] = useState<string | number | null>(null);
     const [updated, setUpdated] = useState(false);
     const [needUpdate, setNeedUpdate] = useState(false);
     const [text, setText] = useState('');
 
-    function clickLang(ev) {
+    function clickLang(ev: React.MouseEvent<HTMLInputElement, MouseEvent>) {
         let lng;
-        if (ev.target.name === 'lng') {
-            lng = ev.target.value;
+        let elem = ev.target as HTMLInputElement;
+        if (elem.name === 'lng') {
+            lng = elem.value;
             props.chooseLang(lng);
             props.getTitle(props.path);
         } else {
@@ -28,7 +28,7 @@ const Header = (props) => {
         }
     }
 
-    const calllbackForProgress = (text, progressValue) => {
+    const calllbackForProgress = (text: string, progressValue: number) => {
         setText(text)
         setProgressValue(progressValue)
     }
@@ -84,8 +84,8 @@ const Header = (props) => {
                 <div className={s.lng} onClick={clickLang}>
                     <input name="lng" type="radio" value='ru' checked={!props.currentLang}
                         onChange={(ev) => ev.target.checked = !props.currentLang} />RU
-                    <input name="lng" type="radio" value='en' checked={props.currentLang}
-                        onChange={(ev) => ev.target.checked = props.currentLang} />EN
+                    <input name="lng" type="radio" value='en' checked={!!props.currentLang}
+                        onChange={(ev) => ev.target.checked = !!props.currentLang} />EN
                 </div>
             </div>
         </header>
