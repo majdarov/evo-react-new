@@ -7,14 +7,15 @@ export default defineConfig({
   plugins: [
     react(),
     tsconfigPaths(),
-    svgrPlugin( { svgrOptions: {icon: true} } )
+    svgrPlugin({ svgrOptions: { icon: true } }),
   ],
   build: {
-    outDir: 'build'
+    outDir: 'build',
   },
   server: {
     host: '0.0.0.0',
     port: 4000,
-    open: true
-  }
+    open: true,
+  },
+  base: './',
 });
