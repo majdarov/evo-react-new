@@ -6,6 +6,7 @@ import { readJsonFile, saveConfig } from "../../api/apiFile";
 import { apiIDB } from "../../api/apiIDB";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { setBaseUrl } from "../../redux/settingsSlice";
+import { Button } from "../common/Forms";
 
 function addKey(id) {
     var key = document.getElementById(id).value;
@@ -125,7 +126,7 @@ const MainSettings = props => {
                     <p>{props.appKey}</p>
                 </div>
             }
-            { props.appKey && !!props.stores.length && !props.storeKey &&
+            {props.appKey && !!props.stores.length && !props.storeKey &&
                 <div style={{ cursor: 'pointer' }}>
                     <h3>Выберите магазин</h3>
                     <ul>
@@ -137,21 +138,34 @@ const MainSettings = props => {
                     </ul>
                 </div>
             }
-            { !!props.storeKey && !props.isInit &&
+            {!!props.storeKey && !props.isInit &&
                 <div>
                     <h3>Выбранный магазин</h3>
                     <p>{props.storeKey}</p>
                 </div>
             }
-            { props.isInit && !clean && <h2>Приложение инициализировано!</h2>}
-            { props.isInit && !clean &&
+            {props.isInit && !clean && <h2>Приложение инициализировано!</h2>}
+            {props.isInit && !clean &&
                 <>
+                    <div style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        marginBottom: '1rem'
+                    }}>
+                        <Button
+                            label="Save Config"
+                            callback={saveData}
+                        />
+                        <Button
+                            label="Clear Storage"
+                            callback={() => cleareStorage('Evo')}
+                            class_name="attention"
+                        />
+                    </div>
                     <div>
-                        <button onClick={() => cleareStorage('Evo')}>cleare Storage</button>
-                        <button onClick={saveData}>Save Config</button>
                         <label htmlFor="periodUpdate">Период обновления(час.):</label>
                         <input type="number" name="periodUpdate" id="periodUpdate"
-                            style={{width: '3rem'}}
+                            style={{ width: '3rem' }}
                             value={periodUpdate} onChange={ev => setPUpdate(ev.target.value)}
                             onBlur={blurPeriodUpdate}
                         />
@@ -159,10 +173,10 @@ const MainSettings = props => {
                     <div>
                         <label htmlFor="backLink">Адрес сервера документов</label>
                         <input type="url" name="backLink" id="backLink"
-                            style={{width: '15rem'}}
-                            value={ backLink }
-                            onChange={ ev => changeBackLink(ev.target.value)}
-                            onBlur={ ev => setBackLink(ev.target.value) }
+                            style={{ width: '15rem' }}
+                            value={backLink}
+                            onChange={ev => changeBackLink(ev.target.value)}
+                            onBlur={ev => setBackLink(ev.target.value)}
                             placeholder="http://localhost:3000"
                         />
                     </div>
@@ -173,7 +187,7 @@ const MainSettings = props => {
                 <div>
                     <p>или выберите восстановление конфигурации...</p>
                     <label>Восстановить конфигурацию из файла
-                    <input type="file" ref={inpRef} onChange={restoreConfig} hidden />
+                        <input type="file" ref={inpRef} onChange={restoreConfig} hidden />
                     </label>
                 </div>
             }

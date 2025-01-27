@@ -9,7 +9,7 @@ import { RootState } from '@/redux/redux-store';
 const HeaderContainer: React.FC<THeaderProps> = (props) => {
 
     const path = '/' + useLocation().pathname.split('/')[1];
-    console.log(path);
+    // console.log(path);
 
     useEffect(() => {
         props.getTitle(path);

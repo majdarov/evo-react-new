@@ -1,34 +1,42 @@
 button {
-    background: none;
-    border: none;
-    margin: 0;
-    padding: 0;
+  background: none;
+  border: none;
+  margin: 0;
+  padding: 0;
 }
 .filter-button {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    margin: 0.2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 0.2rem;
 }
 
 .filter:hover {
-    background-color: lavender;
+  background-color: lavender;
 }
 
 .filter-button i {
-    margin-left: .5rem;
+  margin-left: 0.5rem;
 }
 
 .filter {
-    color: var(--icon-color);
-    cursor: pointer;
-    border: 1px solid var(--icon-color);
-    font-family: var(--icon-font);
-    font-weight: bold;
-    border-radius: 0.5rem;
-    padding: 0.3rem;
+  color: var(--icon-color);
+  cursor: pointer;
+  border: 1px solid var(--icon-color);
+  font-family: var(--icon-font);
+  font-weight: bold;
+  border-radius: 0.5rem;
+  padding: 0.3rem;
 }
 
 .hidden {
-    display: none;
+  display: none;
+}
+
+/* .attention {
+  box-shadow: rgb(81, 131, 133) 0.2rem 0.2rem;
+} */
+
+.attention > span {
+  color: var(--forms-button-attention);
 }
