@@ -1,6 +1,6 @@
 import { AxiosRequestConfig } from 'axios';
 
-console.log('MODE: ' + import.meta.env.MODE);
+// console.log('MODE: ' + import.meta.env.MODE);
 
 const api_back: AxiosRequestConfig = {
   headers: {
@@ -8,6 +8,6 @@ const api_back: AxiosRequestConfig = {
   },
 };
 
-console.log('BaseURL: ' + api_back.baseURL);
+// console.log('BaseURL: ' + api_back.baseURL);
 
 export default api_back;

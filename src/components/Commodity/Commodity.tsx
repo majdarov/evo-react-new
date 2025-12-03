@@ -33,11 +33,10 @@ const Commodity: React.FC<CommodityProps> = (props) => {
   const [cleanFlag, setCleanFlag] = useState(false);
 
   function formBulkSubmit(parent_id: string) {
-    const newCheckedRecords: typeof checkedRecords = [];
-    checkedRecords.forEach(item => {
-      newCheckedRecords.push({ ...item, parent_id });
-    })
-    // setCheckedRecords(newCheckedRecords);
+    const newCheckedRecords = checkedRecords.map(({ alcocodes, ...rest }) => ({
+      ...rest,
+      parent_id
+    }));
     postFormData('array_products', 'put', newCheckedRecords)
     setViewFormBulk(false)
     setCheckedRecords([]);
@@ -51,6 +50,11 @@ const Commodity: React.FC<CommodityProps> = (props) => {
   const handleCheckedRecords = async (id: string) => {
     return await apiIDB.getProduct(id);
   };
+
+  function testCheckedRecords() {
+    alert(`Test ${checkedRecords.length} items.`);
+    console.log(checkedRecords);
+  }
   /*Handlers of checkedRecords */
 
   if (error) {
@@ -201,7 +205,7 @@ const Commodity: React.FC<CommodityProps> = (props) => {
                   {
                     lable: 'Test',
                     className: 'fa fa-bomb',
-                    onClick: () => alert(`Test ${checkedRecords.length} items.`)
+                    onClick: testCheckedRecords
                   },
                   {
                     lable: 'Change Group',
